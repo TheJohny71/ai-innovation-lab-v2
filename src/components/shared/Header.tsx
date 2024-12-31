@@ -1,7 +1,7 @@
-// src/components/shared/Header.tsx
 import React from "react";
 import { Container } from "./Container";
 import Link from 'next/link';
+import { GradientText } from './GradientText';
 
 export function Header() {
   return (
@@ -9,24 +9,24 @@ export function Header() {
       <Container>
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text">
-              AI Innovation Lab
+            <Link href="/" className="text-xl font-bold">
+              <GradientText>AI Innovation Lab</GradientText>
             </Link>
           </div>
           <nav className="flex items-center gap-6">
-            <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link href="/" className="text-sm font-medium text-gray-200 hover:text-white transition-colors">
               Welcome
             </Link>
-            <Link href="/solutions" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link href="/solutions" className="text-sm font-medium text-gray-200 hover:text-white transition-colors">
               Solutions
             </Link>
-            <Link href="/disruption" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link href="/disruption" className="text-sm font-medium text-gray-200 hover:text-white transition-colors">
               Disruption
             </Link>
-            <Link href="/mindset" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link href="/mindset" className="text-sm font-medium text-gray-200 hover:text-white transition-colors">
               Mindset
             </Link>
-            <Link href="/apps" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link href="/apps" className="text-sm font-medium text-gray-200 hover:text-white transition-colors">
               Apps
             </Link>
           </nav>
