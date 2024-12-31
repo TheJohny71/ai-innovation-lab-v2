@@ -1,3 +1,4 @@
+// src/app/page.tsx
 import { Header } from '@/components/shared/Header';
 import { Container } from '@/components/shared/Container';
 import { Section, SectionHeader, SectionTitle, SectionDescription } from '@/components/shared/Section';
@@ -9,9 +10,56 @@ import {
   BeakerIcon,
   ChartBarIcon,
   CogIcon,
-} from '@heroicons/react/24/outline';
+} from '@heroicons/react/24/solid'; // Changed from outline to solid
 
+// Types for our components
+type ButtonProps = {
+  children: React.ReactNode;
+  variant?: 'default' | 'outline';
+  size?: 'default' | 'lg';
+  className?: string;
+};
+
+type CardProps = {
+  children: React.ReactNode;
+  hover?: boolean;
+  className?: string;
+};
+
+type SectionProps = {
+  children: React.ReactNode;
+  className?: string;
+  id?: string;
+};
+
+// Create a Feature type for our features array
+type Feature = {
+  title: string;
+  description: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+};
+
+// Main component
 export default function Home() {
+  // Features array moved inside the component to avoid hoisting issues
+  const features: Feature[] = [
+    {
+      title: "AI-Powered Analysis",
+      description: "Advanced algorithms providing deep insights and predictions",
+      icon: BeakerIcon
+    },
+    {
+      title: "Data Visualization",
+      description: "Interactive and intuitive data visualization tools",
+      icon: ChartBarIcon
+    },
+    {
+      title: "Automation Tools",
+      description: "Streamline your workflow with powerful automation features",
+      icon: CogIcon
+    }
+  ];
+
   return (
     <main className="min-h-screen">
       <Header />
@@ -87,7 +135,6 @@ export default function Home() {
               </SectionDescription>
               <Button className="mt-8">Learn More About Us</Button>
             </motion.div>
-            {/* Add an image or illustration here */}
           </div>
         </Container>
       </Section>
@@ -115,21 +162,3 @@ export default function Home() {
     </main>
   );
 }
-
-const features = [
-  {
-    title: "AI-Powered Analysis",
-    description: "Advanced algorithms providing deep insights and predictions",
-    icon: BeakerIcon
-  },
-  {
-    title: "Data Visualization",
-    description: "Interactive and intuitive data visualization tools",
-    icon: ChartBarIcon
-  },
-  {
-    title: "Automation Tools",
-    description: "Streamline your workflow with powerful automation features",
-    icon: CogIcon
-  }
-];
