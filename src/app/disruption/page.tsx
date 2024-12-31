@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { Zap, Globe, Layers, Flag, ArrowRight, Star } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
 import { debounce } from 'lodash';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { Container } from '@/components/shared/Container';
 import { Section, SectionHeader, SectionTitle } from '@/components/shared/Section';
 import { Card } from '@/components/shared/Card';
 import { GradientText } from '@/components/shared/GradientText';
+import type { MetricCardProps, Metrics } from '@/types/metrics';
 
 interface MousePosition {
   x: number;
@@ -17,27 +17,6 @@ interface MousePosition {
 
 interface StarFieldProps {
   mousePosition: MousePosition;
-}
-
-interface MetricCardProps {
-  icon: LucideIcon;
-  title: string;
-  value: string;
-  subtitle: string;
-  mainStats: {
-    trend: string;
-  };
-  additionalStats: {
-    [key: string]: {
-      value: string;
-      change?: string;
-    };
-  };
-  gradient: {
-    border: string;
-    bg: string;
-    text: string;
-  };
 }
 
 interface ProgressBarProps {
@@ -115,12 +94,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, gradient }) => (
     />
   </div>
 );
-
-export default function DisruptionPage() {
-  const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const metrics = {
+const metrics: Metrics = {
   cards: [
     {
       icon: Zap,
@@ -217,6 +191,10 @@ export default function DisruptionPage() {
   }
 };
 
+const DisruptionPage = () => {
+  const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -243,6 +221,9 @@ export default function DisruptionPage() {
       debouncedSetMousePosition.cancel();
     };
   }, [handleMouseMove, debouncedSetMousePosition]);
+
+  const currentDate = new Date('2024-12-31T20:30:35Z');
+  const currentUser = 'TheJohny71';
 
   return (
     <BaseLayout>
@@ -312,8 +293,25 @@ export default function DisruptionPage() {
                       </div>
                     ))}
                   </div>
+                  <div className="text-xs text-gray-500 text-right">
+                    Last updated: {currentDate.toLocaleString('en-US', {
+                      timeZone: 'UTC',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      timeZoneName: 'short'
+                    })}
+                  </div>
                 </div>
-                <button className="w-full flex items-center justify-center gap-1 text-gray-300 hover:text-white transition-colors bg-gray-900/20 rounded-xl border border-blue-400/10 py-4 px-6 mt-auto">
+                <button 
+                  className="w-full flex items-center justify-center gap-1 text-gray-300 hover:text-white transition-colors bg-gray-900/20 rounded-xl border border-blue-400/10 py-4 px-6 mt-auto"
+                  onClick={() => {
+                    console.log(`Dataset accessed by ${currentUser}`);
+                  }}
+                  aria-label="Access Complete Enterprise Dataset"
+                >
                   <span>Access Complete Enterprise Dataset</span>
                   <ArrowRight className="w-4 h-4 opacity-70" />
                 </button>
@@ -324,4 +322,6 @@ export default function DisruptionPage() {
       </div>
     </BaseLayout>
   );
-}
+};
+
+export default DisruptionPage;
