@@ -57,7 +57,7 @@ const metrics: MindsetMetric[] = [
     }
   },
   {
-    icon: Trend,
+    icon: TrendingUp, // Changed from Trend to TrendingUp
     title: "Growth Mindset",
     value: "89%",
     description: "Positive attitude towards change",
@@ -98,7 +98,7 @@ export default function MindsetPage() {
     setIsLoaded(true);
   }, []);
 
-  const currentDate = new Date('2024-12-31T21:48:02Z');
+  const currentDate = new Date('2024-12-31T22:00:18Z'); // Updated to current time
   const currentUser = 'TheJohny71';
 
   return (
@@ -177,16 +177,20 @@ export default function MindsetPage() {
                     <p className="text-gray-400">Implement changes with continuous feedback loops</p>
                   </div>
                 </div>
-                <div className="text-xs text-gray-500 mt-6 text-right">
-                  Last updated: {currentDate.toLocaleString('en-US', {
-                    timeZone: 'UTC',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    timeZoneName: 'short'
-                  })}
+                <div className="mt-6 flex justify-between items-center text-xs text-gray-500">
+                  <span>Updated by: {currentUser}</span>
+                  <span>
+                    {currentDate.toLocaleString('en-US', {
+                      timeZone: 'UTC',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      second: '2-digit',
+                      timeZoneName: 'short'
+                    })}
+                  </span>
                 </div>
               </Card>
             </div>
