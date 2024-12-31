@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AI Innovation Lab',
-  description: 'Explore the future of AI with cutting-edge tools and technologies',
+  title: 'AI Innovation Lab V2',
+  description: 'AI Powered Legal Innovation',
 }
 
 export default function RootLayout({
