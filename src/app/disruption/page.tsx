@@ -121,100 +121,101 @@ export default function DisruptionPage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const metrics = {
-    cards: [
-      {
-        icon: Zap,
-        title: "Total Initiatives",
-        value: "31",
-        subtitle: "verified",
-        mainStats: {
-          trend: "From 25 Law Firms"
-        },
-        additionalStats: {
-          "Unique Firms": { value: "25" },
-          "AmLaw 100": { value: "19" },
-          "Active Projects": { value: "24" },
-          "Pilot Phase": { value: "7" }
-        },
-        gradient: {
-          border: "border-purple-400/20",
-          bg: "bg-purple-500/10",
-          text: "text-purple-400"
-        }
+  cards: [
+    {
+      icon: Zap,
+      title: "Total Initiatives",
+      value: "31",
+      subtitle: "verified",
+      mainStats: {
+        trend: "From 25 Law Firms"
       },
-      {
-        icon: Globe,
-        title: "Global Reach",
-        value: "18",
-        subtitle: "global deployments",
-        mainStats: {
-          trend: "58% Global Scale"
-        },
-        additionalStats: {
-          "Global Firms": { value: "18" },
-          "US Focus": { value: "13" },
-          "Coverage": { value: "58%" },
-          "Regions": { value: "4" }
-        },
-        border: "border-blue-400/20",
-          bg: "bg-blue-500/10",
-          text: "text-blue-400"
-        }
+      additionalStats: {
+        "Unique Firms": { value: "25" },
+        "AmLaw 100": { value: "19" },
+        "Active Projects": { value: "24" },
+        "Pilot Phase": { value: "7" }
       },
-      {
-        icon: Layers,
-        title: "Active Projects",
-        value: "24",
-        subtitle: "in production",
-        mainStats: {
-          trend: "77% Active Rate"
-        },
-        additionalStats: {
-          "Development": { value: "4" },
-          "Planning": { value: "3" },
-          "Success Rate": { value: "89%" },
-          "Use Cases": { value: "12" }
-        },
-        gradient: {
-          border: "border-blue-400/20",
-          bg: "bg-blue-500/10",
-          text: "text-blue-400"
-        }
-      },
-      {
-        icon: Flag,
-        title: "2024 Launches",
-        value: "8",
-        subtitle: "this year",
-        mainStats: {
-          trend: "vs 6 in 2023"
-        },
-        additionalStats: {
-          "2023 Total": { value: "6" },
-          "2022 Total": { value: "4" },
-          "Growth": { value: "33%" },
-          "Pipeline": { value: "5" }
-        },
-        gradient: {
-          border: "border-teal-400/20",
-          bg: "bg-teal-500/10",
-          text: "text-teal-400"
-        }
+      gradient: {
+        border: "border-purple-400/20",
+        bg: "bg-purple-500/10",
+        text: "text-purple-400"
       }
-    ],
-    implementationTypes: [
-      { name: "Document Analysis & Review", count: 14 },
-      { name: "Legal Research", count: 11 },
-      { name: "Contract Management", count: 9 },
-      { name: "Knowledge Management", count: 8 },
-      { name: "Client Service Automation", count: 7 }
-    ],
-    deploymentStatus: {
-      active: 24,
-      development: 4,
-      planning: 3
+    },
+    {
+      icon: Globe,
+      title: "Global Reach",
+      value: "18",
+      subtitle: "global deployments",
+      mainStats: {
+        trend: "58% Global Scale"
+      },
+      additionalStats: {
+        "Global Firms": { value: "18" },
+        "US Focus": { value: "13" },
+        "Coverage": { value: "58%" },
+        "Regions": { value: "4" }
+      },
+      gradient: {
+        border: "border-blue-400/20",
+        bg: "bg-blue-500/10",
+        text: "text-blue-400"
+      }
+    },
+    {
+      icon: Layers,
+      title: "Active Projects",
+      value: "24",
+      subtitle: "in production",
+      mainStats: {
+        trend: "77% Active Rate"
+      },
+      additionalStats: {
+        "Development": { value: "4" },
+        "Planning": { value: "3" },
+        "Success Rate": { value: "89%" },
+        "Use Cases": { value: "12" }
+      },
+      gradient: {
+        border: "border-blue-400/20",
+        bg: "bg-blue-500/10",
+        text: "text-blue-400"
+      }
+    },
+    {
+      icon: Flag,
+      title: "2024 Launches",
+      value: "8",
+      subtitle: "this year",
+      mainStats: {
+        trend: "vs 6 in 2023"
+      },
+      additionalStats: {
+        "2023 Total": { value: "6" },
+        "2022 Total": { value: "4" },
+        "Growth": { value: "33%" },
+        "Pipeline": { value: "5" }
+      },
+      gradient: {
+        border: "border-teal-400/20",
+        bg: "bg-teal-500/10",
+        text: "text-teal-400"
+      }
     }
-  };
+  ],
+  implementationTypes: [
+    { name: "Document Analysis & Review", count: 14 },
+    { name: "Legal Research", count: 11 },
+    { name: "Contract Management", count: 9 },
+    { name: "Knowledge Management", count: 8 },
+    { name: "Client Service Automation", count: 7 }
+  ],
+  deploymentStatus: {
+    active: 24,
+    development: 4,
+    planning: 3
+  }
+};
 
   useEffect(() => {
     setIsLoaded(true);
