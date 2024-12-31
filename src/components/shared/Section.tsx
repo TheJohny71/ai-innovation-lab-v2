@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { Container } from './Container';
 
 interface SectionProps {
   children: React.ReactNode;
@@ -7,54 +7,33 @@ interface SectionProps {
   id?: string;
 }
 
-export function Section({ children, className, id }: SectionProps) {
+export function Section({ children, className = '', id }: SectionProps) {
   return (
-    <section
-      id={id}
-      className={cn('py-16 md:py-24', className)}
-    >
+    <section id={id} className={`py-16 ${className}`}>
       {children}
     </section>
   );
 }
 
-export function SectionHeader({ 
-  children, 
-  className 
-}: { 
-  children: React.ReactNode; 
-  className?: string;
-}) {
+export function SectionHeader({ children }: { children: React.ReactNode }) {
   return (
-    <div className={cn('mx-auto max-w-3xl text-center', className)}>
+    <div className="text-center space-y-4">
       {children}
     </div>
   );
 }
 
-export function SectionTitle({ 
-  children, 
-  className 
-}: { 
-  children: React.ReactNode; 
-  className?: string;
-}) {
+export function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className={cn('text-3xl font-bold sm:text-4xl md:text-5xl', className)}>
+    <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
       {children}
     </h2>
   );
 }
 
-export function SectionDescription({ 
-  children, 
-  className 
-}: { 
-  children: React.ReactNode; 
-  className?: string;
-}) {
+export function SectionDescription({ children }: { children: React.ReactNode }) {
   return (
-    <p className={cn('mt-4 text-lg text-muted-foreground', className)}>
+    <p className="text-xl text-gray-400">
       {children}
     </p>
   );
