@@ -1,3 +1,4 @@
+'use client';
 // src/app/page.tsx
 import { Header } from '@/components/shared/Header';
 import { Container } from '@/components/shared/Container';

@@ -1,44 +1,26 @@
-import React from 'react';
-import Link from 'next/link';
-import { Container } from './Container';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { Container } from "./Container";
 
-interface HeaderProps {
-  className?: string;
-}
-
-export function Header({ className }: HeaderProps) {
+export function Header() {
   return (
-    <header
-      className={cn(
-        'fixed top-0 z-50 w-full border-b bg-background/80 backdrop-blur',
-        className
-      )}
-    >
+    <header className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <Container>
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold">AI Innovation Lab</span>
-          </Link>
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link
-              href="#features"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
+          <div className="flex items-center">
+            <a href="/" className="text-xl font-bold">
+              AI Innovation Lab
+            </a>
+          </div>
+          <nav className="flex items-center gap-6">
+            <a href="#features" className="text-sm font-medium hover:text-primary">
               Features
-            </Link>
-            <Link
-              href="#about"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
+            </a>
+            <a href="#about" className="text-sm font-medium hover:text-primary">
               About
-            </Link>
-            <Link
-              href="#contact"
-              className="text-sm font-medium transition-colors hover:text-primary"
-            >
+            </a>
+            <a href="#contact" className="text-sm font-medium hover:text-primary">
               Contact
-            </Link>
+            </a>
           </nav>
         </div>
       </Container>
