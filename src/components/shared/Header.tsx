@@ -26,8 +26,8 @@ export function Header() {
             <Link href="/mindset" className="text-sm font-medium text-gray-200 hover:text-white transition-colors">
               Mindset
             </Link>
-            <Link href="/apps" className="text-sm font-medium text-gray-200 hover:text-white transition-colors">
-              Apps
+            <Link href="/future-ready" className="text-sm font-medium text-gray-200 hover:text-white transition-colors">
+              Future-Ready
             </Link>
           </nav>
         </div>
