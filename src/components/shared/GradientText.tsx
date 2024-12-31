@@ -1,31 +1,13 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 
 interface GradientTextProps {
   children: React.ReactNode;
   className?: string;
-  from?: string;
-  via?: string;
-  to?: string;
 }
 
-export function GradientText({
-  children,
-  className,
-  from = 'from-primary',
-  via = 'via-purple-500',
-  to = 'to-cyan-500',
-}: GradientTextProps) {
+export function GradientText({ children, className = '' }: GradientTextProps) {
   return (
-    <span
-      className={cn(
-        'bg-gradient-to-r bg-clip-text text-transparent',
-        from,
-        via,
-        to,
-        className
-      )}
-    >
+    <span className={`bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 text-transparent bg-clip-text ${className}`}>
       {children}
     </span>
   );
