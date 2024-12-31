@@ -5,6 +5,11 @@ import { GradientText } from '@/components/shared/GradientText';
 import { Button } from '@/components/shared/Button';
 import { Card } from '@/components/shared/Card';
 import { motion } from 'framer-motion';
+import { 
+  BeakerIcon,
+  ChartBarIcon,
+  CogIcon,
+} from '@heroicons/react/24/outline';
 
 export default function Home() {
   return (
@@ -111,12 +116,20 @@ export default function Home() {
   );
 }
 
-// Add this at the top of the file or in a separate features.ts file
 const features = [
   {
     title: "AI-Powered Analysis",
     description: "Advanced algorithms providing deep insights and predictions",
-    icon: /* Add icon component here */
+    icon: BeakerIcon
   },
-  // Add more features...
+  {
+    title: "Data Visualization",
+    description: "Interactive and intuitive data visualization tools",
+    icon: ChartBarIcon
+  },
+  {
+    title: "Automation Tools",
+    description: "Streamline your workflow with powerful automation features",
+    icon: CogIcon
+  }
 ];
