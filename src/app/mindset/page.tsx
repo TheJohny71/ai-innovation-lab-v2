@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Lightbulb, Users, Target, Trend } from 'lucide-react';
+import { Lightbulb, Users, Target, TrendingUp } from 'lucide-react';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { Container } from '@/components/shared/Container';
 import { Section, SectionHeader, SectionTitle } from '@/components/shared/Section';
