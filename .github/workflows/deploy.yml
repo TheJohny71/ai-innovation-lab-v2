@@ -15,24 +15,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'  # Added cache for faster builds
-          
+          cache: 'npm' # Added cache for faster builds
+
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Build
         run: npm run build
         env:
-          NEXT_PUBLIC_BASE_PATH: '/ai-innovation-lab-v2'  # Add base path as env variable
-          
+          NEXT_PUBLIC_BASE_PATH: '/ai-innovation-lab-v2' # Add base path as env variable
+
       - name: Add .nojekyll file
         run: |
           touch ./out/.nojekyll
-          
+
       - name: Create 404.html
         run: |
           cat > ./out/404.html << 'EOL'
@@ -57,7 +57,7 @@ jobs:
       - name: Update build info
         run: |
           echo "{\"buildDate\":\"$(date -u +'%Y-%m-%d %H:%M:%S')\",\"version\":\"${{ github.sha }}\"}" > ./out/build-info.json
-          
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

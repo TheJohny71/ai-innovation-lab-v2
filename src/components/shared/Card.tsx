@@ -8,14 +8,14 @@ interface CardProps {
 
 export function Card({ children, hover = false, className = '' }: CardProps) {
   return (
-    <div 
+    <div
       className={`
         rounded-xl 
         border border-white/10 
         bg-gray-900/40 
-        backdrop-blur-sm 
-        p-6
-        ${hover ? 'hover:bg-gray-900/60 transition-colors' : ''} 
+        p-6 
+        backdrop-blur-sm
+        ${hover ? 'transition-colors hover:bg-gray-900/60' : ''} 
         ${className}
       `}
     >

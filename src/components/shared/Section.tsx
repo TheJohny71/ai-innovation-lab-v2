@@ -16,11 +16,7 @@ export function Section({ children, className = '', id }: SectionProps) {
 }
 
 export function SectionHeader({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="text-center space-y-4">
-      {children}
-    </div>
-  );
+  return <div className="space-y-4 text-center">{children}</div>;
 }
 
 export function SectionTitle({ children }: { children: React.ReactNode }) {
@@ -31,10 +27,10 @@ export function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function SectionDescription({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-xl text-gray-400">
-      {children}
-    </p>
-  );
+export function SectionDescription({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <p className="text-xl text-gray-400">{children}</p>;
 }

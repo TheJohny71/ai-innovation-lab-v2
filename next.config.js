@@ -8,8 +8,8 @@ const nextConfig = {
   },
   // Add this to ensure consistent build output
   generateBuildId: async () => {
-    return process.env.GITHUB_SHA || 'development'
+    return process.env.GITHUB_SHA || 'development';
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["node"],  // Add this line
+    "types": ["node"], // Add this line
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

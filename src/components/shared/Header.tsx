@@ -1,5 +1,5 @@
-import React from "react";
-import { Container } from "./Container";
+import React from 'react';
+import { Container } from './Container';
 import Link from 'next/link';
 import { GradientText } from './GradientText';
 import { usePathname } from 'next/navigation';
@@ -44,16 +44,18 @@ export function Header() {
           <div className="flex items-center gap-4 text-sm text-gray-400">
             <span>{currentUser}</span>
             <span>|</span>
-            <span>{currentDate.toLocaleString('en-US', {
-              timeZone: 'UTC',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-              timeZoneName: 'short'
-            })}</span>
+            <span>
+              {currentDate.toLocaleString('en-US', {
+                timeZone: 'UTC',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short',
+              })}
+            </span>
           </div>
         </div>
       </Container>
