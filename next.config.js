@@ -5,6 +5,7 @@ const nextConfig = {
     unoptimized: true,
   },
   basePath: '/ai-innovation-lab-v2',
+  assetPrefix: '/ai-innovation-lab-v2',
 }
 
 module.exports = nextConfig
