@@ -1,4 +1,5 @@
-const content = `'use client';
+'use client';
+import React from 'react';
 import { BaseLayout } from '../components/shared/BaseLayout';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -17,6 +18,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-}`;
-
-console.log(content);
+}
