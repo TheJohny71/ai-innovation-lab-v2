@@ -2,24 +2,13 @@ import React from 'react';
 
 interface CardProps {
   children: React.ReactNode;
-  hover?: boolean;
   className?: string;
 }
 
-export function Card({ children, hover = false, className = '' }: CardProps) {
+export const Card: React.FC<CardProps> = ({ children, className = '' }) => {
   return (
-    <div
-      className={`
-        rounded-xl 
-        border border-white/10 
-        bg-gray-900/40 
-        p-6 
-        backdrop-blur-sm
-        ${hover ? 'transition-colors hover:bg-gray-900/60' : ''} 
-        ${className}
-      `}
-    >
+    <div className={`border bg-gray-800 p-4 rounded-lg ${className}`}>
       {children}
     </div>
   );
-}
+};
