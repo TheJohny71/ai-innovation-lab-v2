@@ -11,4 +11,3 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
