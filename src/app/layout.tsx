@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import { BaseLayout } from '../components/shared/BaseLayout';
 import { Inter } from 'next/font/google';
