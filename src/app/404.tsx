@@ -1,3 +1,4 @@
+// src/app/404.tsx
 'use client';
 import React from 'react';
 
