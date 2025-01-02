@@ -6,15 +6,15 @@ import { usePathname } from 'next/navigation';
 
 export function Header() {
   const pathname = usePathname();
-  const currentDate = new Date('2024-12-31T21:53:46Z');
+  const currentDate = new Date('2025-01-02T23:16:10Z'); // Updated to current time
   const currentUser = 'TheJohny71';
 
   const links = [
-    { href: '/ai-innovation-lab-v2/', label: 'Welcome' },
-    { href: '/ai-innovation-lab-v2/solutions', label: 'Solutions' },
-    { href: '/ai-innovation-lab-v2/disruption', label: 'Disruption' },
-    { href: '/ai-innovation-lab-v2/mindset', label: 'Mindset' },
-    { href: '/ai-innovation-lab-v2/future-ready', label: 'Future-Ready' },
+    { href: '/', label: 'Welcome' },
+    { href: '/solutions', label: 'Solutions' },
+    { href: '/disruption', label: 'Disruption' },
+    { href: '/mindset', label: 'Mindset' },
+    { href: '/future-ready', label: 'Future-Ready' },
   ];
 
   return (
@@ -22,7 +22,7 @@ export function Header() {
       <Container>
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
-            <Link href="/ai-innovation-lab-v2/" className="text-xl font-bold">
+            <Link href="/" className="text-xl font-bold">
               <GradientText>AI Innovation Lab</GradientText>
             </Link>
           </div>
