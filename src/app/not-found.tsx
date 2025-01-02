@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-export default function NotFound() {
+export default function NotFound(): JSX.Element {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#0F1729]">
       <div className="text-center">
