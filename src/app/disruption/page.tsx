@@ -1,34 +1,87 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Zap, Globe, Layers, Flag, ArrowRight, Star } from 'lucide-react';
+import { Zap, Globe, Layers, Flag, Star } from 'lucide-react';
 import { debounce } from 'lodash';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { Container } from '@/components/shared/Container';
 import { Section, SectionHeader, SectionTitle } from '@/components/shared/Section';
 import { Card } from '@/components/shared/Card';
 import { GradientText } from '@/components/shared/GradientText';
-import type { MetricCardProps, Metrics } from '@/types/metrics';
 
 interface MousePosition {
   x: number;
   y: number;
 }
 
-interface ProgressBarProps {
-  value: number;
-  max: number;
-  gradient: string;
-}
-
-const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, gradient }) => (
-  <div className="h-2 overflow-hidden rounded-full bg-gray-700/30">
-    <div
-      className={`h-full ${gradient}`}
-      style={{ width: `${(value / max) * 100}%` }}
-    />
-  </div>
-);
+const metrics = {
+  cards: [
+    {
+      icon: Zap,
+      title: 'Total Initiatives',
+      value: '31',
+      subtitle: 'verified',
+      mainStats: { trend: 'From 25 Law Firms' },
+      additionalStats: {
+        'Unique Firms': { value: '25' },
+        'AmLaw 100': { value: '19' },
+      },
+      gradient: {
+        border: 'border-purple-400/20',
+        bg: 'bg-purple-500/10',
+        text: 'text-purple-400',
+      },
+    },
+    {
+      icon: Globe,
+      title: 'Global Reach',
+      value: '18',
+      subtitle: 'global deployments',
+      mainStats: { trend: '58% Global Scale' },
+      additionalStats: {
+        'Global Firms': { value: '18' },
+        'US Focus': { value: '13' },
+      },
+      gradient: {
+        border: 'border-blue-400/20',
+        bg: 'bg-blue-500/10',
+        text: 'text-blue-400',
+      },
+    },
+    {
+      icon: Layers,
+      title: 'Active Projects',
+      value: '24',
+      subtitle: 'in production',
+      mainStats: { trend: '77% Active Rate' },
+      additionalStats: {
+        Development: { value: '4' },
+        Planning: { value: '3' },
+      },
+      gradient: {
+        border: 'border-blue-400/20',
+        bg: 'bg-blue-500/10',
+        text: 'text-blue-400',
+      },
+    },
+    {
+      icon: Flag,
+      title: '2024 Launches',
+      value: '8',
+      subtitle: 'this year',
+      mainStats: { trend: 'vs 6 in 2023' },
+      additionalStats: {
+        '2023 Total': { value: '6' },
+        '2022 Total': { value: '4' },
+      },
+      gradient: {
+        border: 'border-teal-400/20',
+        bg: 'bg-teal-500/10',
+        text: 'text-teal-400',
+      },
+    },
+  ],
+};
 
 const StarField: React.FC<{ mousePosition: MousePosition }> = React.memo(({ mousePosition }) => {
   const stars = useMemo(() => {
@@ -69,47 +122,6 @@ const StarField: React.FC<{ mousePosition: MousePosition }> = React.memo(({ mous
 });
 
 StarField.displayName = 'StarField';
-
-const metrics: Metrics = {
-  cards: [
-    {
-      icon: Zap,
-      title: 'Total Initiatives',
-      value: '31',
-      subtitle: 'verified',
-      mainStats: { trend: 'From 25 Law Firms' },
-      additionalStats: { 'Unique Firms': { value: '25' }, 'AmLaw 100': { value: '19' } },
-      gradient: { border: 'border-purple-400/20', bg: 'bg-purple-500/10', text: 'text-purple-400' },
-    },
-    {
-      icon: Globe,
-      title: 'Global Reach',
-      value: '18',
-      subtitle: 'global deployments',
-      mainStats: { trend: '58% Global Scale' },
-      additionalStats: { 'Global Firms': { value: '18' }, 'US Focus': { value: '13' } },
-      gradient: { border: 'border-blue-400/20', bg: 'bg-blue-500/10', text: 'text-blue-400' },
-    },
-    {
-      icon: Layers,
-      title: 'Active Projects',
-      value: '24',
-      subtitle: 'in production',
-      mainStats: { trend: '77% Active Rate' },
-      additionalStats: { Development: { value: '4' }, Planning: { value: '3' } },
-      gradient: { border: 'border-blue-400/20', bg: 'bg-blue-500/10', text: 'text-blue-400' },
-    },
-    {
-      icon: Flag,
-      title: '2024 Launches',
-      value: '8',
-      subtitle: 'this year',
-      mainStats: { trend: 'vs 6 in 2023' },
-      additionalStats: { '2023 Total': { value: '6' }, '2022 Total': { value: '4' } },
-      gradient: { border: 'border-teal-400/20', bg: 'bg-teal-500/10', text: 'text-teal-400' },
-    },
-  ],
-};
 
 const DisruptionPage: React.FC = () => {
   const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
