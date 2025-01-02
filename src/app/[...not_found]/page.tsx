@@ -1,0 +1,10 @@
+echo 'export default function CatchAll() {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#0F1729]">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-white">404 - Page Not Found</h1>
+          <p className="mt-4 text-gray-400">The page you're looking for doesn't exist.</p>
+        </div>
+      </main>
+    );
+   }' > src/app/[...not_found]/page.tsx
