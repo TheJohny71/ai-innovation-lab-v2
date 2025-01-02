@@ -1,3 +1,4 @@
+import React from 'react';
 import WelcomeSvg from '../components/WelcomeSvg';
 
 export default function Home() {
@@ -9,3 +10,4 @@ export default function Home() {
     </main>
   );
 }
+

@@ -13,4 +13,10 @@ const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
 ];
 
-export default eslintConfig;
+export default {
+  ...eslintConfig,
+  rules: {
+    'react/react-in-jsx-scope': 'error', // Ensure React is in scope for older JSX runtimes
+  },
+};
+

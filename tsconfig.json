@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["node"], // Add this line
+    "types": ["node"],
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -12,7 +12,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx", // Changed from "preserve" to "react-jsx"
     "incremental": true,
     "plugins": [
       {
