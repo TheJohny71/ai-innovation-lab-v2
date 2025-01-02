@@ -5,7 +5,11 @@ import { Zap, Globe, Layers, Flag, Star } from 'lucide-react';
 import { debounce } from 'lodash';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { Container } from '@/components/shared/Container';
-import { Section, SectionHeader, SectionTitle } from '@/components/shared/Section';
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+} from '@/components/shared/Section';
 import { Card } from '@/components/shared/Card';
 import { GradientText } from '@/components/shared/GradientText';
 
@@ -83,48 +87,53 @@ const metrics = {
   ],
 };
 
-const StarField: React.FC<{ mousePosition: MousePosition }> = React.memo(({ mousePosition }) => {
-  const stars = useMemo(() => {
-    return Array(60)
-      .fill(null)
-      .map(() => ({
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        delay: Math.random() * 3,
-        duration: 2 + Math.random() * 3,
-        isAccent: Math.random() > 0.7,
-        scale: 0.5 + Math.random() * 0.5,
-      }));
-  }, []);
+const StarField: React.FC<{ mousePosition: MousePosition }> = React.memo(
+  ({ mousePosition }) => {
+    const stars = useMemo(() => {
+      return Array(60)
+        .fill(null)
+        .map(() => ({
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          delay: Math.random() * 3,
+          duration: 2 + Math.random() * 3,
+          isAccent: Math.random() > 0.7,
+          scale: 0.5 + Math.random() * 0.5,
+        }));
+    }, []);
 
-  return (
-    <div className="absolute inset-0 opacity-30">
-      {stars.map((star, i) => (
-        <div
-          key={i}
-          className="absolute animate-pulse"
-          style={{
-            left: star.left,
-            top: star.top,
-            transform: `translate3d(${mousePosition.x * 20}px, ${mousePosition.y * 20}px, 0) scale(${star.scale})`,
-            animationDelay: `${star.delay}s`,
-            animationDuration: `${star.duration}s`,
-          }}
-        >
-          <Star
-            className={`h-2 w-2 ${star.isAccent ? 'text-teal-400' : 'text-blue-400'}`}
-            aria-hidden="true"
-          />
-        </div>
-      ))}
-    </div>
-  );
-});
+    return (
+      <div className="absolute inset-0 opacity-30">
+        {stars.map((star, i) => (
+          <div
+            key={i}
+            className="absolute animate-pulse"
+            style={{
+              left: star.left,
+              top: star.top,
+              transform: `translate3d(${mousePosition.x * 20}px, ${mousePosition.y * 20}px, 0) scale(${star.scale})`,
+              animationDelay: `${star.delay}s`,
+              animationDuration: `${star.duration}s`,
+            }}
+          >
+            <Star
+              className={`h-2 w-2 ${star.isAccent ? 'text-teal-400' : 'text-blue-400'}`}
+              aria-hidden="true"
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+);
 
 StarField.displayName = 'StarField';
 
 const DisruptionPage: React.FC = () => {
-  const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState<MousePosition>({
+    x: 0,
+    y: 0,
+  });
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -137,7 +146,10 @@ const DisruptionPage: React.FC = () => {
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      debouncedSetMousePosition(e.clientX / window.innerWidth, e.clientY / window.innerHeight);
+      debouncedSetMousePosition(
+        e.clientX / window.innerWidth,
+        e.clientY / window.innerHeight
+      );
     },
     [debouncedSetMousePosition]
   );
@@ -159,7 +171,9 @@ const DisruptionPage: React.FC = () => {
             <SectionHeader>
               <SectionTitle>
                 <GradientText>Law Firm AI Disruption Index</GradientText>
-                <span className="block text-gray-400 mt-4">Tracking AI innovation in global law firms</span>
+                <span className="mt-4 block text-gray-400">
+                  Tracking AI innovation in global law firms
+                </span>
               </SectionTitle>
             </SectionHeader>
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
@@ -167,7 +181,7 @@ const DisruptionPage: React.FC = () => {
                 <Card key={index}>
                   <div className={`p-4 ${card.gradient.bg}`}>
                     <card.icon className={`h-6 w-6 ${card.gradient.text}`} />
-                    <h3 className="font-semibold mt-2">{card.title}</h3>
+                    <h3 className="mt-2 font-semibold">{card.title}</h3>
                     <p className="text-lg">{card.value}</p>
                     <p className="text-sm text-gray-400">{card.subtitle}</p>
                   </div>
