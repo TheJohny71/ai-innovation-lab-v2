@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Zap, Globe, Layers, Flag, ArrowRight, Star } from 'lucide-react';
 import { debounce } from 'lodash';
@@ -151,7 +152,14 @@ const DisruptionPage: React.FC = () => {
             </SectionHeader>
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
               {metrics.cards.map((card, index) => (
-                <Card key={index} {...card} />
+                <Card key={index}>
+                  <div className={`p-4 ${card.gradient.bg}`}>
+                    <card.icon className={`h-6 w-6 ${card.gradient.text}`} />
+                    <h3 className="font-semibold mt-2">{card.title}</h3>
+                    <p className="text-lg">{card.value}</p>
+                    <p className="text-sm text-gray-400">{card.subtitle}</p>
+                  </div>
+                </Card>
               ))}
             </div>
           </Container>
