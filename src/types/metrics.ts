@@ -1,4 +1,4 @@
-import { LucideIcon } from 'lucide-react';
+import React from 'react';
 
 export interface MetricCardStats {
   value: string;
@@ -6,7 +6,7 @@ export interface MetricCardStats {
 }
 
 export interface MetricCardProps {
-  icon: LucideIcon;
+  icon: React.ComponentType<any>; // Updated to allow flexibility for icons
   title: string;
   value: string;
   subtitle: string;
