@@ -8,8 +8,8 @@ import { WelcomeSvg } from '@/components/shared/WelcomeSvg';
 export default function WelcomePage() {
   return (
     <BaseLayout>
-      <Section className="relative min-h-screen">
-        <Container className="flex items-center justify-center">
+      <Section className="relative min-h-screen flex items-center justify-center">
+        <Container>
           <WelcomeSvg />
         </Container>
       </Section>
