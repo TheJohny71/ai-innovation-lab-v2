@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Zap, Globe, Layers, Flag } from 'lucide-react';
 
-type PageType = 'welcome' | 'solutions' | 'disruption' | 'future-ready';
+type PageType = 'welcome' | 'solutions' | 'disruption' | 'future-ready' | 'mindset';
 
 interface NavigationProps {
   activePage: PageType;
@@ -17,7 +17,7 @@ const Navigation: React.FC<NavigationProps> = ({
   <div className="fixed bottom-0 left-0 right-0 bg-gray-900/80 p-4 backdrop-blur">
     <div className="mx-auto flex max-w-screen-xl justify-center">
       <div className="rounded-full border border-blue-500/20 bg-blue-500/5 p-1">
-        {['Welcome', 'Solutions', 'Disruption', 'Future-Ready'].map((btn) => (
+        {['Welcome', 'Solutions', 'Disruption', 'Mindset', 'Future-Ready'].map((btn) => (
           <button
             key={btn}
             onClick={() => setActivePage(btn.toLowerCase() as PageType)}
@@ -39,7 +39,7 @@ export const MainPreview: React.FC = () => {
   const [activePage, setActivePage] = useState<PageType>('welcome');
 
   const WelcomePage = () => (
-    <div className="relative min-h-screen w-full p-8 pb-24">
+    <div className="relative min-h-screen w-full">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0F1729] via-[#162033] to-[#0F1729]" />
       <div className="relative">
         <div className="flex min-h-screen flex-col items-center justify-center">
@@ -154,6 +154,35 @@ export const MainPreview: React.FC = () => {
     </div>
   );
 
+  const MindsetPage = () => (
+    <div className="min-h-screen p-8 pb-24">
+      <h2 className="mb-8 text-3xl font-bold">
+        <span className="bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent">
+          Cultural Mindset Change
+        </span>
+      </h2>
+      <div className="grid grid-cols-3 gap-6">
+        {[
+          'Innovation First',
+          'Data-Driven Decisions',
+          'Client-Centric Approach',
+        ].map((mindset) => (
+          <div
+            key={mindset}
+            className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
+          >
+            <h3 className="mb-2 text-xl font-semibold text-blue-400">
+              {mindset}
+            </h3>
+            <p className="text-gray-400">
+              Embracing change through innovative thinking
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   const FutureReadyPage = () => (
     <div className="min-h-screen p-8 pb-24">
       <h2 className="mb-8 text-3xl font-bold">
@@ -187,6 +216,7 @@ export const MainPreview: React.FC = () => {
     welcome: <WelcomePage />,
     solutions: <SolutionsPage />,
     disruption: <DisruptionPage />,
+    mindset: <MindsetPage />,
     'future-ready': <FutureReadyPage />,
   };
 
