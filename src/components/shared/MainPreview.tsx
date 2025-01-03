@@ -3,19 +3,33 @@
 import React, { useState } from 'react';
 import { Zap, Globe, Layers, Flag } from 'lucide-react';
 
-type PageType = 'welcome' | 'solutions' | 'disruption' | 'mindset' | 'future-ready';
+type PageType =
+  | 'welcome'
+  | 'solutions'
+  | 'disruption'
+  | 'mindset'
+  | 'future-ready';
 
 interface NavigationProps {
   activePage: PageType;
   setActivePage: (page: PageType) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) => {
+const Navigation: React.FC<NavigationProps> = ({
+  activePage,
+  setActivePage,
+}) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900/80 p-4 backdrop-blur">
       <div className="mx-auto flex max-w-screen-xl justify-center">
         <div className="rounded-full border border-blue-500/20 bg-blue-500/5 p-1">
-          {['Welcome', 'Solutions', 'Disruption', 'Mindset', 'Future-Ready'].map((btn) => (
+          {[
+            'Welcome',
+            'Solutions',
+            'Disruption',
+            'Mindset',
+            'Future-Ready',
+          ].map((btn) => (
             <button
               key={btn}
               onClick={() => setActivePage(btn.toLowerCase() as PageType)}
@@ -69,18 +83,37 @@ export const MainPreview: React.FC = () => {
       </h2>
       <div className="grid grid-cols-2 gap-6">
         {[
-          { title: 'Document Analysis', gradient: 'from-purple-400 to-blue-400' },
-          { title: 'Legal Research', gradient: 'from-blue-400 to-teal-400' },
-          { title: 'Contract Management', gradient: 'from-teal-400 to-cyan-400' },
-          { title: 'Knowledge Management', gradient: 'from-cyan-400 to-purple-400' },
+          {
+            title: 'Document Analysis',
+            gradient: 'from-purple-400 to-blue-400',
+          },
+          {
+            title: 'Legal Research',
+            gradient: 'from-blue-400 to-teal-400',
+          },
+          {
+            title: 'Contract Management',
+            gradient: 'from-teal-400 to-cyan-400',
+          },
+          {
+            title: 'Knowledge Management',
+            gradient: 'from-cyan-400 to-purple-400',
+          },
         ].map((solution, index) => (
-          <div key={index} className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm">
+          <div
+            key={index}
+            className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
+          >
             <h3 className="mb-2 text-xl font-semibold">
-              <span className={`bg-gradient-to-r ${solution.gradient} bg-clip-text text-transparent`}>
+              <span
+                className={`bg-gradient-to-r ${solution.gradient} bg-clip-text text-transparent`}
+              >
                 {solution.title}
               </span>
             </h3>
-            <p className="text-gray-400">AI-powered solutions for modern challenges</p>
+            <p className="text-gray-400">
+              AI-powered solutions for modern challenges
+            </p>
           </div>
         ))}
       </div>
@@ -96,12 +129,35 @@ export const MainPreview: React.FC = () => {
       </h2>
       <div className="grid grid-cols-4 gap-4">
         {[
-          { icon: Zap, value: '31', title: 'Total Initiatives', color: 'purple' },
-          { icon: Globe, value: '18', title: 'Global Reach', color: 'blue' },
-          { icon: Layers, value: '24', title: 'Active Projects', color: 'blue' },
-          { icon: Flag, value: '8', title: '2024 Launches', color: 'teal' },
+          {
+            icon: Zap,
+            value: '31',
+            title: 'Total Initiatives',
+            color: 'purple',
+          },
+          {
+            icon: Globe,
+            value: '18',
+            title: 'Global Reach',
+            color: 'blue',
+          },
+          {
+            icon: Layers,
+            value: '24',
+            title: 'Active Projects',
+            color: 'blue',
+          },
+          {
+            icon: Flag,
+            value: '8',
+            title: '2024 Launches',
+            color: 'teal',
+          },
         ].map((metric, i) => (
-          <div key={i} className="rounded-lg border border-gray-700 bg-gray-800/50 p-4 backdrop-blur-sm">
+          <div
+            key={i}
+            className="rounded-lg border border-gray-700 bg-gray-800/50 p-4 backdrop-blur-sm"
+          >
             <metric.icon className={`h-6 w-6 text-${metric.color}-400`} />
             <p className="mt-2 text-2xl font-bold text-white">{metric.value}</p>
             <p className="text-sm text-gray-400">{metric.title}</p>
@@ -119,10 +175,21 @@ export const MainPreview: React.FC = () => {
         </span>
       </h2>
       <div className="grid grid-cols-3 gap-6">
-        {['Innovation First', 'Data-Driven Decisions', 'Client-Centric Approach'].map((mindset) => (
-          <div key={mindset} className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm">
-            <h3 className="mb-2 text-xl font-semibold text-blue-400">{mindset}</h3>
-            <p className="text-gray-400">Embracing change through innovative thinking</p>
+        {[
+          'Innovation First',
+          'Data-Driven Decisions',
+          'Client-Centric Approach',
+        ].map((mindset) => (
+          <div
+            key={mindset}
+            className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
+          >
+            <h3 className="mb-2 text-xl font-semibold text-blue-400">
+              {mindset}
+            </h3>
+            <p className="text-gray-400">
+              Embracing change through innovative thinking
+            </p>
           </div>
         ))}
       </div>
@@ -137,10 +204,21 @@ export const MainPreview: React.FC = () => {
         </span>
       </h2>
       <div className="grid grid-cols-3 gap-6">
-        {['AI Integration', 'Digital Transformation', 'Innovation Framework'].map((solution) => (
-          <div key={solution} className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm">
-            <h3 className="mb-2 text-xl font-semibold text-blue-400">{solution}</h3>
-            <p className="text-gray-400">Advanced solutions for future-ready practices</p>
+        {[
+          'AI Integration',
+          'Digital Transformation',
+          'Innovation Framework',
+        ].map((solution) => (
+          <div
+            key={solution}
+            className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
+          >
+            <h3 className="mb-2 text-xl font-semibold text-blue-400">
+              {solution}
+            </h3>
+            <p className="text-gray-400">
+              Advanced solutions for future-ready practices
+            </p>
           </div>
         ))}
       </div>
