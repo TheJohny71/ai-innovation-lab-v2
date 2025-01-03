@@ -3,7 +3,20 @@
 import React, { useState } from 'react';
 import { Zap, Globe, Layers, Flag } from 'lucide-react';
 
-const Navigation = ({ activePage, setActivePage }) => (
+interface NavigationProps {
+  activePage: string;
+  setActivePage: (page: string) => void;
+}
+
+interface ServiceCardProps {
+  title: string;
+  subtitle: string;
+  gradientBorder: string;
+  children: React.ReactNode;
+  delay?: number;
+}
+
+const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) => (
   <div className="fixed bottom-0 left-0 right-0 bg-gray-900/80 p-4 backdrop-blur">
     <div className="mx-auto flex max-w-screen-xl justify-center">
       <div className="rounded-full border border-blue-500/20 bg-blue-500/5 p-1">
@@ -25,7 +38,7 @@ const Navigation = ({ activePage, setActivePage }) => (
   </div>
 );
 
-const ServiceCard = ({
+const ServiceCard: React.FC<ServiceCardProps> = ({
   title,
   subtitle,
   gradientBorder,
@@ -44,7 +57,7 @@ const ServiceCard = ({
   </div>
 );
 
-export const MainPreview = () => {
+export const MainPreview: React.FC = () => {
   const [activePage, setActivePage] = useState('welcome');
 
   const WelcomePage = () => (
