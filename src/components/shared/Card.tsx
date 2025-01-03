@@ -1,4 +1,3 @@
-// Button.tsx
 'use client';
 
 import React from 'react';
@@ -30,11 +29,6 @@ export function Button({
     </button>
   );
 }
-
-// Card.tsx
-'use client';
-
-import React from 'react';
 
 interface CardProps {
   children: React.ReactNode;
