@@ -1,8 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { MainPreview } from '@/components/shared/MainPreview';
 
 export default function Home() {
-  return <MainPreview />;
+  return (
+    <div className="bg-[#0F1729]">
+      <MainPreview />
+    </div>
+  );
 }
