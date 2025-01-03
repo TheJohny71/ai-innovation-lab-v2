@@ -16,7 +16,10 @@ interface ServiceCardProps {
   delay?: number;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) => (
+const Navigation: React.FC<NavigationProps> = ({
+  activePage,
+  setActivePage,
+}) => (
   <div className="fixed bottom-0 left-0 right-0 bg-gray-900/80 p-4 backdrop-blur">
     <div className="mx-auto flex max-w-screen-xl justify-center">
       <div className="rounded-full border border-blue-500/20 bg-blue-500/5 p-1">
