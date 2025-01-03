@@ -1,4 +1,3 @@
-# /src/lib/animation.ts
 'use client';
 
 export const fadeIn = 'animate-in fade-in duration-500';
