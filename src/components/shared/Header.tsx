@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 export function Header() {
   const pathname = usePathname();
-  const currentDate = new Date('2025-01-02T23:16:10Z'); // Updated to current time
+  const currentDate = new Date('2025-01-03T02:09:23Z'); // Updated to current UTC time
   const currentUser = 'TheJohny71';
 
   const links = [
