@@ -1,9 +1,15 @@
+# /src/components/shared/MainPreview.tsx
 'use client';
 
 import React, { useState } from 'react';
 import { Zap, Globe, Layers, Flag, Rocket, Users, Cpu } from 'lucide-react';
 
-type PageType = 'welcome' | 'solutions' | 'disruption' | 'mindset' | 'future-ready';
+type PageType =
+  | 'welcome'
+  | 'solutions'
+  | 'disruption'
+  | 'mindset'
+  | 'future-ready';
 
 interface ServiceBoxProps {
   icon: React.ElementType;
@@ -12,10 +18,17 @@ interface ServiceBoxProps {
   gradient: string;
 }
 
-const ServiceBox = ({ icon: Icon, title, description, gradient }: ServiceBoxProps) => (
-  <div className={`rounded-xl border border-white/10 bg-gray-900/50 p-6 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white/20 hover:shadow-lg ${gradient}`}>
-    <Icon className="h-12 w-12 mb-4" />
-    <h3 className="text-xl font-semibold mb-2">{title}</h3>
+const ServiceBox = ({
+  icon: Icon,
+  title,
+  description,
+  gradient,
+}: ServiceBoxProps) => (
+  <div
+    className={`rounded-xl border border-white/10 bg-gray-900/50 p-6 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white/20 hover:shadow-lg ${gradient}`}
+  >
+    <Icon className="mb-4 h-12 w-12" />
+    <h3 className="mb-2 text-xl font-semibold">{title}</h3>
     <p className="text-gray-300">{description}</p>
   </div>
 );
@@ -25,12 +38,21 @@ interface NavigationProps {
   setActivePage: (page: PageType) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) => {
+const Navigation: React.FC<NavigationProps> = ({
+  activePage,
+  setActivePage,
+}) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900/90 p-4 backdrop-blur-md">
       <div className="mx-auto flex max-w-screen-xl justify-center">
         <div className="rounded-full border border-indigo-500/20 bg-indigo-500/5 p-1">
-          {['Welcome', 'Solutions', 'Disruption', 'Mindset', 'Future-Ready'].map((btn) => (
+          {[
+            'Welcome',
+            'Solutions',
+            'Disruption',
+            'Mindset',
+            'Future-Ready',
+          ].map((btn) => (
             <button
               key={btn}
               onClick={() => setActivePage(btn.toLowerCase() as PageType)}
@@ -71,7 +93,7 @@ export const MainPreview: React.FC = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 max-w-7xl w-full">
+          <div className="w-full max-w-7xl grid-cols-1 gap-8 px-4 md:grid-cols-3">
             <ServiceBox
               icon={Users}
               title="Enhanced Client Service"
@@ -96,7 +118,6 @@ export const MainPreview: React.FC = () => {
     </div>
   );
 
-  // [Previous page components remain the same]
   const SolutionsPage = () => (
     <div className="min-h-screen p-8 pb-24">
       <h2 className="mb-8 text-3xl font-bold">
