@@ -1,4 +1,3 @@
-# /src/components/shared/Container.tsx
 'use client';
 
 import React from 'react';
