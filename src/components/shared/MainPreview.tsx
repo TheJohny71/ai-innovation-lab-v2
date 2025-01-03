@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import { Zap, Globe, Layers, Flag } from 'lucide-react';
 
+type PageType = 'welcome' | 'solutions' | 'disruption' | 'future-ready';
+
 interface NavigationProps {
-  activePage: string;
-  setActivePage: (page: string) => void;
+  activePage: PageType;
+  setActivePage: (page: PageType) => void;
 }
 
 interface ServiceCardProps {
@@ -26,7 +28,7 @@ const Navigation: React.FC<NavigationProps> = ({
         {['Welcome', 'Solutions', 'Disruption', 'Future-Ready'].map((btn) => (
           <button
             key={btn}
-            onClick={() => setActivePage(btn.toLowerCase())}
+            onClick={() => setActivePage(btn.toLowerCase() as PageType)}
             className={`mx-2 rounded-full px-8 py-2 transition-all duration-300 ${
               activePage === btn.toLowerCase()
                 ? 'bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg'
@@ -61,7 +63,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 );
 
 export const MainPreview: React.FC = () => {
-  const [activePage, setActivePage] = useState('welcome');
+  const [activePage, setActivePage] = useState<PageType>('welcome');
 
   const WelcomePage = () => (
     <div className="relative min-h-screen w-full p-8 pb-24">
@@ -253,7 +255,7 @@ export const MainPreview: React.FC = () => {
     </div>
   );
 
-  const pages = {
+  const pages: Record<PageType, JSX.Element> = {
     welcome: <WelcomePage />,
     solutions: <SolutionsPage />,
     disruption: <DisruptionPage />,
