@@ -92,7 +92,7 @@ export const MainPreview: React.FC = () => {
             </p>
           </div>
           
-          <div className="w-full max-w-7xl grid-cols-1 gap-8 px-4 md:grid-cols-3">
+           <div className="w-full max-w-7xl grid-cols-1 gap-8 px-4 md:grid-cols-3">
             <ServiceBox
               icon={Users}
               title="Enhanced Client Service"
