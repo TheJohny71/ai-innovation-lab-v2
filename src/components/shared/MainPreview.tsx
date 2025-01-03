@@ -1,41 +1,42 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Zap, Globe, Layers, Flag } from 'lucide-react';
+import { Zap, Globe, Layers, Flag, Rocket, Users, Cpu } from 'lucide-react';
 
-type PageType =
-  | 'welcome'
-  | 'solutions'
-  | 'disruption'
-  | 'mindset'
-  | 'future-ready';
+type PageType = 'welcome' | 'solutions' | 'disruption' | 'mindset' | 'future-ready';
+
+interface ServiceBoxProps {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  gradient: string;
+}
+
+const ServiceBox = ({ icon: Icon, title, description, gradient }: ServiceBoxProps) => (
+  <div className={`rounded-xl border border-white/10 bg-gray-900/50 p-6 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white/20 hover:shadow-lg ${gradient}`}>
+    <Icon className="h-12 w-12 mb-4" />
+    <h3 className="text-xl font-semibold mb-2">{title}</h3>
+    <p className="text-gray-300">{description}</p>
+  </div>
+);
 
 interface NavigationProps {
   activePage: PageType;
   setActivePage: (page: PageType) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({
-  activePage,
-  setActivePage,
-}) => {
+const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900/80 p-4 backdrop-blur">
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-900/90 p-4 backdrop-blur-md">
       <div className="mx-auto flex max-w-screen-xl justify-center">
-        <div className="rounded-full border border-blue-500/20 bg-blue-500/5 p-1">
-          {[
-            'Welcome',
-            'Solutions',
-            'Disruption',
-            'Mindset',
-            'Future-Ready',
-          ].map((btn) => (
+        <div className="rounded-full border border-indigo-500/20 bg-indigo-500/5 p-1">
+          {['Welcome', 'Solutions', 'Disruption', 'Mindset', 'Future-Ready'].map((btn) => (
             <button
               key={btn}
               onClick={() => setActivePage(btn.toLowerCase() as PageType)}
               className={`mx-2 rounded-full px-8 py-2 transition-all duration-300 ${
                 activePage === btn.toLowerCase()
-                  ? 'bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-indigo-500 to-cyan-400 text-white shadow-lg'
                   : 'text-gray-300 hover:bg-gray-800/50'
               }`}
             >
@@ -53,12 +54,12 @@ export const MainPreview: React.FC = () => {
 
   const WelcomePage = () => (
     <div className="relative min-h-screen w-full">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0F1729] via-[#162033] to-[#0F1729]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0A1128] via-[#1B2B4D] to-[#0A1128]" />
       <div className="relative">
-        <div className="flex min-h-screen flex-col items-center justify-center">
+        <div className="flex min-h-screen flex-col items-center justify-center space-y-16">
           <div className="text-center">
             <h1 className="mb-4 text-6xl font-bold">
-              <span className="bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent">
                 AI Innovation Law
               </span>
             </h1>
@@ -69,11 +70,33 @@ export const MainPreview: React.FC = () => {
               Accelerating Disruption Through Cultural Mindset Change
             </p>
           </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 max-w-7xl w-full">
+            <ServiceBox
+              icon={Users}
+              title="Enhanced Client Service"
+              description="Transforming legal service delivery through AI-driven solutions"
+              gradient="hover:shadow-purple-500/20"
+            />
+            <ServiceBox
+              icon={Rocket}
+              title="Accelerated Workflows"
+              description="Streamlining legal processes with intelligent automation"
+              gradient="hover:shadow-blue-500/20"
+            />
+            <ServiceBox
+              icon={Cpu}
+              title="Talent Acceleration"
+              description="Empowering legal professionals with AI capabilities"
+              gradient="hover:shadow-cyan-500/20"
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 
+  // [Previous page components remain the same]
   const SolutionsPage = () => (
     <div className="min-h-screen p-8 pb-24">
       <h2 className="mb-8 text-3xl font-bold">
