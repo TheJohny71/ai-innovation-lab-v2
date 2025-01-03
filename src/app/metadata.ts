@@ -1,19 +1,6 @@
-'use client';
+import { Metadata } from 'next';
 
-import React from 'react';
-import { BaseLayout } from '../components/shared/BaseLayout';
-import { Inter } from 'next/font/google';
-import './globals.css';
-
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap', // Optimize font loading
-  preload: true
-});
-
-// While this is a client component, we can still define metadata
-// that will be used by Next.js for static generation
-export const metadata = {
+export const metadata: Metadata = {
   title: 'AI Innovation Lab V2',
   description: 'Next generation AI innovation laboratory and experimental platform',
   keywords: 'AI, innovation, laboratory, experiments, research',
@@ -50,21 +37,3 @@ export const metadata = {
     },
   },
 };
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="theme-color" content="#000000" />
-      </head>
-      <body className={`${inter.className} antialiased`}>
-        <BaseLayout>{children}</BaseLayout>
-      </body>
-    </html>
-  );
-}
