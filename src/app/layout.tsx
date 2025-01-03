@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { BaseLayout } from '../components/shared/BaseLayout';
 import { Inter } from 'next/font/google';
@@ -7,19 +5,17 @@ import './globals.css';
 
 const inter = Inter({ 
   subsets: ['latin'],
-  display: 'swap', // Optimize font loading
+  display: 'swap',
   preload: true
 });
 
-// While this is a client component, we can still define metadata
-// that will be used by Next.js for static generation
 export const metadata = {
   title: 'AI Innovation Lab V2',
   description: 'Next generation AI innovation laboratory and experimental platform',
   keywords: 'AI, innovation, laboratory, experiments, research',
   authors: [{ name: 'TheJohny71', url: 'https://github.com/TheJohny71' }],
   creator: 'TheJohny71',
-  metadataBase: new URL('https://ai-innovation-lab-v2.vercel.app'),
+  metadataBase: 'https://ai-innovation-lab-v2.vercel.app', // Changed from new URL() to string
   openGraph: {
     type: 'website',
     locale: 'en_US',
