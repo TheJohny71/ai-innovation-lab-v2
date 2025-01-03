@@ -25,16 +25,20 @@ const Navigation = ({ activePage, setActivePage }) => (
   </div>
 );
 
-const ServiceCard = ({ title, subtitle, gradientBorder, children, delay = 0 }) => (
-  <div 
+const ServiceCard = ({
+  title,
+  subtitle,
+  gradientBorder,
+  children,
+  delay = 0,
+}) => (
+  <div
     className={`animate-float rounded-xl border bg-gray-900/40 p-6 shadow-lg backdrop-blur-sm ${gradientBorder}`}
     style={{
       animation: `float 8s ease-in-out ${delay}s infinite`,
     }}
   >
-    <div className="mb-4 flex h-16 items-center justify-center">
-      {children}
-    </div>
+    <div className="mb-4 flex h-16 items-center justify-center">{children}</div>
     <h3 className="text-center text-lg font-medium text-gray-200">{title}</h3>
     <p className="text-center text-sm text-gray-400">{subtitle}</p>
   </div>
@@ -120,18 +124,36 @@ export const MainPreview = () => {
       </h2>
       <div className="grid grid-cols-2 gap-6">
         {[
-          { title: 'Document Analysis', gradient: 'from-purple-400 to-blue-400' },
-          { title: 'Legal Research', gradient: 'from-blue-400 to-teal-400' },
-          { title: 'Contract Management', gradient: 'from-teal-400 to-cyan-400' },
-          { title: 'Knowledge Management', gradient: 'from-cyan-400 to-purple-400' }
+          {
+            title: 'Document Analysis',
+            gradient: 'from-purple-400 to-blue-400',
+          },
+          {
+            title: 'Legal Research',
+            gradient: 'from-blue-400 to-teal-400',
+          },
+          {
+            title: 'Contract Management',
+            gradient: 'from-teal-400 to-cyan-400',
+          },
+          {
+            title: 'Knowledge Management',
+            gradient: 'from-cyan-400 to-purple-400',
+          },
         ].map((solution, index) => (
-          <div key={index} className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm">
+          <div
+            key={index}
+            className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
+          >
             <h3 className="mb-2 text-xl font-semibold">
-              <span className={`bg-gradient-to-r ${solution.gradient} bg-clip-text text-transparent`}>
+              <span className={`bg-gradient-to-r ${solution.gradient} bg-clip-text text-transparent`}
+              >
                 {solution.title}
               </span>
             </h3>
-            <p className="text-gray-400">AI-powered solutions for modern challenges</p>
+            <p className="text-gray-400">
+              AI-powered solutions for modern challenges
+            </p>
           </div>
         ))}
       </div>
@@ -147,12 +169,35 @@ export const MainPreview = () => {
       </h2>
       <div className="grid grid-cols-4 gap-4">
         {[
-          { icon: Zap, value: '31', title: 'Total Initiatives', color: 'purple' },
-          { icon: Globe, value: '18', title: 'Global Reach', color: 'blue' },
-          { icon: Layers, value: '24', title: 'Active Projects', color: 'blue' },
-          { icon: Flag, value: '8', title: '2024 Launches', color: 'teal' }
+          {
+            icon: Zap,
+            value: '31',
+            title: 'Total Initiatives',
+            color: 'purple',
+          },
+          {
+            icon: Globe,
+            value: '18',
+            title: 'Global Reach',
+            color: 'blue',
+          },
+          {
+            icon: Layers,
+            value: '24',
+            title: 'Active Projects',
+            color: 'blue',
+          },
+          {
+            icon: Flag,
+            value: '8',
+            title: '2024 Launches',
+            color: 'teal',
+          },
         ].map((metric, i) => (
-          <div key={i} className="rounded-lg border border-gray-700 bg-gray-800/50 p-4 backdrop-blur-sm">
+          <div
+            key={i}
+            className="rounded-lg border border-gray-700 bg-gray-800/50 p-4 backdrop-blur-sm"
+          >
             <metric.icon className={`h-6 w-6 text-${metric.color}-400`} />
             <p className="mt-2 text-2xl font-bold text-white">{metric.value}</p>
             <p className="text-sm text-gray-400">{metric.title}</p>
@@ -173,11 +218,18 @@ export const MainPreview = () => {
         {[
           'AI Integration',
           'Digital Transformation',
-          'Innovation Framework'
+          'Innovation Framework',
         ].map((solution) => (
-          <div key={solution} className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm">
-            <h3 className="mb-2 text-xl font-semibold text-blue-400">{solution}</h3>
-            <p className="text-gray-400">Advanced solutions for future-ready practices</p>
+          <div
+            key={solution}
+            className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
+          >
+            <h3 className="mb-2 text-xl font-semibold text-blue-400">
+              {solution}
+            </h3>
+            <p className="text-gray-400">
+              Advanced solutions for future-ready practices
+            </p>
           </div>
         ))}
       </div>
