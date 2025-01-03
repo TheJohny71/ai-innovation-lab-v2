@@ -67,7 +67,7 @@ export const MainPreview = () => {
           </div>
 
           <div className="grid grid-cols-3 gap-8">
-            <ServiceCard 
+            <ServiceCard
               title="Enhanced"
               subtitle="Client Service"
               gradientBorder="border-purple-500/20"
@@ -146,7 +146,8 @@ export const MainPreview = () => {
             className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
           >
             <h3 className="mb-2 text-xl font-semibold">
-              <span className={`bg-gradient-to-r ${solution.gradient} bg-clip-text text-transparent`}
+              <span
+                className={`bg-gradient-to-r ${solution.gradient} bg-clip-text text-transparent`}
               >
                 {solution.title}
               </span>
