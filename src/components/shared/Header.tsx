@@ -1,4 +1,5 @@
-"use client";
+// Header.tsx
+'use client';
 
 import React from 'react';
 import { Container } from './Container';
@@ -8,7 +9,7 @@ import { usePathname } from 'next/navigation';
 
 export function Header() {
   const pathname = usePathname();
-  const currentDate = new Date('2025-01-03T02:09:23Z'); // Updated to current UTC time
+  const currentDate = new Date('2025-01-03T02:09:23Z');
   const currentUser = 'TheJohny71';
 
   const links = [
