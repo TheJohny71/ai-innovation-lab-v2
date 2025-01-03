@@ -10,14 +10,6 @@ interface NavigationProps {
   setActivePage: (page: PageType) => void;
 }
 
-interface ServiceCardProps {
-  title: string;
-  subtitle: string;
-  gradientBorder: string;
-  children: React.ReactNode;
-  delay?: number;
-}
-
 const Navigation: React.FC<NavigationProps> = ({
   activePage,
   setActivePage,
@@ -43,25 +35,6 @@ const Navigation: React.FC<NavigationProps> = ({
   </div>
 );
 
-const ServiceCard: React.FC<ServiceCardProps> = ({
-  title,
-  subtitle,
-  gradientBorder,
-  children,
-  delay = 0,
-}) => (
-  <div
-    className={`animate-float rounded-xl border bg-gray-900/40 p-6 shadow-lg backdrop-blur-sm ${gradientBorder}`}
-    style={{
-      animation: `float 8s ease-in-out ${delay}s infinite`,
-    }}
-  >
-    <div className="mb-4 flex h-16 items-center justify-center">{children}</div>
-    <h3 className="text-center text-lg font-medium text-gray-200">{title}</h3>
-    <p className="text-center text-sm text-gray-400">{subtitle}</p>
-  </div>
-);
-
 export const MainPreview: React.FC = () => {
   const [activePage, setActivePage] = useState<PageType>('welcome');
 
@@ -70,7 +43,7 @@ export const MainPreview: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-[#0F1729] via-[#162033] to-[#0F1729]" />
       <div className="relative">
         <div className="flex min-h-screen flex-col items-center justify-center">
-          <div className="mb-16 text-center">
+          <div className="text-center">
             <h1 className="mb-4 text-6xl font-bold">
               <span className="bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
                 AI Innovation Law
@@ -82,51 +55,6 @@ export const MainPreview: React.FC = () => {
             <p className="text-xl text-gray-400">
               Accelerating Disruption Through Cultural Mindset Change
             </p>
-          </div>
-
-          <div className="grid grid-cols-3 gap-8">
-            <ServiceCard
-              title="Enhanced"
-              subtitle="Client Service"
-              gradientBorder="border-purple-500/20"
-              delay={0}
-            >
-              <div className="relative h-12 w-12">
-                <div className="absolute inset-0 animate-pulse rounded-full border-2 border-purple-500 opacity-20" />
-                <div className="absolute inset-2 animate-pulse rounded-full border border-purple-500 opacity-40" />
-                <div className="absolute inset-4 animate-pulse rounded-full bg-purple-500 opacity-60" />
-              </div>
-            </ServiceCard>
-
-            <ServiceCard
-              title="Accelerated"
-              subtitle="Workflows"
-              gradientBorder="border-blue-500/20"
-              delay={2}
-            >
-              <div className="space-y-2">
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-1 w-16 animate-pulse rounded-full bg-blue-500"
-                    style={{ opacity: 1 - i * 0.2 }}
-                  />
-                ))}
-              </div>
-            </ServiceCard>
-
-            <ServiceCard
-              title="Talent"
-              subtitle="Acceleration"
-              gradientBorder="border-teal-400/20"
-              delay={4}
-            >
-              <div className="relative h-12 w-12">
-                <div className="absolute inset-0 animate-spin rounded-full border-2 border-t-teal-400 opacity-20" />
-                <div className="absolute inset-2 animate-spin rounded-full border-2 border-t-teal-400 opacity-40" />
-                <div className="absolute inset-4 animate-spin rounded-full border-2 border-t-teal-400 opacity-60" />
-              </div>
-            </ServiceCard>
           </div>
         </div>
       </div>
