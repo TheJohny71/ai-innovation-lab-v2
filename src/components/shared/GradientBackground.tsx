@@ -1,3 +1,4 @@
+# /src/components/shared/GradientBackground.tsx
 'use client';
 
 import React from 'react';
@@ -7,7 +8,13 @@ export function GradientBackground() {
     <div className="fixed inset-0 -z-10">
       <svg className="h-full w-full" preserveAspectRatio="xMidYMid slice">
         <defs>
-          <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <linearGradient
+            id="backgroundGradient"
+            x1="0%"
+            y1="0%"
+            x2="0%"
+            y2="100%"
+          >
             <stop offset="0%" stopColor="#0A1128" stopOpacity="1" />
             <stop offset="50%" stopColor="#1B2B4D" stopOpacity="1" />
             <stop offset="100%" stopColor="#0A1128" stopOpacity="1" />
@@ -15,18 +22,25 @@ export function GradientBackground() {
 
           <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
-            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" />
+            <feColorMatrix
+              type="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            />
           </filter>
 
-          <filter id="particleGlow" x="-100%" y="-100%" width="300%" height="300%">
+          <filter
+            id="particleGlow"
+            x="-100%"
+            y="-100%"
+            width="300%"
+            height="300%"
+          >
             <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
-            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6" />
+            <feColorMatrix
+              type="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6"
+            />
           </filter>
-
-          <radialGradient id="particleGradient" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#4F46E5" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#4F46E5" stopOpacity="0" />
-          </radialGradient>
         </defs>
 
         <rect width="100%" height="100%" fill="url(#backgroundGradient)" />
