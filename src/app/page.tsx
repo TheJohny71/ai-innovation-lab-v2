@@ -1,18 +1,11 @@
-'use client';
+import WelcomeSvg from '@/components/shared/WelcomeSvg';
 
-import { BaseLayout } from '@/components/shared/BaseLayout';
-import { Container } from '@/components/shared/Container';
-import { Section } from '@/components/shared/Section';
-import { WelcomeSvg } from '@/components/shared/WelcomeSvg';
-
-export default function WelcomePage() {
+export default function Home() {
   return (
-    <BaseLayout>
-      <Section className="relative min-h-screen flex items-center justify-center">
-        <Container>
-          <WelcomeSvg />
-        </Container>
-      </Section>
-    </BaseLayout>
+    <main className="flex min-h-screen w-full bg-navy-900">
+      <div className="w-full h-screen">
+        <WelcomeSvg />
+      </div>
+    </main>
   );
 }
