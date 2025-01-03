@@ -1,11 +1,8 @@
-import WelcomeSvg from '@/components/shared/WelcomeSvg';
+'use client';
+
+import React, { useState } from 'react';
+import { MainPreview } from '@/components/shared/MainPreview';
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen w-full bg-navy-900">
-      <div className="w-full h-screen">
-        <WelcomeSvg />
-      </div>
-    </main>
-  );
+  return <MainPreview />;
 }
