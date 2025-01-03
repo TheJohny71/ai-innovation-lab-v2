@@ -1,4 +1,3 @@
-# /src/components/shared/MainPreview.tsx
 'use client';
 
 import React, { useState } from 'react';
