@@ -1,3 +1,4 @@
+# /src/lib/animation.ts
 'use client';
 
 export const fadeIn = 'animate-in fade-in duration-500';
@@ -6,7 +7,7 @@ export const scaleUp = 'animate-in zoom-in duration-500';
 
 export const stagger = (index: number) => ({
   animationDelay: `${index * 100}ms`,
-  style: { animationFillMode: 'forwards' }
+  style: { animationFillMode: 'forwards' },
 });
 
 export const glowPulse = 'animate-pulse';
