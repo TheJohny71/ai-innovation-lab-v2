@@ -1,14 +1,18 @@
 'use client';
 
-import React from 'react';
-import WelcomeSvg from '../components/WelcomeSvg';
+import { BaseLayout } from '@/components/shared/BaseLayout';
+import { Container } from '@/components/shared/Container';
+import { Section } from '@/components/shared/Section';
+import { WelcomeSvg } from '@/components/shared/WelcomeSvg';
 
-export default function Home() {
+export default function WelcomePage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#0F1729]">
-      <div className="aspect-[3/2] w-full max-w-[1200px]">
-        <WelcomeSvg />
-      </div>
-    </main>
+    <BaseLayout>
+      <Section className="relative min-h-screen">
+        <Container className="flex items-center justify-center">
+          <WelcomeSvg />
+        </Container>
+      </Section>
+    </BaseLayout>
   );
 }
