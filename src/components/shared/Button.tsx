@@ -1,40 +1,64 @@
 import React from 'react';
+import { Container } from './Container';
+import Link from 'next/link';
+import { GradientText } from './GradientText';
+import { usePathname } from 'next/navigation';
 
-interface ButtonProps {
-  children: React.ReactNode;
-  variant?: 'default' | 'outline';
-  size?: 'default' | 'lg';
-  className?: string;
-  onClick?: () => void;
-}
+export function Header() {
+  const pathname = usePathname();
+  const currentDate = new Date('2025-01-03T02:11:57Z'); // Updated to exact UTC time provided
+  const currentUser = 'TheJohny71';
 
-export function Button({
-  children,
-  variant = 'default',
-  size = 'default',
-  className = '',
-  onClick,
-}: ButtonProps) {
-  const baseStyles =
-    'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
-
-  const variants = {
-    default:
-      'bg-gradient-to-r from-blue-500/80 to-teal-500/80 hover:from-blue-500 hover:to-teal-500 text-white',
-    outline: 'border border-blue-400/20 hover:bg-blue-500/10 text-white',
-  };
-
-  const sizes = {
-    default: 'h-10 px-4 py-2',
-    lg: 'h-12 px-8 py-3 text-lg',
-  };
+  const links = [
+    { href: '/', label: 'Welcome' },
+    { href: '/solutions', label: 'Solutions' },
+    { href: '/disruption', label: 'Disruption' },
+    { href: '/mindset', label: 'Mindset' },
+    { href: '/future-ready', label: 'Future-Ready' },
+  ];
 
   return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <Container>
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center">
+            <Link href="/" className="text-xl font-bold">
+              <GradientText>AI Innovation Lab</GradientText>
+            </Link>
+          </div>
+          <nav className="flex items-center gap-6">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium transition-colors ${
+                  pathname === link.href
+                    ? 'text-white'
+                    : 'text-gray-200 hover:text-white'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="flex items-center gap-4 text-sm text-gray-400">
+            <span>{currentUser}</span>
+            <span>|</span>
+            <span>
+              {currentDate.toLocaleString('en-US', {
+                timeZone: 'UTC',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZoneName: 'short',
+              })}
+            </span>
+          </div>
+        </div>
+      </Container>
+    </header>
   );
 }
