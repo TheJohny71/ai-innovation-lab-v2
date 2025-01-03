@@ -3,37 +3,43 @@
 import React, { useState } from 'react';
 import { Zap, Globe, Layers, Flag } from 'lucide-react';
 
-type PageType = 'welcome' | 'solutions' | 'disruption' | 'future-ready' | 'mindset';
+type PageType =
+  | 'welcome'
+  | 'solutions'
+  | 'disruption'
+  | 'mindset'
+  | 'future-ready';
 
 interface NavigationProps {
   activePage: PageType;
   setActivePage: (page: PageType) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({
-  activePage,
-  setActivePage,
-}) => (
-  <div className="fixed bottom-0 left-0 right-0 bg-gray-900/80 p-4 backdrop-blur">
-    <div className="mx-auto flex max-w-screen-xl justify-center">
-      <div className="rounded-full border border-blue-500/20 bg-blue-500/5 p-1">
-        {['Welcome', 'Solutions', 'Disruption', 'Mindset', 'Future-Ready'].map((btn) => (
-          <button
-            key={btn}
-            onClick={() => setActivePage(btn.toLowerCase() as PageType)}
-            className={`mx-2 rounded-full px-8 py-2 transition-all duration-300 ${
-              activePage === btn.toLowerCase()
-                ? 'bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg'
-                : 'text-gray-300 hover:bg-gray-800/50'
-            }`}
-          >
-            {btn}
-          </button>
-        ))}
+const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) => {
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-900/80 p-4 backdrop-blur">
+      <div className="mx-auto flex max-w-screen-xl justify-center">
+        <div className="rounded-full border border-blue-500/20 bg-blue-500/5 p-1">
+          {['Welcome', 'Solutions', 'Disruption', 'Mindset', 'Future-Ready'].map(
+            (btn) => (
+              <button
+                key={btn}
+                onClick={() => setActivePage(btn.toLowerCase() as PageType)}
+                className={`mx-2 rounded-full px-8 py-2 transition-all duration-300 ${
+                  activePage === btn.toLowerCase()
+                    ? 'bg-gradient-to-r from-blue-500 to-teal-400 text-white shadow-lg'
+                    : 'text-gray-300 hover:bg-gray-800/50'
+                }`}
+              >
+                {btn}
+              </button>
+            )
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const MainPreview: React.FC = () => {
   const [activePage, setActivePage] = useState<PageType>('welcome');
