@@ -1,3 +1,4 @@
+# /src/components/shared/Container.tsx
 'use client';
 
 import React from 'react';
@@ -15,20 +16,22 @@ const maxWidthClasses = {
   lg: 'max-w-screen-lg',
   xl: 'max-w-screen-xl',
   '2xl': 'max-w-screen-2xl',
-  'full': 'max-w-full'
+  full: 'max-w-full',
 };
 
-export function Container({ 
-  children, 
+export function Container({
+  children,
   className = '',
-  maxWidth = 'xl' 
+  maxWidth = 'xl',
 }: ContainerProps) {
   return (
-    <div className={cn(
-      'mx-auto w-full px-4 sm:px-6 lg:px-8',
-      maxWidthClasses[maxWidth],
-      className
-    )}>
+    <div
+      className={cn(
+        'mx-auto w-full px-4 sm:px-6 lg:px-8',
+        maxWidthClasses[maxWidth],
+        className
+      )}
+    >
       {children}
     </div>
   );
