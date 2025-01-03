@@ -1,4 +1,3 @@
-# /src/components/shared/GradientBackground.tsx
 'use client';
 
 import React from 'react';
