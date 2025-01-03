@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "next-sitemap && touch out/.nojekyll",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
@@ -36,7 +35,6 @@
     "eslint-config-next": "14.1.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
-    "next-sitemap": "^4.2.3",
     "postcss": "^8.4.33",
     "prettier": "^3.2.4",
     "prettier-plugin-tailwindcss": "^0.5.11",
@@ -66,9 +64,5 @@
   "author": {
     "name": "TheJohny71",
     "url": "https://github.com/TheJohny71"
-  },
-  "homepage": "https://thejohny71.github.io/ai-innovation-lab-v2",
-  "bugs": {
-    "url": "https://github.com/TheJohny71/ai-innovation-lab-v2/issues"
   }
 }
