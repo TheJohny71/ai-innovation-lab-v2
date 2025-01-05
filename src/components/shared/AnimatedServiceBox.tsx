@@ -9,7 +9,7 @@ interface AnimatedServiceBoxProps {
   title: string;
   description: string;
   color: string;
-  animationDelay?: number,
+  animationDelay?: number;
 }
 
 export function AnimatedServiceBox({
@@ -23,7 +23,7 @@ export function AnimatedServiceBox({
     <div
       className="group relative"
       style={{
-        animation: `float 8s ease-in-out infinite`,
+        animation: 'float 8s ease-in-out infinite',
         animationDelay: `${animationDelay}s`,
       }}
     >
