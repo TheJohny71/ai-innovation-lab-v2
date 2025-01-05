@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { MainPreview } from '@/components/shared/MainPreview';
+import MainPreview from '@/components/shared/MainPreview';
 
 export default function Home() {
   return (
