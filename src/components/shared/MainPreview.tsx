@@ -3,7 +3,12 @@
 import React, { useState } from 'react';
 import { Zap, Globe, Layers, Flag, Rocket, Users, Cpu } from 'lucide-react';
 
-type PageType = 'welcome' | 'solutions' | 'disruption' | 'mindset' | 'future-ready';
+type PageType =
+  | 'welcome'
+  | 'solutions'
+  | 'disruption'
+  | 'mindset'
+  | 'future-ready';
 
 interface ServiceBoxProps {
   icon: React.ElementType;
@@ -12,8 +17,15 @@ interface ServiceBoxProps {
   gradient: string;
 }
 
-const ServiceBox = ({ icon: Icon, title, description, gradient }: ServiceBoxProps) => (
-  <div className={`rounded-xl border border-white/10 bg-gray-900/50 p-6 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white/20 hover:shadow-lg ${gradient}`}>
+const ServiceBox = ({
+  icon: Icon,
+  title,
+  description,
+  gradient,
+}: ServiceBoxProps) => (
+  <div
+    className={`rounded-xl border border-white/10 bg-gray-900/50 p-6 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white/20 hover:shadow-lg ${gradient}`}
+  >
     <Icon className="mb-4 h-12 w-12" />
     <h3 className="mb-2 text-xl font-semibold">{title}</h3>
     <p className="text-gray-300">{description}</p>
@@ -25,7 +37,10 @@ interface NavigationProps {
   setActivePage: (page: PageType) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) => {
+const Navigation: React.FC<NavigationProps> = ({
+  activePage,
+  setActivePage,
+}) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900/90 p-4 backdrop-blur-md">
       <div className="mx-auto flex max-w-screen-xl justify-center">
@@ -35,7 +50,7 @@ const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) =>
             'Solutions',
             'Disruption',
             'Mindset',
-            'Future-Ready'
+            'Future-Ready',
           ].map((btn) => (
             <button
               key={btn}
@@ -112,31 +127,35 @@ export const MainPreview: React.FC = () => {
         {[
           {
             title: 'Document Analysis',
-            gradient: 'from-purple-400 to-blue-400'
+            gradient: 'from-purple-400 to-blue-400',
           },
           {
             title: 'Legal Research',
-            gradient: 'from-blue-400 to-teal-400'
+            gradient: 'from-blue-400 to-teal-400',
           },
           {
             title: 'Contract Management',
-            gradient: 'from-teal-400 to-cyan-400'
+            gradient: 'from-teal-400 to-cyan-400',
           },
           {
             title: 'Knowledge Management',
-            gradient: 'from-cyan-400 to-purple-400'
-          }
+            gradient: 'from-cyan-400 to-purple-400',
+          },
         ].map((solution, index) => (
           <div
             key={index}
             className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
           >
             <h3 className="mb-2 text-xl font-semibold">
-              <span className={`bg-gradient-to-r ${solution.gradient} bg-clip-text text-transparent`}>
+              <span
+                className={`bg-gradient-to-r ${solution.gradient} bg-clip-text text-transparent`}
+              >
                 {solution.title}
               </span>
             </h3>
-            <p className="text-gray-400">AI-powered solutions for modern challenges</p>
+            <p className="text-gray-400">
+              AI-powered solutions for modern challenges
+            </p>
           </div>
         ))}
       </div>
@@ -156,26 +175,26 @@ export const MainPreview: React.FC = () => {
             icon: Zap,
             value: '31',
             title: 'Total Initiatives',
-            color: 'purple'
+            color: 'purple',
           },
           {
             icon: Globe,
             value: '18',
             title: 'Global Reach',
-            color: 'blue'
+            color: 'blue',
           },
           {
             icon: Layers,
             value: '24',
             title: 'Active Projects',
-            color: 'blue'
+            color: 'blue',
           },
           {
             icon: Flag,
             value: '8',
             title: '2024 Launches',
-            color: 'teal'
-          }
+            color: 'teal',
+          },
         ].map((metric, i) => (
           <div
             key={i}
@@ -201,14 +220,18 @@ export const MainPreview: React.FC = () => {
         {[
           'Innovation First',
           'Data-Driven Decisions',
-          'Client-Centric Approach'
+          'Client-Centric Approach',
         ].map((mindset) => (
           <div
             key={mindset}
             className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
           >
-            <h3 className="mb-2 text-xl font-semibold text-blue-400">{mindset}</h3>
-            <p className="text-gray-400">Embracing change through innovative thinking</p>
+            <h3 className="mb-2 text-xl font-semibold text-blue-400">
+              {mindset}
+            </h3>
+            <p className="text-gray-400">
+              Embracing change through innovative thinking
+            </p>
           </div>
         ))}
       </div>
@@ -226,14 +249,18 @@ export const MainPreview: React.FC = () => {
         {[
           'AI Integration',
           'Digital Transformation',
-          'Innovation Framework'
+          'Innovation Framework',
         ].map((solution) => (
           <div
             key={solution}
             className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
           >
-            <h3 className="mb-2 text-xl font-semibold text-blue-400">{solution}</h3>
-            <p className="text-gray-400">Advanced solutions for future-ready practices</p>
+            <h3 className="mb-2 text-xl font-semibold text-blue-400">
+              {solution}
+            </h3>
+            <p className="text-gray-400">
+              Advanced solutions for future-ready practices
+            </p>
           </div>
         ))}
       </div>
@@ -245,7 +272,7 @@ export const MainPreview: React.FC = () => {
     solutions: <SolutionsPage />,
     disruption: <DisruptionPage />,
     mindset: <MindsetPage />,
-    'future-ready': <FutureReadyPage />
+    'future-ready': <FutureReadyPage />,
   };
 
   return (
