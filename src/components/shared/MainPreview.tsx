@@ -17,10 +17,7 @@ interface NavigationProps {
   setActivePage: (page: PageType) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({
-  activePage,
-  setActivePage,
-}) => {
+const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900/90 p-4 backdrop-blur-md">
       <div className="mx-auto flex max-w-screen-xl justify-center">
@@ -54,56 +51,53 @@ export const MainPreview: React.FC = () => {
   const [activePage, setActivePage] = useState<PageType>('welcome');
 
   const WelcomePage = () => (
-  <div className="relative min-h-screen w-full">
-    <GradientBackground />
-    <div className="relative">
-      <div className="flex min-h-screen flex-col items-center justify-center space-y-16 px-4">
-        {/* Title Section */}
-        <div className="space-y-4 text-center">
-          <h1 className="mb-4 text-6xl font-bold">
-            <span
-              className="bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text
-                       drop-shadow-[0_4px_8px_rgba(59,130,246,0.3)] filter text-transparent"
-            >
-              AI Innovation Law
-            </span>
-          </h1>
-          <h2 className="text-3xl font-medium tracking-wide text-gray-200">
-            AI Powered Legal Innovation
-          </h2>
-          <p className="tracking-wide text-gray-400">
-            Accelerating Disruption Through Cultural Mindset Change
-          </p>
-        </div>
+    <div className="relative min-h-screen w-full">
+      <GradientBackground />
+      <div className="relative">
+        <div className="flex min-h-screen flex-col items-center justify-center space-y-16 px-4">
+          {/* Title Section */}
+          <div className="space-y-4 text-center">
+            <h1 className="mb-4 text-6xl font-bold">
+              <span className="bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_4px_8px_rgba(59,130,246,0.3)] filter">
+                AI Innovation Law
+              </span>
+            </h1>
+            <h2 className="text-3xl font-medium tracking-wide text-gray-200">
+              AI Powered Legal Innovation
+            </h2>
+            <p className="tracking-wide text-gray-400">
+              Accelerating Disruption Through Cultural Mindset Change
+            </p>
+          </div>
 
-        {/* Service Boxes */}
-        <div className="grid w-full max-w-7xl grid-cols-1 gap-8 md:grid-cols-3">
-          <AnimatedServiceBox
-            icon={Users}
-            title="Enhanced Client Service"
-            description="Transforming legal service delivery through AI-driven solutions"
-            color="purple"
-            animationDelay={0}
-          />
-          <AnimatedServiceBox
-            icon={Rocket}
-            title="Accelerated Workflows"
-            description="Streamlining legal processes with intelligent automation"
-            color="blue"
-            animationDelay={0.2}
-          />
-          <AnimatedServiceBox
-            icon={Cpu}
-            title="Talent Acceleration"
-            description="Empowering legal professionals with AI capabilities"
-            color="cyan"
-            animationDelay={0.4}
-          />
+          {/* Service Boxes */}
+          <div className="grid w-full max-w-7xl grid-cols-1 gap-8 md:grid-cols-3">
+            <AnimatedServiceBox
+              icon={Users}
+              title="Enhanced Client Service"
+              description="Transforming legal service delivery through AI-driven solutions"
+              color="purple"
+              animationDelay={0}
+            />
+            <AnimatedServiceBox
+              icon={Rocket}
+              title="Accelerated Workflows"
+              description="Streamlining legal processes with intelligent automation"
+              color="blue"
+              animationDelay={0.2}
+            />
+            <AnimatedServiceBox
+              icon={Cpu}
+              title="Talent Acceleration"
+              description="Empowering legal professionals with AI capabilities"
+              color="cyan"
+              animationDelay={0.4}
+            />
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 
   const SolutionsPage = () => (
     <div className="min-h-screen p-8 pb-24">
