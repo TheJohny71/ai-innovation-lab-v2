@@ -14,66 +14,67 @@ export function GradientBackground() {
             x2="0%"
             y2="100%"
           >
-            <stop offset="0%" stopColor="#0A1128" stopOpacity="1" />
-            <stop offset="50%" stopColor="#1B2B4D" stopOpacity="1" />
-            <stop offset="100%" stopColor="#0A1128" stopOpacity="1" />
+            <stop offset="0%" stopColor="#0F1729" stopOpacity="1" />
+            <stop offset="50%" stopColor="#162033" stopOpacity="1" />
+            <stop offset="100%" stopColor="#0F1729" stopOpacity="1" />
           </linearGradient>
 
           <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
-            <feColorMatrix
-              type="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-            />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
           </filter>
 
-          <filter
-            id="particleGlow"
-            x="-100%"
-            y="-100%"
-            width="300%"
-            height="300%"
-          >
-            <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
-            <feColorMatrix
-              type="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6"
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+            <feColorMatrix 
+              in="blur" 
+              type="matrix" 
+              values="1 0 0 0 0.6  0 0 0 0 0.2  0 0 0 0 1  0 0 0 18 -7" 
+              result="glow" 
             />
+            <feMerge>
+              <feMergeNode in="glow" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
           </filter>
         </defs>
 
-        <rect width="100%" height="100%" fill="url(#backgroundGradient)" />
-
-        <g className="particles">
-          {[...Array(20)].map((_, i) => (
-            <circle
-              key={i}
-              className={`particle-${i}`}
-              r={Math.random() * 3 + 1}
-              fill={Math.random() > 0.5 ? '#4F46E5' : '#06B6D4'}
-              filter="url(#particleGlow)"
-              opacity={Math.random() * 0.5 + 0.2}
-            >
-              <animate
-                attributeName="cx"
-                values={`${Math.random() * 100}%;${Math.random() * 100}%;${Math.random() * 100}%`}
-                dur={`${Math.random() * 20 + 10}s`}
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="cy"
-                values={`${Math.random() * 100}%;${Math.random() * 100}%;${Math.random() * 100}%`}
-                dur={`${Math.random() * 20 + 10}s`}
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="opacity"
-                values={`${Math.random() * 0.5 + 0.2};${Math.random() * 0.5 + 0.4};${Math.random() * 0.5 + 0.2}`}
-                dur={`${Math.random() * 8 + 4}s`}
-                repeatCount="indefinite"
-              />
-            </circle>
-          ))}
+        <rect width="100%" height="100%" fill="url(#backgroundGradient)"/>
+        
+        <g opacity="0.4">
+          {[...Array(4)].map((_, i) => {
+            const positions = [
+              { cx: 200, cy: 200, r: 3, color: '#3B82F6' },
+              { cx: 400, cy: 600, r: 2, color: '#2DD4BF' },
+              { cx: 800, cy: 300, r: 4, color: '#3B82F6' },
+              { cx: 1000, cy: 500, r: 3, color: '#2DD4BF' }
+            ];
+            const pos = positions[i];
+            
+            return (
+              <circle
+                key={i}
+                cx={pos.cx}
+                cy={pos.cy}
+                r={pos.r}
+                fill={pos.color}
+                filter="url(#softGlow)"
+                opacity="0.4"
+              >
+                <animate
+                  attributeName="cy"
+                  values={`${pos.cy};${pos.cy - 50};${pos.cy}`}
+                  dur={`${8 + i * 1}s`}
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0.4;0.6;0.4"
+                  dur={`${8 + i * 1}s`}
+                  repeatCount="indefinite"
+                />
+              </circle>
+            );
+          })}
         </g>
       </svg>
     </div>
