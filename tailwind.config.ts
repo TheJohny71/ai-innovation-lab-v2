@@ -1,5 +1,7 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
+
+const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -63,7 +65,7 @@ module.exports = {
     },
   },
   plugins: [
-    require('tailwindcss/plugin')(({ addUtilities }) => {
+    plugin(({ addUtilities }) => {
       addUtilities({
         '.glow-shadow-blue': {
           'box-shadow': '0 0 20px rgba(59, 130, 246, 0.3)',
@@ -92,4 +94,6 @@ module.exports = {
       variants: ['hover', 'group-hover'],
     },
   ],
-};
+} satisfies Config;
+
+export default config;
