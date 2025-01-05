@@ -1,16 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Zap, Globe, Layers, Flag, Rocket, Users, Cpu } from 'lucide-react';
+import { Users, Wave, Sparkles, Zap, Globe, Layers, Flag } from 'lucide-react';
 import { GradientBackground } from './GradientBackground';
 import { AnimatedServiceBox } from './AnimatedServiceBox';
 
-type PageType =
-  | 'welcome'
-  | 'solutions'
-  | 'disruption'
-  | 'mindset'
-  | 'future-ready';
+type PageType = 'welcome' | 'solutions' | 'disruption' | 'future-ready';
 
 interface NavigationProps {
   activePage: PageType;
@@ -25,13 +20,7 @@ const Navigation: React.FC<NavigationProps> = ({
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900/90 p-4 backdrop-blur-md">
       <div className="mx-auto flex max-w-screen-xl justify-center">
         <div className="rounded-full border border-indigo-500/20 bg-indigo-500/5 p-1">
-          {[
-            'Welcome',
-            'Solutions',
-            'Disruption',
-            'Mindset',
-            'Future-Ready',
-          ].map((btn) => (
+          {['Welcome', 'Solutions', 'Disruption', 'Future-Ready'].map((btn) => (
             <button
               key={btn}
               onClick={() => setActivePage(btn.toLowerCase() as PageType)}
@@ -54,21 +43,21 @@ export const MainPreview: React.FC = () => {
   const [activePage, setActivePage] = useState<PageType>('welcome');
 
   const WelcomePage = () => (
-    <div className="relative min-h-screen w-full">
+    <div className="relative min-h-screen w-full bg-background">
       <GradientBackground />
       <div className="relative">
         <div className="flex min-h-screen flex-col items-center justify-center space-y-16 px-4">
           {/* Title Section */}
-          <div className="space-y-4 text-center">
-            <h1 className="mb-4 text-6xl font-bold">
-              <span className="bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_4px_8px_rgba(59,130,246,0.3)] filter">
+          <div className="space-y-6 text-center">
+            <h1 className="text-7xl font-bold">
+              <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
                 AI Innovation Law
               </span>
             </h1>
-            <h2 className="text-3xl font-medium tracking-wide text-gray-200">
+            <h2 className="text-4xl font-medium tracking-wide text-gray-200">
               AI Powered Legal Innovation
             </h2>
-            <p className="tracking-wide text-gray-400">
+            <p className="text-xl tracking-wide text-gray-400">
               Accelerating Disruption Through Cultural Mindset Change
             </p>
           </div>
@@ -83,14 +72,14 @@ export const MainPreview: React.FC = () => {
               animationDelay={0}
             />
             <AnimatedServiceBox
-              icon={Rocket}
+              icon={Wave}
               title="Accelerated Workflows"
               description="Streamlining legal processes with intelligent automation"
               color="blue"
               animationDelay={0.2}
             />
             <AnimatedServiceBox
-              icon={Cpu}
+              icon={Sparkles}
               title="Talent Acceleration"
               description="Empowering legal professionals with AI capabilities"
               color="cyan"
@@ -105,11 +94,11 @@ export const MainPreview: React.FC = () => {
   const SolutionsPage = () => (
     <div className="min-h-screen p-8 pb-24">
       <h2 className="mb-8 text-3xl font-bold">
-        <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-teal-400 bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
           AI Solutions
         </span>
       </h2>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {[
           {
             title: 'Document Analysis',
@@ -117,15 +106,15 @@ export const MainPreview: React.FC = () => {
           },
           {
             title: 'Legal Research',
-            gradient: 'from-blue-400 to-teal-400',
+            gradient: 'from-blue-400 to-cyan-400',
           },
           {
             title: 'Contract Management',
-            gradient: 'from-teal-400 to-cyan-400',
+            gradient: 'from-cyan-400 to-blue-400',
           },
           {
             title: 'Knowledge Management',
-            gradient: 'from-cyan-400 to-purple-400',
+            gradient: 'from-blue-400 to-purple-400',
           },
         ].map((solution, index) => (
           <div
@@ -140,7 +129,7 @@ export const MainPreview: React.FC = () => {
               </span>
             </h3>
             <p className="text-gray-400">
-              AI-powered solutions for modern challenges
+              AI-powered solutions for modern legal challenges
             </p>
           </div>
         ))}
@@ -151,11 +140,11 @@ export const MainPreview: React.FC = () => {
   const DisruptionPage = () => (
     <div className="min-h-screen p-8 pb-24">
       <h2 className="mb-8 text-3xl font-bold">
-        <span className="bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
           Law Firm AI Disruption Index
         </span>
       </h2>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {[
           {
             icon: Zap,
@@ -179,7 +168,7 @@ export const MainPreview: React.FC = () => {
             icon: Flag,
             value: '8',
             title: '2024 Launches',
-            color: 'teal',
+            color: 'cyan',
           },
         ].map((metric, i) => (
           <div
@@ -195,43 +184,14 @@ export const MainPreview: React.FC = () => {
     </div>
   );
 
-  const MindsetPage = () => (
-    <div className="min-h-screen p-8 pb-24">
-      <h2 className="mb-8 text-3xl font-bold">
-        <span className="bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent">
-          Cultural Mindset Change
-        </span>
-      </h2>
-      <div className="grid grid-cols-3 gap-6">
-        {[
-          'Innovation First',
-          'Data-Driven Decisions',
-          'Client-Centric Approach',
-        ].map((mindset) => (
-          <div
-            key={mindset}
-            className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm"
-          >
-            <h3 className="mb-2 text-xl font-semibold text-blue-400">
-              {mindset}
-            </h3>
-            <p className="text-gray-400">
-              Embracing change through innovative thinking
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
   const FutureReadyPage = () => (
     <div className="min-h-screen p-8 pb-24">
       <h2 className="mb-8 text-3xl font-bold">
-        <span className="bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
           Future-Ready Solutions
         </span>
       </h2>
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {[
           'AI Integration',
           'Digital Transformation',
@@ -245,7 +205,7 @@ export const MainPreview: React.FC = () => {
               {solution}
             </h3>
             <p className="text-gray-400">
-              Advanced solutions for future-ready practices
+              Advanced solutions for future-ready legal practices
             </p>
           </div>
         ))}
@@ -257,7 +217,6 @@ export const MainPreview: React.FC = () => {
     welcome: <WelcomePage />,
     solutions: <SolutionsPage />,
     disruption: <DisruptionPage />,
-    mindset: <MindsetPage />,
     'future-ready': <FutureReadyPage />,
   };
 
