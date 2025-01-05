@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Users, Wave, Sparkles, Zap, Globe, Layers, Flag } from 'lucide-react';
+import { Users, Waves, Sparkles, Zap, Globe, Layers, Flag } from 'lucide-react';
 import { GradientBackground } from './GradientBackground';
 import { AnimatedServiceBox } from './AnimatedServiceBox';
 
@@ -72,7 +72,7 @@ export const MainPreview: React.FC = () => {
               animationDelay={0}
             />
             <AnimatedServiceBox
-              icon={Wave}
+              icon={Waves}
               title="Accelerated Workflows"
               description="Streamlining legal processes with intelligent automation"
               color="blue"
