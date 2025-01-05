@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { Zap, Globe, Layers, Flag, Rocket, Users, Cpu } from 'lucide-react';
+import { GradientBackground } from './GradientBackground';
+import { AnimatedServiceBox } from './AnimatedServiceBox';
 
 type PageType =
   | 'welcome'
@@ -9,28 +11,6 @@ type PageType =
   | 'disruption'
   | 'mindset'
   | 'future-ready';
-
-interface ServiceBoxProps {
-  icon: React.ElementType;
-  title: string;
-  description: string;
-  gradient: string;
-}
-
-const ServiceBox = ({
-  icon: Icon,
-  title,
-  description,
-  gradient,
-}: ServiceBoxProps) => (
-  <div
-    className={`rounded-xl border border-white/10 bg-gray-900/50 p-6 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white/20 hover:shadow-lg ${gradient}`}
-  >
-    <Icon className="mb-4 h-12 w-12" />
-    <h3 className="mb-2 text-xl font-semibold">{title}</h3>
-    <p className="text-gray-300">{description}</p>
-  </div>
-);
 
 interface NavigationProps {
   activePage: PageType;
@@ -75,40 +55,48 @@ export const MainPreview: React.FC = () => {
 
   const WelcomePage = () => (
     <div className="relative min-h-screen w-full">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0A1128] via-[#1B2B4D] to-[#0A1128]" />
+      <GradientBackground />
+      
       <div className="relative">
-        <div className="flex min-h-screen flex-col items-center justify-center space-y-16">
-          <div className="text-center">
+        <div className="flex min-h-screen flex-col items-center justify-center space-y-16 px-4">
+          {/* Title Section */}
+          <div className="text-center space-y-4">
             <h1 className="mb-4 text-6xl font-bold">
-              <span className="bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent
+                             filter drop-shadow-[0_4px_8px_rgba(59,130,246,0.3)]">
                 AI Innovation Law
               </span>
             </h1>
-            <h2 className="mb-2 text-3xl font-medium text-gray-200">
+            <h2 className="text-3xl font-medium text-gray-200 tracking-wide">
               AI Powered Legal Innovation
             </h2>
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-gray-400 tracking-wide">
               Accelerating Disruption Through Cultural Mindset Change
             </p>
           </div>
-          <div className="grid w-full max-w-7xl grid-cols-1 gap-8 px-4 md:grid-cols-3">
-            <ServiceBox
+
+          {/* Service Boxes */}
+          <div className="grid w-full max-w-7xl grid-cols-1 gap-8 md:grid-cols-3">
+            <AnimatedServiceBox
               icon={Users}
               title="Enhanced Client Service"
               description="Transforming legal service delivery through AI-driven solutions"
-              gradient="hover:shadow-purple-500/20"
+              color="purple"
+              animationDelay={0}
             />
-            <ServiceBox
+            <AnimatedServiceBox
               icon={Rocket}
               title="Accelerated Workflows"
               description="Streamlining legal processes with intelligent automation"
-              gradient="hover:shadow-blue-500/20"
+              color="blue"
+              animationDelay={0.2}
             />
-            <ServiceBox
+            <AnimatedServiceBox
               icon={Cpu}
               title="Talent Acceleration"
               description="Empowering legal professionals with AI capabilities"
-              gradient="hover:shadow-cyan-500/20"
+              color="cyan"
+              animationDelay={0.4}
             />
           </div>
         </div>
