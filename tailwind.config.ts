@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
-const config: Config = {
+const config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -32,8 +32,8 @@ const config: Config = {
           '50%': { transform: 'translateY(-20px)' },
         },
         glowPulse: {
-          '0%, 100%': { opacity: 0.4 },
-          '50%': { opacity: 0.8 },
+          '0%, 100%': { opacity: '0.4' },  // Changed to string
+          '50%': { opacity: '0.8' },       // Changed to string
         },
         particleFloat: {
           '0%, 100%': {
