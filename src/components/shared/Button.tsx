@@ -37,7 +37,7 @@ interface CardProps {
   className?: string;
   hover?: boolean;
   glow?: boolean;
-  gradient?: string,
+  gradient?: string; // Note: using semicolon here as it's an interface
 }
 
 export function Card({
@@ -45,7 +45,7 @@ export function Card({
   className = '',
   hover = false,
   glow = false,
-  gradient
+  gradient,
 }: CardProps) {
   return (
     <div
