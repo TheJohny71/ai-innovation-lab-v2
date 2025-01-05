@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Users, Waves, Sparkles } from 'lucide-react';
 import { GradientBackground } from './GradientBackground';
 import { AnimatedServiceBox } from './AnimatedServiceBox';
@@ -19,10 +19,10 @@ const MainPreview: React.FC = () => {
               </span>
             </h1>
             <h2 className="text-4xl font-medium tracking-wide text-gray-200">
-              AI Powered Legal Innovation
+              AI Powered Innovation
             </h2>
             <p className="text-xl tracking-wide text-gray-400">
-              Accelerating Disruption Through Cultural Mindset Change
+              Accelerating Innovation Through Cultural Mindset Change
             </p>
           </div>
 
@@ -30,22 +30,22 @@ const MainPreview: React.FC = () => {
           <div className="grid w-full max-w-7xl grid-cols-1 gap-8 md:grid-cols-3">
             <AnimatedServiceBox
               icon={Users}
-              title="Enhanced Client Service"
-              description="Transforming legal service delivery through AI-driven solutions"
+              title="Enhanced Service"
+              description="Transforming service delivery through AI-driven solutions"
               color="purple"
               animationDelay={0}
             />
             <AnimatedServiceBox
               icon={Waves}
               title="Accelerated Workflows"
-              description="Streamlining legal processes with intelligent automation"
+              description="Streamlining processes with intelligent automation"
               color="blue"
               animationDelay={0.2}
             />
             <AnimatedServiceBox
               icon={Sparkles}
               title="Talent Acceleration"
-              description="Empowering legal professionals with AI capabilities"
+              description="Empowering professionals with AI capabilities"
               color="cyan"
               animationDelay={0.4}
             />
