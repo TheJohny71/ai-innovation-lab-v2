@@ -17,7 +17,10 @@ interface NavigationProps {
   setActivePage: (page: PageType) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ activePage, setActivePage }) => {
+const Navigation: React.FC<NavigationProps> = ({
+  activePage,
+  setActivePage,
+}) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gray-900/90 p-4 backdrop-blur-md">
       <div className="mx-auto flex max-w-screen-xl justify-center">
