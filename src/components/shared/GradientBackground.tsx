@@ -25,11 +25,11 @@ export function GradientBackground() {
 
           <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
-            <feColorMatrix 
-              in="blur" 
-              type="matrix" 
-              values="1 0 0 0 0.6  0 0 0 0 0.2  0 0 0 0 1  0 0 0 18 -7" 
-              result="glow" 
+            <feColorMatrix
+              in="blur"
+              type="matrix"
+              values="1 0 0 0 0.6 0 0 0 0 0.2 0 0 0 0 1 0 0 0 18 -7"
+              result="glow"
             />
             <feMerge>
               <feMergeNode in="glow" />
@@ -38,18 +38,18 @@ export function GradientBackground() {
           </filter>
         </defs>
 
-        <rect width="100%" height="100%" fill="url(#backgroundGradient)"/>
-        
+        <rect width="100%" height="100%" fill="url(#backgroundGradient)" />
+
         <g opacity="0.4">
           {[...Array(4)].map((_, i) => {
             const positions = [
               { cx: 200, cy: 200, r: 3, color: '#3B82F6' },
               { cx: 400, cy: 600, r: 2, color: '#2DD4BF' },
               { cx: 800, cy: 300, r: 4, color: '#3B82F6' },
-              { cx: 1000, cy: 500, r: 3, color: '#2DD4BF' }
+              { cx: 1000, cy: 500, r: 3, color: '#2DD4BF' },
             ];
             const pos = positions[i];
-            
+
             return (
               <circle
                 key={i}
