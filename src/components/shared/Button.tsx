@@ -23,7 +23,7 @@ export function Button({
           'border border-white/10 bg-transparent hover:bg-white/5',
         variant === 'gradient' &&
           'bg-gradient-to-r from-indigo-500 to-cyan-400 text-white hover:opacity-90',
-        className,
+        className
       )}
       {...props}
     >
@@ -45,7 +45,7 @@ export function Card({
   className = '',
   hover = false,
   glow = false,
-  gradient,
+  gradient
 }: CardProps) {
   return (
     <div
@@ -53,7 +53,7 @@ export function Card({
         'rounded-xl border border-white/10 bg-gray-900/50 backdrop-blur-sm transition-all duration-300',
         hover && 'hover:scale-105 hover:border-white/20',
         glow && `shadow-lg ${gradient ? gradient : 'shadow-indigo-500/20'}`,
-        className,
+        className
       )}
     >
       {children}
