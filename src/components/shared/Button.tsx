@@ -37,7 +37,7 @@ interface CardProps {
   className?: string;
   hover?: boolean;
   glow?: boolean;
-  gradient?: string;
+  gradient?: string,
 }
 
 export function Card({
