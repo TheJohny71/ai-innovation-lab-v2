@@ -4,8 +4,22 @@ import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
 
-// Reusable Metric Card Component
-const MetricCard = ({
+// ✅ Explicit Type Definitions for the Metric Card Component
+interface MetricCardProps {
+  icon: React.ReactNode;
+  title: string;
+  value: string;
+  subtitle: string;
+  subtext?: string;
+  stats: {
+    label: string;
+    value: string;
+  }[];
+  iconColor?: string;
+}
+
+// ✅ Reusable Metric Card Component (Now Fully Typed)
+const MetricCard: React.FC<MetricCardProps> = ({
   icon,
   title,
   value,
@@ -35,11 +49,12 @@ const MetricCard = ({
   </div>
 );
 
-const DisruptionIndex = () => {
+// ✅ Main Disruption Index Page Component
+const DisruptionIndex: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-900 p-6 flex flex-col">
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col">
-        {/* Header Section */}
+        {/* ✅ Header Section */}
         <div className="mb-12 flex justify-between items-center">
           <div className="space-y-2">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-teal-400 bg-clip-text text-transparent">
@@ -58,14 +73,14 @@ const DisruptionIndex = () => {
           </Button>
         </div>
 
-        {/* Metrics Grid */}
+        {/* ✅ Metrics Grid Section */}
         <div className="grid grid-cols-4 gap-4 mb-12">
           <MetricCard
-            icon="+"
+            icon="📊"
             iconColor="text-purple-500"
             title="Total Initiatives"
             value="31"
-            subtitle="verified"
+            subtitle="Verified"
             subtext="From 25 Law Firms"
             stats={[
               { label: 'Unique Firms', value: '25' },
@@ -75,11 +90,11 @@ const DisruptionIndex = () => {
             ]}
           />
           <MetricCard
-            icon="○"
+            icon="🌐"
             iconColor="text-blue-500"
             title="Global Reach"
             value="18"
-            subtitle="global deployments"
+            subtitle="Global Deployments"
             subtext="58% Global Scale"
             stats={[
               { label: 'Global Firms', value: '18' },
@@ -88,9 +103,66 @@ const DisruptionIndex = () => {
               { label: 'Regions', value: '4' },
             ]}
           />
+          <MetricCard
+            icon="📈"
+            iconColor="text-teal-500"
+            title="Active Projects"
+            value="24"
+            subtitle="In Production"
+            subtext="77% Active Rate"
+            stats={[
+              { label: 'Development', value: '4' },
+              { label: 'Planning', value: '3' },
+              { label: 'Success Rate', value: '89%' },
+              { label: 'Use Cases', value: '12' },
+            ]}
+          />
+          <MetricCard
+            icon="🚀"
+            iconColor="text-emerald-500"
+            title="2024 Launches"
+            value="8"
+            subtitle="This Year"
+            subtext="vs 6 in 2023"
+            stats={[
+              { label: '2023 Total', value: '6' },
+              { label: '2022 Total', value: '4' },
+              { label: 'Growth', value: '33%' },
+              { label: 'Pipeline', value: '5' },
+            ]}
+          />
         </div>
 
-        {/* Updated Navigation Section */}
+        {/* ✅ Three Column Section */}
+        <div className="grid grid-cols-3 gap-4">
+          {/* Column 1 */}
+          <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800/50 hover:border-slate-700/50 transition-colors">
+            <h2 className="text-base font-semibold text-white mb-1">
+              Implementation Types
+            </h2>
+            <p className="text-gray-500 text-sm mb-6">By practice area</p>
+          </div>
+
+          {/* Column 2 */}
+          <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800/50 hover:border-slate-700/50 transition-colors">
+            <h2 className="text-base font-semibold text-white mb-1">
+              Deployment Status
+            </h2>
+            <p className="text-gray-500 text-sm mb-6">Current state</p>
+          </div>
+
+          {/* Column 3 */}
+          <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800/50 hover:border-slate-700/50 transition-colors">
+            <h2 className="text-base font-semibold text-white mb-1">
+              Regional Impact
+            </h2>
+            <p className="text-gray-500 text-sm mb-6">
+              Geographic distribution
+            </p>
+          </div>
+        </div>
+
+        {/* ✅ Updated Bottom Navigation Section */}
         <div className="fixed bottom-0 left-0 right-0 flex justify-center gap-4 p-3 bg-slate-900/90 backdrop-blur-sm border-t border-slate-800/50">
           <Button variant="gradient" className="text-sm">
             Welcome
