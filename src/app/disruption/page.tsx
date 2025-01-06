@@ -226,14 +226,19 @@ const DisruptionPage: React.FC = () => {
                   <div className="grid grid-cols-3 gap-4">
                     {[
                       { label: 'Active', value: metrics.deployment.active },
-                      { label: 'Development', value: metrics.deployment.development },
+                      {
+                        label: 'Development',
+                        value: metrics.deployment.development,
+                      },
                       { label: 'Planning', value: metrics.deployment.planning },
                     ].map((item, index) => (
                       <div key={index} className="text-center">
                         <p className="text-3xl font-bold text-teal-400">
                           {item.value}
                         </p>
-                        <p className="mt-1 text-sm text-gray-400">{item.label}</p>
+                        <p className="mt-1 text-sm text-gray-400">
+                          {item.label}
+                        </p>
                       </div>
                     ))}
                   </div>
