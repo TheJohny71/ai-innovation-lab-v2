@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Zap, Globe, Layers, Flag, Star, ArrowRight } from 'lucide-react';
-import { debounce } from 'lodash';
+import { ExternalLink, Zap, Globe, Layers, Flag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { Container } from '@/components/shared/Container';
@@ -10,7 +9,6 @@ import {
   Section,
   SectionHeader,
   SectionTitle,
-  SectionDescription,
 } from '@/components/shared/Section';
 import { Button, Card } from '@/components/shared/Button';
 import { GradientText } from '@/components/shared/GradientText';
@@ -37,6 +35,60 @@ const metrics = {
         text: 'text-purple-400',
       },
     },
+    {
+      icon: Globe,
+      title: 'Global Reach',
+      value: '18',
+      subtitle: 'global deployments',
+      mainStats: { trend: '58% Global Scale' },
+      additionalStats: [
+        { label: 'Global Firms', value: '18' },
+        { label: 'US Focus', value: '13' },
+        { label: 'Coverage', value: '58%' },
+        { label: 'Regions', value: '4' },
+      ],
+      gradient: {
+        border: 'border-blue-400/20',
+        bg: 'bg-blue-500/10',
+        text: 'text-blue-400',
+      },
+    },
+    {
+      icon: Layers,
+      title: 'Active Projects',
+      value: '24',
+      subtitle: 'in production',
+      mainStats: { trend: '77% Active Rate' },
+      additionalStats: [
+        { label: 'Development', value: '4' },
+        { label: 'Planning', value: '3' },
+        { label: 'Success Rate', value: '89%' },
+        { label: 'Use Cases', value: '12' },
+      ],
+      gradient: {
+        border: 'border-teal-400/20',
+        bg: 'bg-teal-500/10',
+        text: 'text-teal-400',
+      },
+    },
+    {
+      icon: Flag,
+      title: '2024 Launches',
+      value: '8',
+      subtitle: 'this year',
+      mainStats: { trend: 'vs 6 in 2023' },
+      additionalStats: [
+        { label: '2023 Total', value: '6' },
+        { label: '2022 Total', value: '4' },
+        { label: 'Growth', value: '33%' },
+        { label: 'Pipeline', value: '5' },
+      ],
+      gradient: {
+        border: 'border-emerald-400/20',
+        bg: 'bg-emerald-500/10',
+        text: 'text-emerald-400',
+      },
+    },
   ],
   implementation: [
     { name: 'Document Analysis & Review', value: 14 },
@@ -50,6 +102,12 @@ const metrics = {
     development: 4,
     planning: 3,
   },
+  regional: [
+    { region: 'North America', value: '42%' },
+    { region: 'Europe', value: '28%' },
+    { region: 'Asia Pacific', value: '18%' },
+    { region: 'Other Regions', value: '12%' },
+  ],
 };
 
 const DisruptionPage: React.FC = () => {
@@ -83,8 +141,8 @@ const DisruptionPage: React.FC = () => {
             <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-4">
               {metrics.cards.map((card, index) => (
                 <Card key={index} className={card.gradient.border} hover glow>
-                  <div className={`p-6 ${card.gradient.bg}`}>
-                    <card.icon className={`h-6 w-6 ${card.gradient.text}`} />
+                  <div className={cn('p-6', card.gradient.bg)}>
+                    <card.icon className={cn('h-6 w-6', card.gradient.text)} />
                     <h3 className="mt-2 text-lg font-semibold text-white">
                       {card.title}
                     </h3>
@@ -113,9 +171,10 @@ const DisruptionPage: React.FC = () => {
               ))}
             </div>
 
-            {/* Implementation Types */}
+            {/* Implementation and Deployment Grid */}
             <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-2">
-              <div>
+              {/* Implementation Types */}
+              <Card hover glow className="border-purple-400/20 p-6">
                 <h3 className="mb-6 text-xl font-semibold text-white">
                   Implementation Types
                   <span className="ml-2 text-sm font-normal text-gray-400">
@@ -131,53 +190,65 @@ const DisruptionPage: React.FC = () => {
                     />
                   ))}
                 </div>
-              </div>
+              </Card>
 
-              {/* Deployment Status */}
-              <div>
-                <h3 className="mb-6 text-xl font-semibold text-white">
-                  Deployment Status
-                  <span className="ml-2 text-sm font-normal text-gray-400">
-                    Current state
-                  </span>
-                </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  <Card hover glow className="border-blue-400/20">
-                    <div className="p-4 text-center">
-                      <p className="text-3xl font-bold text-blue-400">
-                        {metrics.deployment.active}
-                      </p>
-                      <p className="mt-1 text-sm text-gray-400">Active</p>
-                    </div>
-                  </Card>
-                  <Card hover glow className="border-blue-400/20">
-                    <div className="p-4 text-center">
-                      <p className="text-3xl font-bold text-blue-400">
-                        {metrics.deployment.development}
-                      </p>
-                      <p className="mt-1 text-sm text-gray-400">Development</p>
-                    </div>
-                  </Card>
-                  <Card hover glow className="border-blue-400/20">
-                    <div className="p-4 text-center">
-                      <p className="text-3xl font-bold text-blue-400">
-                        {metrics.deployment.planning}
-                      </p>
-                      <p className="mt-1 text-sm text-gray-400">Planning</p>
-                    </div>
-                  </Card>
-                </div>
+              {/* Regional Impact and Deployment Status */}
+              <div className="space-y-8">
+                <Card hover glow className="border-blue-400/20 p-6">
+                  <h3 className="mb-6 text-xl font-semibold text-white">
+                    Regional Impact
+                    <span className="ml-2 text-sm font-normal text-gray-400">
+                      Geographic distribution
+                    </span>
+                  </h3>
+                  <div className="space-y-6">
+                    {metrics.regional.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="text-gray-300">{item.region}</span>
+                        <span className="text-2xl font-bold text-blue-400">
+                          {item.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+
+                <Card hover glow className="border-teal-400/20 p-6">
+                  <h3 className="mb-6 text-xl font-semibold text-white">
+                    Deployment Status
+                    <span className="ml-2 text-sm font-normal text-gray-400">
+                      Current state
+                    </span>
+                  </h3>
+                  <div className="grid grid-cols-3 gap-4">
+                    {[
+                      { label: 'Active', value: metrics.deployment.active },
+                      { label: 'Development', value: metrics.deployment.development },
+                      { label: 'Planning', value: metrics.deployment.planning },
+                    ].map((item, index) => (
+                      <div key={index} className="text-center">
+                        <p className="text-3xl font-bold text-teal-400">
+                          {item.value}
+                        </p>
+                        <p className="mt-1 text-sm text-gray-400">{item.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
               </div>
             </div>
 
-            {/* Dataset Access Link */}
+            {/* Dataset Access Button */}
             <div className="mt-12 text-center">
               <Button
                 variant="gradient"
                 className="group inline-flex items-center space-x-2"
               >
                 <span>Access Complete Enterprise Dataset</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
           </Container>
