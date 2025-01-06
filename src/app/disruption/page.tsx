@@ -3,58 +3,89 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
+import { MetricCard, MetricCardProps } from '@/components/shared/MetricCard';
+import { ImplementationBar } from '@/components/shared/ImplementationBar';
 
-// ✅ Explicit Type Definitions for the Metric Card Component
-interface MetricCardProps {
-  icon: React.ReactNode;
-  title: string;
-  value: string;
-  subtitle: string;
-  subtext?: string;
-  stats: {
-    label: string;
-    value: string;
-  }[];
-  iconColor?: string;
-}
+const metrics: MetricCardProps[] = [
+  {
+    icon: () => <span>📊</span>,
+    title: 'Total Initiatives',
+    value: '31',
+    subtitle: 'Verified',
+    mainStats: { trend: 'From 25 Law Firms' },
+    additionalStats: {
+      'Unique Firms': { value: '25' },
+      'AmLaw 100': { value: '19' },
+      'Active Projects': { value: '24' },
+      'Pilot Phase': { value: '7' },
+    },
+    gradient: {
+      border: 'border-purple-400/20',
+      bg: 'bg-purple-500/10',
+      text: 'text-purple-400',
+    },
+  },
+  {
+    icon: () => <span>🌐</span>,
+    title: 'Global Reach',
+    value: '18',
+    subtitle: 'Global Deployments',
+    mainStats: { trend: '58% Global Scale' },
+    additionalStats: {
+      'Global Firms': { value: '18' },
+      'US Focus': { value: '13' },
+      Coverage: { value: '58%' },
+      Regions: { value: '4' },
+    },
+    gradient: {
+      border: 'border-blue-400/20',
+      bg: 'bg-blue-500/10',
+      text: 'text-blue-400',
+    },
+  },
+  {
+    icon: () => <span>📈</span>,
+    title: 'Active Projects',
+    value: '24',
+    subtitle: 'In Production',
+    mainStats: { trend: '77% Active Rate' },
+    additionalStats: {
+      Development: { value: '4' },
+      Planning: { value: '3' },
+      'Success Rate': { value: '89%' },
+      'Use Cases': { value: '12' },
+    },
+    gradient: {
+      border: 'border-teal-400/20',
+      bg: 'bg-teal-500/10',
+      text: 'text-teal-400',
+    },
+  },
+  {
+    icon: () => <span>🚀</span>,
+    title: '2024 Launches',
+    value: '8',
+    subtitle: 'This Year',
+    mainStats: { trend: 'vs 6 in 2023' },
+    additionalStats: {
+      '2023 Total': { value: '6' },
+      '2022 Total': { value: '4' },
+      Growth: { value: '33%' },
+      Pipeline: { value: '5' },
+    },
+    gradient: {
+      border: 'border-emerald-400/20',
+      bg: 'bg-emerald-500/10',
+      text: 'text-emerald-400',
+    },
+  },
+];
 
-// ✅ Reusable Metric Card Component (Now Fully Typed)
-const MetricCard: React.FC<MetricCardProps> = ({
-  icon,
-  title,
-  value,
-  subtitle,
-  subtext,
-  stats,
-  iconColor,
-}) => (
-  <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800/50 hover:border-slate-700/50 transition-colors">
-    <div className="flex items-center gap-2 mb-6">
-      <span className={`text-lg ${iconColor}`}>{icon}</span>
-      <span className={`text-sm font-medium ${iconColor}`}>{title}</span>
-    </div>
-    <div className="flex flex-col mb-4">
-      <div className="text-5xl font-bold text-white mb-1">{value}</div>
-      <div className="text-sm text-gray-400">{subtitle}</div>
-    </div>
-    {subtext && <div className="text-sm text-gray-500 mb-4">{subtext}</div>}
-    <div className="space-y-2">
-      {stats.map((stat, index) => (
-        <div key={index} className="flex justify-between items-center">
-          <span className="text-gray-500">{stat.label}</span>
-          <span className="text-gray-400">{stat.value}</span>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-// ✅ Main Disruption Index Page Component
 const DisruptionIndex: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-900 p-6 flex flex-col">
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col">
-        {/* ✅ Header Section */}
+        {/* Header Section */}
         <div className="mb-12 flex justify-between items-center">
           <div className="space-y-2">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-teal-400 bg-clip-text text-transparent">
@@ -73,85 +104,40 @@ const DisruptionIndex: React.FC = () => {
           </Button>
         </div>
 
-        {/* ✅ Metrics Grid Section */}
+        {/* Metrics Grid */}
         <div className="grid grid-cols-4 gap-4 mb-12">
-          <MetricCard
-            icon="📊"
-            iconColor="text-purple-500"
-            title="Total Initiatives"
-            value="31"
-            subtitle="Verified"
-            subtext="From 25 Law Firms"
-            stats={[
-              { label: 'Unique Firms', value: '25' },
-              { label: 'AmLaw 100', value: '19' },
-              { label: 'Active Projects', value: '24' },
-              { label: 'Pilot Phase', value: '7' },
-            ]}
-          />
-          <MetricCard
-            icon="🌐"
-            iconColor="text-blue-500"
-            title="Global Reach"
-            value="18"
-            subtitle="Global Deployments"
-            subtext="58% Global Scale"
-            stats={[
-              { label: 'Global Firms', value: '18' },
-              { label: 'US Focus', value: '13' },
-              { label: 'Coverage', value: '58%' },
-              { label: 'Regions', value: '4' },
-            ]}
-          />
-          <MetricCard
-            icon="📈"
-            iconColor="text-teal-500"
-            title="Active Projects"
-            value="24"
-            subtitle="In Production"
-            subtext="77% Active Rate"
-            stats={[
-              { label: 'Development', value: '4' },
-              { label: 'Planning', value: '3' },
-              { label: 'Success Rate', value: '89%' },
-              { label: 'Use Cases', value: '12' },
-            ]}
-          />
-          <MetricCard
-            icon="🚀"
-            iconColor="text-emerald-500"
-            title="2024 Launches"
-            value="8"
-            subtitle="This Year"
-            subtext="vs 6 in 2023"
-            stats={[
-              { label: '2023 Total', value: '6' },
-              { label: '2022 Total', value: '4' },
-              { label: 'Growth', value: '33%' },
-              { label: 'Pipeline', value: '5' },
-            ]}
-          />
+          {metrics.map((card, index) => (
+            <MetricCard key={index} {...card} />
+          ))}
         </div>
 
-        {/* ✅ Three Column Section */}
+        {/* Three Column Section with ImplementationBar */}
         <div className="grid grid-cols-3 gap-4">
-          {/* Column 1 */}
+          {/* Implementation Types */}
           <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800/50 hover:border-slate-700/50 transition-colors">
             <h2 className="text-base font-semibold text-white mb-1">
               Implementation Types
             </h2>
             <p className="text-gray-500 text-sm mb-6">By practice area</p>
+            <ImplementationBar name="Document Analysis & Review" value={14} />
+            <ImplementationBar name="Legal Research" value={11} />
+            <ImplementationBar name="Contract Management" value={9} />
+            <ImplementationBar name="Knowledge Management" value={8} />
+            <ImplementationBar name="Client Service Automation" value={7} />
           </div>
 
-          {/* Column 2 */}
+          {/* Deployment Status Section */}
           <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800/50 hover:border-slate-700/50 transition-colors">
             <h2 className="text-base font-semibold text-white mb-1">
               Deployment Status
             </h2>
             <p className="text-gray-500 text-sm mb-6">Current state</p>
+            <p className="text-sm text-gray-400">Active: 24</p>
+            <p className="text-sm text-gray-400">Development: 4</p>
+            <p className="text-sm text-gray-400">Planning: 3</p>
           </div>
 
-          {/* Column 3 */}
+          {/* Regional Impact Section */}
           <div className="bg-slate-900/50 rounded-xl p-6 border border-slate-800/50 hover:border-slate-700/50 transition-colors">
             <h2 className="text-base font-semibold text-white mb-1">
               Regional Impact
@@ -159,23 +145,11 @@ const DisruptionIndex: React.FC = () => {
             <p className="text-gray-500 text-sm mb-6">
               Geographic distribution
             </p>
+            <p className="text-sm text-gray-400">North America: 42%</p>
+            <p className="text-sm text-gray-400">Europe: 28%</p>
+            <p className="text-sm text-gray-400">Asia Pacific: 18%</p>
+            <p className="text-sm text-gray-400">Other Regions: 12%</p>
           </div>
-        </div>
-
-        {/* ✅ Updated Bottom Navigation Section */}
-        <div className="fixed bottom-0 left-0 right-0 flex justify-center gap-4 p-3 bg-slate-900/90 backdrop-blur-sm border-t border-slate-800/50">
-          <Button variant="gradient" className="text-sm">
-            Welcome
-          </Button>
-          <Button variant="gradient" className="text-sm">
-            Solutions
-          </Button>
-          <Button variant="gradient" className="text-sm">
-            Disruption
-          </Button>
-          <Button variant="gradient" className="text-sm">
-            Apps
-          </Button>
         </div>
       </div>
     </div>
