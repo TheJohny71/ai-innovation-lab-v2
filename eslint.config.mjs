@@ -19,4 +19,3 @@ export default {
     'react/react-in-jsx-scope': 'error', // Ensure React is in scope for older JSX runtimes
   },
 };
-

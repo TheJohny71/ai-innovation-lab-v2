@@ -21,7 +21,7 @@ const config = {
         },
       },
       animation: {
-        'float': 'float 8s ease-in-out infinite',
+        float: 'float 8s ease-in-out infinite',
         'float-delayed': 'float 8s ease-in-out 2s infinite',
         'glow-pulse': 'glowPulse 4s ease-in-out infinite',
         'particle-float': 'particleFloat 20s ease-in-out infinite',
@@ -32,8 +32,8 @@ const config = {
           '50%': { transform: 'translateY(-20px)' },
         },
         glowPulse: {
-          '0%, 100%': { opacity: '0.4' },  // Changed to string
-          '50%': { opacity: '0.8' },       // Changed to string
+          '0%, 100%': { opacity: '0.4' }, // Changed to string
+          '50%': { opacity: '0.8' }, // Changed to string
         },
         particleFloat: {
           '0%, 100%': {
@@ -48,11 +48,11 @@ const config = {
         },
       },
       backdropFilter: {
-        'none': 'none',
-        'blur': 'blur(8px)',
+        none: 'none',
+        blur: 'blur(8px)',
       },
       dropShadow: {
-        'glow': '0 0 10px rgba(59, 130, 246, 0.5)',
+        glow: '0 0 10px rgba(59, 130, 246, 0.5)',
         'glow-cyan': '0 0 10px rgba(45, 212, 191, 0.5)',
         'glow-purple': '0 0 10px rgba(139, 92, 246, 0.5)',
       },
