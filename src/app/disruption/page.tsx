@@ -90,12 +90,32 @@ const DisruptionIndex = () => {
           />
         </div>
 
-        {/* Navigation Section with Consistent Button Styling */}
+        {/* Updated Navigation Section */}
         <div className="fixed bottom-0 left-0 right-0 flex justify-center gap-4 p-3 bg-slate-900/90 backdrop-blur-sm border-t border-slate-800/50">
-          <Button variant="gradient" className="text-sm">Welcome</Button>
-          <Button variant="gradient" className="text-sm">Solutions</Button>
-          <Button variant="gradient" className="text-sm">Disruption</Button>
-          <Button variant="gradient" className="text-sm">Apps</Button>
+          <Button
+            variant="gradient"
+            className="text-sm"
+          >
+            Welcome
+          </Button>
+          <Button
+            variant="gradient"
+            className="text-sm"
+          >
+            Solutions
+          </Button>
+          <Button
+            variant="gradient"
+            className="text-sm"
+          >
+            Disruption
+          </Button>
+          <Button
+            variant="gradient"
+            className="text-sm"
+          >
+            Apps
+          </Button>
         </div>
       </div>
     </div>
