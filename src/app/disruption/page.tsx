@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Zap, Globe, Layers, Flag, Star, ArrowRight } from 'lucide-react';
 import { debounce } from 'lodash';
+import { cn } from '@/lib/utils';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { Container } from '@/components/shared/Container';
 import {
@@ -13,7 +14,83 @@ import {
 import { Button, Card } from '@/components/shared/Button';
 import { GradientText } from '@/components/shared/GradientText';
 
-// ... [Previous interfaces and types remain the same]
+// StarField Component
+interface StarFieldProps {
+  mousePosition: { x: number; y: number };
+}
+
+const StarField: React.FC<StarFieldProps> = ({ mousePosition }) => {
+  const [stars, setStars] = useState<Array<{ x: number; y: number; size: number }>>([]);
+
+  useEffect(() => {
+    const generateStars = () => {
+      const newStars = Array.from({ length: 100 }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: Math.random() * 2 + 1,
+      }));
+      setStars(newStars);
+    };
+
+    generateStars();
+    window.addEventListener('resize', generateStars);
+    return () => window.removeEventListener('resize', generateStars);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 pointer-events-none">
+      {stars.map((star, index) => {
+        const dx = (mousePosition.x - star.x) * 0.01;
+        const dy = (mousePosition.y - star.y) * 0.01;
+        
+        return (
+          <div
+            key={index}
+            className="absolute bg-white rounded-full"
+            style={{
+              width: star.size,
+              height: star.size,
+              left: star.x + dx,
+              top: star.y + dy,
+              opacity: 0.6,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
+// Implementation Bar Component
+interface ImplementationBarProps {
+  name: string;
+  value: number;
+  maxValue?: number;
+  className?: string;
+}
+
+function ImplementationBar({
+  name,
+  value,
+  maxValue = 14,
+  className,
+}: ImplementationBarProps) {
+  const width = `${(value / maxValue) * 100}%`;
+  return (
+    <div className={cn('mb-4', className)}>
+      <div className="mb-2 flex justify-between">
+        <span className="text-sm text-gray-300">{name}</span>
+        <span className="text-sm text-gray-400">{value}</span>
+      </div>
+      <div className="h-2 w-full rounded-full bg-gray-800/50 backdrop-blur-sm">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-purple-400 to-blue-400 transition-all duration-500"
+          style={{ width }}
+        />
+      </div>
+    </div>
+  );
+}
 
 const metrics = {
   cards: [
@@ -35,14 +112,13 @@ const metrics = {
         text: 'text-purple-400',
       },
     },
-    // ... [Other metric cards remain the same]
   ],
   implementation: [
     { name: 'Document Analysis & Review', value: 14 },
     { name: 'Legal Research', value: 11 },
     { name: 'Contract Management', value: 9 },
     { name: 'Knowledge Management', value: 8 },
-    { label: 'Client Service Automation', value: 7 },
+    { name: 'Client Service Automation', value: 7 },
   ],
   deployment: {
     active: 24,
@@ -51,30 +127,17 @@ const metrics = {
   },
 };
 
-// ... [StarField component remains the same]
-
-const ImplementationBar = ({ name, value }: { name: string; value: number }) => {
-  const maxValue = 14;
-  const width = `${(value / maxValue) * 100}%`;
-
-  return (
-    <div className="mb-4">
-      <div className="mb-2 flex justify-between">
-        <span className="text-sm text-gray-300">{name}</span>
-        <span className="text-sm text-gray-400">{value}</span>
-      </div>
-      <div className="h-2 w-full rounded-full bg-gray-800">
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-purple-400 to-blue-400"
-          style={{ width }}
-        />
-      </div>
-    </div>
-  );
-};
-
 const DisruptionPage: React.FC = () => {
-  // ... [Previous state and effects remain the same]
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
     <BaseLayout>
@@ -182,7 +245,7 @@ const DisruptionPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Dataset Access Link - Using original Button component */}
+            {/* Dataset Access Link */}
             <div className="mt-12 text-center">
               <Button
                 variant="outline"
