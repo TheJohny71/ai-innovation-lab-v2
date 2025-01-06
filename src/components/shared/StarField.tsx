@@ -7,7 +7,9 @@ interface StarFieldProps {
 }
 
 export function StarField({ mousePosition }: StarFieldProps) {
-  const [stars, setStars] = useState<Array<{ x: number; y: number; size: number }>>([]);
+  const [stars, setStars] = useState<
+    Array<{ x: number; y: number; size: number }>
+  >([]);
 
   useEffect(() => {
     const generateStars = () => {
@@ -33,7 +35,7 @@ export function StarField({ mousePosition }: StarFieldProps) {
       {stars.map((star, index) => {
         const dx = (mousePosition.x - star.x) * 0.01;
         const dy = (mousePosition.y - star.y) * 0.01;
-        
+
         return (
           <div
             key={index}
