@@ -17,7 +17,7 @@ export function ImplementationBar({
   className,
 }: ImplementationBarProps) {
   const width = `${(value / maxValue) * 100}%`;
-  
+
   return (
     <div className={cn('mb-4', className)}>
       <div className="mb-2 flex justify-between">
