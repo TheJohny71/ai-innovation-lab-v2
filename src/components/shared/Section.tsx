@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from './Container';
+import { cn } from '@/lib/utils';
 
 interface SectionProps {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ interface SectionProps {
 
 export function Section({ children, className = '', id }: SectionProps) {
   return (
-    <section id={id} className={`py-16 ${className}`}>
+    <section id={id} className={cn('py-16', className)}>
       {children}
     </section>
   );
