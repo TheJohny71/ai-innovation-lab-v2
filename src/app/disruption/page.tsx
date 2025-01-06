@@ -51,7 +51,6 @@ const metrics = {
         text: 'text-purple-400',
       },
     },
-    // ... other cards
   ],
   implementation: [
     { name: 'Document Analysis & Review', value: 14 },
@@ -78,7 +77,7 @@ const DisruptionPage: React.FC = () => {
     <BaseLayout>
       <div className="relative min-h-screen overflow-hidden">
         <StarField mousePosition={mousePosition} />
-        
+
         <div className="fixed inset-0 pt-16">
           <Container maxWidth="xl" className="h-full">
             <div className="flex items-center justify-between mb-8">
@@ -109,7 +108,12 @@ const DisruptionPage: React.FC = () => {
                   hover
                   glow
                 >
-                  <div className={cn('flex items-center gap-2 mb-4', card.gradient.text)}>
+                  <div
+                    className={cn(
+                      'flex items-center gap-2 mb-4',
+                      card.gradient.text
+                    )}
+                  >
                     <card.icon className="h-5 w-5" />
                     <span className="text-sm font-medium">{card.title}</span>
                   </div>
@@ -166,7 +170,7 @@ const DisruptionPage: React.FC = () => {
                     Current state
                   </span>
                 </h3>
-                {/* Deployment status content */}
+                {/* Add deployment status content */}
               </Card>
 
               <Card hover glow className="border-teal-400/20 p-4">
@@ -176,7 +180,7 @@ const DisruptionPage: React.FC = () => {
                     Geographic distribution
                   </span>
                 </h3>
-                {/* Regional impact content */}
+                {/* Add regional impact content */}
               </Card>
             </div>
           </Container>
