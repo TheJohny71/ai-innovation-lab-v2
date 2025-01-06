@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Zap, Globe, Layers, Flag, Star, ArrowRight } from 'lucide-react';
 import { debounce } from 'lodash';
 import { cn } from '@/lib/utils';
@@ -10,87 +10,12 @@ import {
   Section,
   SectionHeader,
   SectionTitle,
+  SectionDescription,
 } from '@/components/shared/Section';
 import { Button, Card } from '@/components/shared/Button';
 import { GradientText } from '@/components/shared/GradientText';
-
-// StarField Component
-interface StarFieldProps {
-  mousePosition: { x: number; y: number };
-}
-
-const StarField: React.FC<StarFieldProps> = ({ mousePosition }) => {
-  const [stars, setStars] = useState<Array<{ x: number; y: number; size: number }>>([]);
-
-  useEffect(() => {
-    const generateStars = () => {
-      const newStars = Array.from({ length: 100 }, () => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        size: Math.random() * 2 + 1,
-      }));
-      setStars(newStars);
-    };
-
-    generateStars();
-    window.addEventListener('resize', generateStars);
-    return () => window.removeEventListener('resize', generateStars);
-  }, []);
-
-  return (
-    <div className="fixed inset-0 pointer-events-none">
-      {stars.map((star, index) => {
-        const dx = (mousePosition.x - star.x) * 0.01;
-        const dy = (mousePosition.y - star.y) * 0.01;
-        
-        return (
-          <div
-            key={index}
-            className="absolute bg-white rounded-full"
-            style={{
-              width: star.size,
-              height: star.size,
-              left: star.x + dx,
-              top: star.y + dy,
-              opacity: 0.6,
-            }}
-          />
-        );
-      })}
-    </div>
-  );
-};
-
-// Implementation Bar Component
-interface ImplementationBarProps {
-  name: string;
-  value: number;
-  maxValue?: number;
-  className?: string;
-}
-
-function ImplementationBar({
-  name,
-  value,
-  maxValue = 14,
-  className,
-}: ImplementationBarProps) {
-  const width = `${(value / maxValue) * 100}%`;
-  return (
-    <div className={cn('mb-4', className)}>
-      <div className="mb-2 flex justify-between">
-        <span className="text-sm text-gray-300">{name}</span>
-        <span className="text-sm text-gray-400">{value}</span>
-      </div>
-      <div className="h-2 w-full rounded-full bg-gray-800/50 backdrop-blur-sm">
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-purple-400 to-blue-400 transition-all duration-500"
-          style={{ width }}
-        />
-      </div>
-    </div>
-  );
-}
+import { ImplementationBar } from '@/components/shared/ImplementationBar';
+import { StarField } from '@/components/shared/StarField';
 
 const metrics = {
   cards: [
@@ -144,7 +69,7 @@ const DisruptionPage: React.FC = () => {
       <div className="relative min-h-screen overflow-hidden">
         <StarField mousePosition={mousePosition} />
         <Section className="pt-32">
-          <Container>
+          <Container maxWidth="xl">
             <SectionHeader>
               <SectionTitle>
                 <GradientText>Law Firm AI Disruption Index</GradientText>
@@ -157,7 +82,7 @@ const DisruptionPage: React.FC = () => {
             {/* Metric Cards */}
             <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-4">
               {metrics.cards.map((card, index) => (
-                <Card key={index} className={card.gradient.border}>
+                <Card key={index} className={card.gradient.border} hover glow>
                   <div className={`p-6 ${card.gradient.bg}`}>
                     <card.icon className={`h-6 w-6 ${card.gradient.text}`} />
                     <h3 className="mt-2 text-lg font-semibold text-white">
@@ -217,7 +142,7 @@ const DisruptionPage: React.FC = () => {
                   </span>
                 </h3>
                 <div className="grid grid-cols-3 gap-4">
-                  <Card className="border-blue-400/20">
+                  <Card hover glow className="border-blue-400/20">
                     <div className="p-4 text-center">
                       <p className="text-3xl font-bold text-blue-400">
                         {metrics.deployment.active}
@@ -225,7 +150,7 @@ const DisruptionPage: React.FC = () => {
                       <p className="mt-1 text-sm text-gray-400">Active</p>
                     </div>
                   </Card>
-                  <Card className="border-blue-400/20">
+                  <Card hover glow className="border-blue-400/20">
                     <div className="p-4 text-center">
                       <p className="text-3xl font-bold text-blue-400">
                         {metrics.deployment.development}
@@ -233,7 +158,7 @@ const DisruptionPage: React.FC = () => {
                       <p className="mt-1 text-sm text-gray-400">Development</p>
                     </div>
                   </Card>
-                  <Card className="border-blue-400/20">
+                  <Card hover glow className="border-blue-400/20">
                     <div className="p-4 text-center">
                       <p className="text-3xl font-bold text-blue-400">
                         {metrics.deployment.planning}
@@ -248,7 +173,7 @@ const DisruptionPage: React.FC = () => {
             {/* Dataset Access Link */}
             <div className="mt-12 text-center">
               <Button
-                variant="outline"
+                variant="gradient"
                 className="group inline-flex items-center space-x-2"
               >
                 <span>Access Complete Enterprise Dataset</span>
