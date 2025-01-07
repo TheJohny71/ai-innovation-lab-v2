@@ -25,6 +25,8 @@ const config = {
         'float-delayed': 'float 8s ease-in-out 2s infinite',
         'glow-pulse': 'glowPulse 4s ease-in-out infinite',
         'particle-float': 'particleFloat 20s ease-in-out infinite',
+        'spin-slow': 'spin 3s linear infinite',
+        'wave': 'wave 2s ease-in-out infinite',
       },
       keyframes: {
         float: {
@@ -32,8 +34,8 @@ const config = {
           '50%': { transform: 'translateY(-20px)' },
         },
         glowPulse: {
-          '0%, 100%': { opacity: '0.4' }, // Changed to string
-          '50%': { opacity: '0.8' }, // Changed to string
+          '0%, 100%': { opacity: '0.4' },
+          '50%': { opacity: '0.8' },
         },
         particleFloat: {
           '0%, 100%': {
@@ -44,6 +46,14 @@ const config = {
           },
           '66%': {
             transform: 'translate(-20px, 20px) scale(0.8)',
+          },
+        },
+        wave: {
+          '0%, 100%': {
+            transform: 'translateY(0) translateX(0) scale(1)',
+          },
+          '50%': {
+            transform: 'translateY(-10px) translateX(10px) scale(1.2)',
           },
         },
       },
