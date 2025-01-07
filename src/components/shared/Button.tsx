@@ -1,12 +1,12 @@
 'use client';
 
-import React from 'react';
+import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'outline' | 'gradient';
   className?: string;
-  children?: React.ReactNode;  // Added this line
+  children?: React.ReactNode;
 }
 
 export function Button({
