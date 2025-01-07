@@ -3,7 +3,7 @@
 import React from 'react';
 import { Box, Globe, TrendingUp, Zap, ExternalLink, Clock } from 'lucide-react';
 
-// ✅ TypeScript Type Definitions
+// ✅ TypeScript Definitions for Metric Cards
 interface MetricCardProps {
   icon: React.ComponentType<any>;
   title: string;
@@ -22,7 +22,7 @@ interface MetricCardProps {
   };
 }
 
-// ✅ Metric Card Component
+// ✅ MetricCard Component
 const MetricCard: React.FC<MetricCardProps> = ({
   icon: Icon,
   title,
@@ -63,7 +63,56 @@ const MetricCard: React.FC<MetricCardProps> = ({
   );
 };
 
-// ✅ Enterprise Data Context Component
+// ✅ Component: Implementation Types
+const ImplementationTypes = () => (
+  <div className="bg-slate-800 p-6 rounded-xl border border-slate-700">
+    <h3 className="text-white font-semibold mb-2">Implementation Types</h3>
+    <p className="text-gray-400 mb-4 text-sm">By practice area</p>
+    {[
+      { name: 'Document Analysis & Review', value: 14 },
+      { name: 'Legal Research', value: 11 },
+      { name: 'Contract Management', value: 9 },
+      { name: 'Knowledge Management', value: 8 },
+      { name: 'Client Service Automation', value: 7 },
+    ].map((item, index) => (
+      <div key={index} className="mb-2">
+        <span className="text-gray-300">{item.name}</span>
+        <div className="w-full bg-slate-700 rounded-full h-2 mt-1">
+          <div
+            className="h-full bg-blue-500 rounded-full"
+            style={{ width: `${(item.value / 14) * 100}%` }}
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+// ✅ Component: Deployment Status
+const DeploymentStatus = () => (
+  <div className="bg-slate-800 p-6 rounded-xl border border-slate-700">
+    <h3 className="text-white font-semibold mb-2">Deployment Status</h3>
+    <p className="text-gray-400 mb-4 text-sm">Current state</p>
+    <p className="text-white text-2xl font-bold">Active: 24</p>
+    <p className="text-white">Development: 4 | Planning: 3</p>
+  </div>
+);
+
+// ✅ Component: Regional Impact
+const RegionalImpact = () => (
+  <div className="bg-slate-800 p-6 rounded-xl border border-slate-700">
+    <h3 className="text-white font-semibold mb-2">Regional Impact</h3>
+    <p className="text-gray-400 mb-4 text-sm">Geographic distribution</p>
+    <ul className="space-y-2">
+      <li className="text-white">North America: 42%</li>
+      <li className="text-white">Europe: 28%</li>
+      <li className="text-white">Asia Pacific: 18%</li>
+      <li className="text-white">Other Regions: 12%</li>
+    </ul>
+  </div>
+);
+
+// ✅ Component: Enterprise Data Context
 const EnterpriseDataContext = () => (
   <div className="mt-8 p-6 rounded-xl bg-slate-800 border border-slate-700">
     <div className="flex items-center gap-3">
@@ -86,96 +135,35 @@ const EnterpriseDataContext = () => (
   </div>
 );
 
-// ✅ All Metrics for Display
-const metricsData: MetricCardProps[] = [
-  {
-    icon: Box,
-    title: 'Total Initiatives',
-    value: '31',
-    subtitle: 'Verified',
-    mainStats: { trend: 'From 25 Law Firms' },
-    additionalStats: {
-      'Unique Firms': { value: '25' },
-      'AmLaw 100': { value: '19' },
-      'Active Projects': { value: '24' },
-      'Pilot Phase': { value: '7' },
-    },
-    gradient: {
-      background: 'bg-gradient-to-br from-indigo-950 to-purple-900',
-      border: 'border-purple-500/20',
-      text: 'text-purple-400',
-      icon: 'bg-purple-900/50',
-      iconColor: 'text-purple-400',
-    },
-  },
-  {
-    icon: Globe,
-    title: 'Global Reach',
-    value: '18',
-    subtitle: 'Global Deployments',
-    mainStats: { trend: '58% Global Scale' },
-    additionalStats: {
-      'Global Firms': { value: '18' },
-      'US Focus': { value: '13' },
-      Coverage: { value: '58%' },
-      Regions: { value: '4' },
-    },
-    gradient: {
-      background: 'bg-gradient-to-br from-blue-950 to-slate-900',
-      border: 'border-blue-500/20',
-      text: 'text-blue-400',
-      icon: 'bg-blue-900/50',
-      iconColor: 'text-blue-400',
-    },
-  },
-  {
-    icon: TrendingUp,
-    title: 'Active Projects',
-    value: '24',
-    subtitle: 'In Production',
-    mainStats: { trend: '77% Active Rate' },
-    additionalStats: {
-      Development: { value: '4' },
-      Planning: { value: '3' },
-      'Success Rate': { value: '89%' },
-      'Use Cases': { value: '12' },
-    },
-    gradient: {
-      background: 'bg-gradient-to-br from-emerald-950 to-cyan-900',
-      border: 'border-emerald-500/20',
-      text: 'text-emerald-400',
-      icon: 'bg-emerald-900/50',
-      iconColor: 'text-emerald-400',
-    },
-  },
-  {
-    icon: Zap,
-    title: '2024 Launches',
-    value: '8',
-    subtitle: 'This Year',
-    mainStats: { trend: 'vs 6 in 2023' },
-    additionalStats: {
-      '2023 Total': { value: '6' },
-      '2022 Total': { value: '4' },
-      Growth: { value: '33%' },
-      Pipeline: { value: '5' },
-    },
-    gradient: {
-      background: 'bg-gradient-to-br from-violet-950 to-indigo-900',
-      border: 'border-violet-500/20',
-      text: 'text-violet-400',
-      icon: 'bg-violet-900/50',
-      iconColor: 'text-violet-400',
-    },
-  },
-];
-
-// ✅ Final Page Layout with All Cards Rendered
+// ✅ Full Page Layout
 const DisruptionIndex: React.FC = () => {
+  const metrics: MetricCardProps[] = [
+    {
+      icon: Box,
+      title: 'Total Initiatives',
+      value: '31',
+      subtitle: 'Verified',
+      mainStats: { trend: 'From 25 Law Firms' },
+      additionalStats: {
+        'Unique Firms': { value: '25' },
+        'AmLaw 100': { value: '19' },
+        'Active Projects': { value: '24' },
+        'Pilot Phase': { value: '7' },
+      },
+      gradient: {
+        background: 'bg-gradient-to-br from-indigo-950 to-purple-900',
+        border: 'border-purple-500/20',
+        icon: 'bg-purple-900/50',
+        iconColor: 'text-purple-400',
+        text: 'text-purple-400',
+      },
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-900 p-6 flex flex-col">
       <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col space-y-8">
-        {/* ✅ Header with Access Dataset Button */}
+        {/* ✅ Header with Access Button */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-teal-400 bg-clip-text text-transparent">
             Law Firm AI Disruption Index
@@ -186,11 +174,18 @@ const DisruptionIndex: React.FC = () => {
           </button>
         </div>
 
-        {/* ✅ All Metric Cards Rendered Properly */}
+        {/* ✅ Metric Cards */}
         <div className="grid grid-cols-4 gap-4">
-          {metricsData.map((metric, index) => (
+          {metrics.map((metric, index) => (
             <MetricCard key={index} {...metric} />
           ))}
+        </div>
+
+        {/* ✅ Missing Three Cards Fixed Here */}
+        <div className="grid grid-cols-3 gap-4 mt-8">
+          <ImplementationTypes />
+          <DeploymentStatus />
+          <RegionalImpact />
         </div>
 
         {/* ✅ Enterprise Data Context Section */}
