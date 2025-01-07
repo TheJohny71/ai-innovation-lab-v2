@@ -1,98 +1,71 @@
-'use client';
-
 import React from 'react';
-import { Box, Globe, TrendingUp, Zap } from 'lucide-react';
+import { Box, Globe, TrendingUp, Zap, ExternalLink } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import MetricCard, { MetricCardProps } from '@/components/shared/MetricCard';
 import { Button } from '@/components/shared/Button';
 
-// ✅ Metric Cards Data (Fixed Types and Structure)
-const metrics: MetricCardProps[] = [
-  {
-    icon: Box,
-    title: 'Total Initiatives',
-    value: '31',
-    subtitle: 'Verified',
-    mainStats: { trend: 'From 25 Law Firms' },
-    additionalStats: {
-      'Unique Firms': { value: '25' },
-      'AmLaw 100': { value: '19' },
-      'Active Projects': { value: '24' },
-      'Pilot Phase': { value: '7' },
-    },
-    gradient: {
-      background: 'bg-gradient-to-br from-indigo-900 to-purple-900',
-      border: 'border-purple-400/50',
-      icon: 'bg-purple-900/50',
-      iconColor: 'text-purple-400',
-      text: 'text-purple-400',
-    },
-  },
-  {
-    icon: Globe,
-    title: 'Global Reach',
-    value: '18',
-    subtitle: 'Global Deployments',
-    mainStats: { trend: '58% Global Scale' },
-    additionalStats: {
-      'Global Firms': { value: '18' },
-      'US Focus': { value: '13' },
-      Coverage: { value: '58%' },
-      Regions: { value: '4' },
-    },
-    gradient: {
-      background: 'bg-gradient-to-br from-blue-900 to-slate-900',
-      border: 'border-blue-500/50',
-      icon: 'bg-blue-900/50',
-      iconColor: 'text-blue-400',
-      text: 'text-blue-400',
-    },
-  },
-  {
-    icon: TrendingUp,
-    title: 'Active Projects',
-    value: '24',
-    subtitle: 'In Production',
-    mainStats: { trend: '77% Active Rate' },
-    additionalStats: {
-      Development: { value: '4' },
-      Planning: { value: '3' },
-      'Success Rate': { value: '89%' },
-      'Use Cases': { value: '12' },
-    },
-    gradient: {
-      background: 'bg-gradient-to-br from-teal-900 to-green-900',
-      border: 'border-teal-400/50',
-      icon: 'bg-teal-900/50',
-      iconColor: 'text-teal-400',
-      text: 'text-teal-400',
-    },
-  },
-  {
-    icon: Zap,
-    title: '2024 Launches',
-    value: '8',
-    subtitle: 'This Year',
-    mainStats: { trend: 'vs 6 in 2023' },
-    additionalStats: {
-      '2023 Total': { value: '6' },
-      '2022 Total': { value: '4' },
-      Growth: { value: '33%' },
-      Pipeline: { value: '5' },
-    },
-    gradient: {
-      background: 'bg-gradient-to-br from-fuchsia-900 to-violet-900',
-      border: 'border-fuchsia-400/50',
-      icon: 'bg-fuchsia-900/50',
-      iconColor: 'text-fuchsia-400',
-      text: 'text-fuchsia-400',
-    },
-  },
-];
+// Define TypeScript types for props
+interface MetricCardProps {
+  icon: React.ComponentType<any>;
+  title: string;
+  value: string;
+  subtitle: string;
+  mainStats: {
+    trend: string;
+  };
+  additionalStats: Record<string, { value: string }>;
+  gradient: {
+    background: string;
+    border: string;
+    icon: string;
+    iconColor: string;
+    text: string;
+  };
+}
 
-// ✅ Implementation Types Card
+const MetricCard: React.FC<MetricCardProps> = ({
+  icon: Icon,
+  title,
+  value,
+  subtitle,
+  mainStats,
+  additionalStats,
+  gradient,
+}) => (
+  <div
+    className={`rounded-xl p-6 ${gradient.background} border ${gradient.border}`}
+  >
+    <div className="mb-6">
+      <div className={`${gradient.icon} p-2 rounded-lg w-fit`}>
+        <Icon className={`${gradient.iconColor} w-5 h-5`} />
+      </div>
+    </div>
+    <div className="space-y-1 mb-6">
+      <h3 className="text-white text-sm font-medium">{title}</h3>
+      <div className="space-y-1">
+        <div className="flex items-baseline gap-2">
+          <span className="text-3xl font-bold text-white">{value}</span>
+          <span className="text-sm text-gray-400">{subtitle}</span>
+        </div>
+        <p className={`text-sm ${gradient.text}`}>{mainStats.trend}</p>
+      </div>
+    </div>
+    <div className="grid grid-cols-2 gap-4">
+      {Object.entries(additionalStats).map(([label, stat]) => (
+        <div
+          key={label}
+          className={`${gradient.background} rounded-lg bg-opacity-30 p-2`}
+        >
+          <p className="text-gray-400 text-xs mb-1">{label}</p>
+          <p className="text-white text-sm font-medium">{stat.value}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+// Implementation Types Component
 const ImplementationTypes = () => (
-  <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
+  <div className="bg-indigo-950 bg-opacity-50 rounded-xl p-6 border border-indigo-500/20">
     <h2 className="text-base font-semibold text-white mb-1">
       Implementation Types
     </h2>
@@ -103,13 +76,13 @@ const ImplementationTypes = () => (
       { name: 'Contract Management', value: 9 },
       { name: 'Knowledge Management', value: 8 },
       { name: 'Client Service Automation', value: 7 },
-    ].map((item, index) => (
-      <div key={index} className="mb-4 last:mb-0">
+    ].map((item) => (
+      <div key={item.name} className="mb-4 last:mb-0">
         <div className="flex justify-between text-sm mb-1.5">
           <span className="text-gray-300">{item.name}</span>
           <span className="text-gray-400">{item.value}</span>
         </div>
-        <div className="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+        <div className="w-full bg-black/25 h-1.5 rounded-full">
           <div
             className="h-full bg-blue-500 rounded-full"
             style={{ width: `${(item.value / 14) * 100}%` }}
@@ -120,84 +93,88 @@ const ImplementationTypes = () => (
   </div>
 );
 
-// ✅ Deployment Status Card
-const DeploymentStatus = () => {
-  const data = [
-    { name: 'Active', value: 24, color: '#10b981' },
-    { name: 'Development', value: 4, color: '#6366f1' },
-    { name: 'Planning', value: 3, color: '#8b5cf6' },
+// Disruption Index Main Component
+const DisruptionIndex = () => {
+  const metrics: MetricCardProps[] = [
+    {
+      icon: Box,
+      title: 'Total Initiatives',
+      value: '31',
+      subtitle: 'verified',
+      mainStats: { trend: 'From 25 Law Firms' },
+      additionalStats: {
+        'Unique Firms': { value: '25' },
+        'AmLaw 100': { value: '19' },
+        'Active Projects': { value: '24' },
+        'Pilot Phase': { value: '7' },
+      },
+      gradient: {
+        background: 'bg-gradient-to-br from-purple-900 to-indigo-900',
+        border: 'border-purple-500/20',
+        text: 'text-purple-400',
+        icon: 'bg-purple-900/50',
+        iconColor: 'text-purple-400',
+      },
+    },
+    {
+      icon: Globe,
+      title: 'Global Reach',
+      value: '18',
+      subtitle: 'global deployments',
+      mainStats: { trend: '58% Global Scale' },
+      additionalStats: {
+        'Global Firms': { value: '18' },
+        'US Focus': { value: '13' },
+        Coverage: { value: '58%' },
+        Regions: { value: '4' },
+      },
+      gradient: {
+        background: 'bg-gradient-to-br from-blue-900 to-slate-900',
+        border: 'border-blue-500/20',
+        text: 'text-blue-400',
+        icon: 'bg-blue-900/50',
+        iconColor: 'text-blue-400',
+      },
+    },
   ];
 
-  const total = data.reduce((sum, item) => sum + item.value, 0);
-
   return (
-    <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
-      <h2 className="text-base font-semibold text-white mb-1">
-        Deployment Status
-      </h2>
-      <ResponsiveContainer width="100%" height={200}>
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="value"
-            cx="50%"
-            cy="50%"
-            innerRadius={50}
-            outerRadius={70}
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-      <p className="text-center text-white mt-4 text-2xl font-bold">{total}</p>
-    </div>
-  );
-};
-
-// ✅ Regional Impact Card
-const RegionalImpact = () => (
-  <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50">
-    <h2 className="text-base font-semibold text-white mb-1">Regional Impact</h2>
-    <p className="text-gray-400">North America: 42%</p>
-    <p className="text-gray-400">Europe: 28%</p>
-    <p className="text-gray-400">Asia Pacific: 18%</p>
-    <p className="text-gray-400">Other Regions: 12%</p>
-  </div>
-);
-
-// ✅ Final Disruption Page Layout
-const DisruptionIndex = () => {
-  return (
-    <div className="min-h-screen bg-slate-900 p-6 flex flex-col space-y-8">
-      {/* Header Section */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-4xl font-bold text-white">
-            Law Firm <span className="text-blue-400">AI Disruption Index</span>
-          </h1>
-          <p className="text-gray-400">
-            Tracking AI innovation in global law firms
-          </p>
+    <div className="min-h-screen bg-slate-900 p-6 flex flex-col">
+      <div className="max-w-7xl mx-auto w-full space-y-6 flex-grow">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-bold text-white">
+              Law Firm{' '}
+              <span className="text-blue-400">AI Disruption Index</span>
+            </h1>
+            <p className="text-gray-400">
+              Tracking AI innovation in global law firms
+            </p>
+          </div>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-          Access Dataset
-        </Button>
-      </div>
 
-      {/* Metric Cards Section */}
-      <div className="grid grid-cols-4 gap-4">
-        {metrics.map((metric, index) => (
-          <MetricCard key={index} {...metric} />
-        ))}
-      </div>
+        <div className="grid grid-cols-2 gap-4">
+          {metrics.map((card, index) => (
+            <MetricCard key={index} {...card} />
+          ))}
+        </div>
 
-      {/* Cards with Charts Section */}
-      <div className="grid grid-cols-3 gap-4">
         <ImplementationTypes />
-        <DeploymentStatus />
-        <RegionalImpact />
+      </div>
+
+      <div className="max-w-7xl mx-auto w-full mt-8">
+        <div className="flex justify-center gap-4">
+          <Button variant="outline">Nexus</Button>
+          <Button variant="outline">Accelerate</Button>
+          <Button
+            variant="default"
+            className="bg-indigo-500 hover:bg-indigo-600"
+          >
+            Disruption
+          </Button>
+          <Button variant="outline">Mindset</Button>
+          <Button variant="outline">Future-Ready</Button>
+        </div>
       </div>
     </div>
   );
