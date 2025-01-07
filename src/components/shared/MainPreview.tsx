@@ -6,12 +6,24 @@ import { GradientBackground } from './GradientBackground';
 import { AnimatedServiceBox } from './AnimatedServiceBox';
 
 const MainPreview: React.FC = () => {
+  const [activeSection, setActiveSection] = React.useState('nexus');
+
+  const navigationItems = [
+    { id: 'nexus', label: 'Nexus' },
+    { id: 'accelerate', label: 'Accelerate' },
+    { id: 'disruption', label: 'Disruption' },
+    { id: 'mindset', label: 'Mindset' },
+    { id: 'future-ready', label: 'Future-Ready' },
+  ];
+
   return (
-    <div className="relative min-h-screen w-full bg-background">
+    <div className="relative flex min-h-screen w-full flex-col bg-background">
       <GradientBackground />
-      <div className="relative">
-        <div className="flex min-h-screen flex-col items-center justify-start pt-32 px-4">
-          {/* Title Section - With new subtitle */}
+
+      {/* Main Content Container */}
+      <div className="flex flex-1 flex-col">
+        {/* Title Section */}
+        <div className="flex flex-col items-center justify-start px-4 pt-32">
           <div className="space-y-5 text-center">
             <h1 className="text-6xl font-bold">
               <span className="bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
@@ -26,7 +38,7 @@ const MainPreview: React.FC = () => {
             </p>
           </div>
 
-          {/* Service Boxes - Reduced spacing */}
+          {/* Service Boxes */}
           <div className="mt-20 flex justify-center gap-6">
             <AnimatedServiceBox
               icon={Users}
@@ -44,25 +56,23 @@ const MainPreview: React.FC = () => {
               color="teal"
             />
           </div>
+        </div>
 
-          {/* Navigation - Raised position */}
-          <div className="mt-auto mb-12">
-            <nav className="flex gap-8 rounded-full border border-blue-500/20 bg-blue-500/5 px-8 py-3">
-              <button className="text-gray-200 hover:text-blue-400 transition-colors">
-                Nexus
-              </button>
-              <button className="text-gray-200 hover:text-blue-400 transition-colors">
-                Accelerate
-              </button>
-              <button className="text-gray-200 hover:text-blue-400 transition-colors">
-                Disruption
-              </button>
-              <button className="text-gray-200 hover:text-blue-400 transition-colors">
-                Mindset
-              </button>
-              <button className="text-gray-200 hover:text-blue-400 transition-colors">
-                Future-Ready
-              </button>
+        {/* Navigation - Fixed at bottom */}
+        <div className="mt-auto">
+          <div className="flex justify-center pb-12 pt-8">
+            <nav className="flex gap-8 rounded-full border border-blue-500/20 bg-blue-500/5 px-8 py-3 backdrop-blur-sm">
+              {navigationItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveSection(item.id)}
+                  className={`text-gray-200 transition-colors hover:text-blue-400 ${
+                    activeSection === item.id ? 'text-blue-400' : ''
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
             </nav>
           </div>
         </div>
