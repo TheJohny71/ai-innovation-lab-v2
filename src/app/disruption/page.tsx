@@ -40,7 +40,9 @@ const MetricCard = ({
     className={`rounded-xl p-6 ${gradient.background} border ${gradient.border} transition-all duration-300`}
   >
     <div className="flex justify-between items-start mb-4">
-      <div className={`${gradient.icon} p-2 rounded-lg flex items-center justify-center`}>
+      <div
+        className={`${gradient.icon} p-2 rounded-lg flex items-center justify-center`}
+      >
         <Icon className={gradient.iconColor} size={20} />
       </div>
     </div>
@@ -78,7 +80,9 @@ const ImplementationTypes = () => (
     ].map((item) => (
       <div key={item.name} className="mb-4 last:mb-0">
         <div className="flex justify-between text-sm mb-1.5">
-          <span className="text-gray-300 text-sm truncate pr-2">{item.name}</span>
+          <span className="text-gray-300 text-sm truncate pr-2">
+            {item.name}
+          </span>
           <span className="text-gray-400 text-sm">{item.value}</span>
         </div>
         <div className="w-full bg-black/25 rounded-full h-1">
