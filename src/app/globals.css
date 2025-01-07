@@ -14,7 +14,7 @@
   .animate-pulse-circle {
     position: relative;
   }
-  
+
   .animate-pulse-circle::before {
     content: '';
     position: absolute;
@@ -23,13 +23,13 @@
     border-radius: 50%;
     animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-  
+
   /* Wave Animation for Accelerated Workflows */
   .animate-wave {
     position: relative;
     overflow: hidden;
   }
-  
+
   .animate-wave::before {
     content: '';
     position: absolute;
@@ -39,12 +39,12 @@
     background: linear-gradient(90deg, transparent, theme('colors.blue.400'), transparent);
     animation: wave 3s linear infinite;
   }
-  
+
   /* Sparkle Animation for Talent Acceleration */
   .animate-sparkle {
     position: relative;
   }
-  
+
   .animate-sparkle::after {
     content: '';
     position: absolute;
