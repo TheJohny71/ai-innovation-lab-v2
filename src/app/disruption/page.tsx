@@ -57,7 +57,7 @@ const MetricCard = ({
     <div className="grid grid-cols-2 gap-2">
       {Object.entries(additionalStats).map(([label, stat]) => (
         <div key={label} className="bg-slate-900/30 rounded-lg p-2">
-          <div className="text-xs text-gray-400 mb-0.5">{label}</div>
+          <div className="text-xs text-gray-400 mb-0.5 truncate">{label}</div>
           <div className="text-sm text-white font-medium">{stat.value}</div>
         </div>
       ))}
@@ -134,8 +134,8 @@ const DeploymentStatus = () => {
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-2xl font-bold text-white">{total}</span>
-            <span className="text-sm text-gray-400">Total</span>
+            <span className="text-6xl font-bold text-white -mt-2">{total}</span>
+            <span className="text-sm text-gray-400 mt-1">total</span>
           </div>
         </div>
         <div className="mt-4 space-y-2">
@@ -173,7 +173,7 @@ const RegionalImpact = () => {
         Regional Impact
       </h2>
       <div className="flex flex-col">
-        <div className="h-48 flex justify-center">
+        <div className="h-48 flex justify-center relative">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -193,6 +193,10 @@ const RegionalImpact = () => {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-6xl font-bold text-white -mt-2">4</span>
+            <span className="text-sm text-gray-400 mt-1">regions</span>
+          </div>
         </div>
         <div className="mt-4 space-y-2">
           {data.map((item) => (
@@ -300,13 +304,13 @@ export default function DisruptionIndex() {
   return (
     <div className="min-h-screen bg-slate-900 p-6 flex flex-col">
       <div className="max-w-7xl mx-auto w-full space-y-6 flex-grow">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-4">
           <div>
-            <h1 className="text-4xl font-bold text-white">
+            <h1 className="text-4xl font-bold text-white mb-2">
               Law Firm{' '}
               <span className="text-blue-400">AI Disruption Index</span>
             </h1>
-            <p className="text-gray-400">
+            <p className="text-gray-400 text-base">
               Tracking AI innovation in global law firms
             </p>
           </div>
@@ -317,6 +321,20 @@ export default function DisruptionIndex() {
             Access Dataset
             <ExternalLink size={16} />
           </Button>
+        </div>
+
+        <div className="bg-slate-800/50 rounded-lg p-4 text-sm text-gray-300 mb-6">
+          <p className="mb-1">
+            Analysis derived from 31 verified AI implementations across leading
+            global law firms.
+          </p>
+          <div className="flex justify-between items-center">
+            <p>
+              Data aggregated using AI-powered research across publicly
+              available sources and industry announcements.
+            </p>
+            <p className="text-gray-400">Last updated: December 26, 2024</p>
+          </div>
         </div>
 
         <div className="grid grid-cols-4 gap-4">
@@ -342,6 +360,7 @@ export default function DisruptionIndex() {
           >
             Disruption
           </Button>
+          <Button variant="outline">Mindset</Button>
           <Button variant="outline">Mindset</Button>
           <Button variant="outline">Future-Ready</Button>
         </div>
