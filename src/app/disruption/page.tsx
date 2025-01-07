@@ -1,18 +1,23 @@
+'use client';
+
 import React from 'react';
 import { Box, Globe, TrendingUp, Zap, ExternalLink } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/shared/Button';
 
-// Define TypeScript types for props
+type AdditionalStat = {
+  value: string;
+};
+
 interface MetricCardProps {
-  icon: React.ComponentType<any>;
+  icon: React.ElementType;
   title: string;
   value: string;
   subtitle: string;
   mainStats: {
     trend: string;
   };
-  additionalStats: Record<string, { value: string }>;
+  additionalStats: Record<string, AdditionalStat>;
   gradient: {
     background: string;
     border: string;
@@ -22,7 +27,7 @@ interface MetricCardProps {
   };
 }
 
-const MetricCard: React.FC<MetricCardProps> = ({
+const MetricCard = ({
   icon: Icon,
   title,
   value,
@@ -30,7 +35,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
   mainStats,
   additionalStats,
   gradient,
-}) => (
+}: MetricCardProps) => (
   <div
     className={`rounded-xl p-6 ${gradient.background} border ${gradient.border}`}
   >
@@ -63,7 +68,6 @@ const MetricCard: React.FC<MetricCardProps> = ({
   </div>
 );
 
-// Implementation Types Component
 const ImplementationTypes = () => (
   <div className="bg-indigo-950 bg-opacity-50 rounded-xl p-6 border border-indigo-500/20">
     <h2 className="text-base font-semibold text-white mb-1">
@@ -93,51 +97,199 @@ const ImplementationTypes = () => (
   </div>
 );
 
-// Disruption Index Main Component
-const DisruptionIndex = () => {
-  const metrics: MetricCardProps[] = [
-    {
-      icon: Box,
-      title: 'Total Initiatives',
-      value: '31',
-      subtitle: 'verified',
-      mainStats: { trend: 'From 25 Law Firms' },
-      additionalStats: {
-        'Unique Firms': { value: '25' },
-        'AmLaw 100': { value: '19' },
-        'Active Projects': { value: '24' },
-        'Pilot Phase': { value: '7' },
-      },
-      gradient: {
-        background: 'bg-gradient-to-br from-purple-900 to-indigo-900',
-        border: 'border-purple-500/20',
-        text: 'text-purple-400',
-        icon: 'bg-purple-900/50',
-        iconColor: 'text-purple-400',
-      },
-    },
-    {
-      icon: Globe,
-      title: 'Global Reach',
-      value: '18',
-      subtitle: 'global deployments',
-      mainStats: { trend: '58% Global Scale' },
-      additionalStats: {
-        'Global Firms': { value: '18' },
-        'US Focus': { value: '13' },
-        Coverage: { value: '58%' },
-        Regions: { value: '4' },
-      },
-      gradient: {
-        background: 'bg-gradient-to-br from-blue-900 to-slate-900',
-        border: 'border-blue-500/20',
-        text: 'text-blue-400',
-        icon: 'bg-blue-900/50',
-        iconColor: 'text-blue-400',
-      },
-    },
+const DeploymentStatus = () => {
+  const data = [
+    { name: 'Active', value: 24, color: '#10b981' },
+    { name: 'Development', value: 4, color: '#6366f1' },
+    { name: 'Planning', value: 3, color: '#8b5cf6' },
   ];
 
+  return (
+    <div className="bg-emerald-950 bg-opacity-50 rounded-xl p-6 border border-emerald-500/20">
+      <h2 className="text-base font-semibold text-white mb-6">
+        Deployment Status
+      </h2>
+      <div className="flex flex-col">
+        <div className="h-48 relative">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={80}
+                startAngle={90}
+                endAngle={450}
+                dataKey="value"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-2xl font-bold text-white">31</span>
+            <span className="text-sm text-gray-400">Total</span>
+          </div>
+        </div>
+        <div className="mt-4 space-y-2">
+          {data.map((item) => (
+            <div key={item.name} className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div
+                  className="w-2.5 h-2.5 rounded-full"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="text-gray-300 text-sm">{item.name}</span>
+              </div>
+              <span className="text-gray-300 text-sm">{item.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const RegionalImpact = () => {
+  const data = [
+    { name: 'North America', value: 42, color: '#10b981' },
+    { name: 'Europe', value: 28, color: '#6366f1' },
+    { name: 'Asia Pacific', value: 18, color: '#8b5cf6' },
+    { name: 'Other Regions', value: 12, color: '#c084fc' },
+  ];
+
+  return (
+    <div className="bg-blue-950 bg-opacity-50 rounded-xl p-6 border border-blue-500/20">
+      <h2 className="text-base font-semibold text-white mb-6">
+        Regional Impact
+      </h2>
+      <div className="flex flex-col">
+        <div className="h-48 relative">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={80}
+                startAngle={90}
+                endAngle={450}
+                dataKey="value"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="mt-4 space-y-2">
+          {data.map((item) => (
+            <div key={item.name} className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div
+                  className="w-2.5 h-2.5 rounded-full"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="text-gray-300 text-sm">{item.name}</span>
+              </div>
+              <span className="text-gray-300 text-sm">{item.value}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const metrics: MetricCardProps[] = [
+  {
+    icon: Box,
+    title: 'Total Initiatives',
+    value: '31',
+    subtitle: 'verified',
+    mainStats: { trend: 'From 25 Law Firms' },
+    additionalStats: {
+      'Unique Firms': { value: '25' },
+      'AmLaw 100': { value: '19' },
+      'Active Projects': { value: '24' },
+      'Pilot Phase': { value: '7' },
+    },
+    gradient: {
+      background: 'bg-gradient-to-br from-purple-900 to-indigo-900',
+      border: 'border-purple-500/20',
+      text: 'text-purple-400',
+      icon: 'bg-purple-900/50',
+      iconColor: 'text-purple-400',
+    },
+  },
+  {
+    icon: Globe,
+    title: 'Global Reach',
+    value: '18',
+    subtitle: 'global deployments',
+    mainStats: { trend: '58% Global Scale' },
+    additionalStats: {
+      'Global Firms': { value: '18' },
+      'US Focus': { value: '13' },
+      Coverage: { value: '58%' },
+      Regions: { value: '4' },
+    },
+    gradient: {
+      background: 'bg-gradient-to-br from-blue-900 to-slate-900',
+      border: 'border-blue-500/20',
+      text: 'text-blue-400',
+      icon: 'bg-blue-900/50',
+      iconColor: 'text-blue-400',
+    },
+  },
+  {
+    icon: TrendingUp,
+    title: 'Active Projects',
+    value: '24',
+    subtitle: 'in production',
+    mainStats: { trend: '77% Active Rate' },
+    additionalStats: {
+      Development: { value: '4' },
+      Planning: { value: '3' },
+      'Success Rate': { value: '89%' },
+      'Use Cases': { value: '12' },
+    },
+    gradient: {
+      background: 'bg-gradient-to-br from-emerald-900 to-teal-900',
+      border: 'border-emerald-500/20',
+      text: 'text-emerald-400',
+      icon: 'bg-emerald-900/50',
+      iconColor: 'text-emerald-400',
+    },
+  },
+  {
+    icon: Zap,
+    title: '2024 Launches',
+    value: '8',
+    subtitle: 'this year',
+    mainStats: { trend: 'vs 6 in 2023' },
+    additionalStats: {
+      '2023 Total': { value: '6' },
+      '2022 Total': { value: '4' },
+      Growth: { value: '33%' },
+      Pipeline: { value: '5' },
+    },
+    gradient: {
+      background: 'bg-gradient-to-br from-purple-900 to-violet-900',
+      border: 'border-violet-500/20',
+      text: 'text-violet-400',
+      icon: 'bg-violet-900/50',
+      iconColor: 'text-violet-400',
+    },
+  },
+];
+
+export default function DisruptionIndex() {
   return (
     <div className="min-h-screen bg-slate-900 p-6 flex flex-col">
       <div className="max-w-7xl mx-auto w-full space-y-6 flex-grow">
@@ -151,15 +303,26 @@ const DisruptionIndex = () => {
               Tracking AI innovation in global law firms
             </p>
           </div>
+          <Button
+            variant="default"
+            className="bg-indigo-500 hover:bg-indigo-600 gap-2 inline-flex items-center"
+          >
+            Access Dataset
+            <ExternalLink size={16} />
+          </Button>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           {metrics.map((card, index) => (
             <MetricCard key={index} {...card} />
           ))}
         </div>
 
-        <ImplementationTypes />
+        <div className="grid grid-cols-3 gap-4">
+          <ImplementationTypes />
+          <DeploymentStatus />
+          <RegionalImpact />
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto w-full mt-8">
@@ -178,6 +341,4 @@ const DisruptionIndex = () => {
       </div>
     </div>
   );
-};
-
-export default DisruptionIndex;
+}
