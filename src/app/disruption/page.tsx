@@ -3,7 +3,8 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/shared/Button';
-import { MetricCard, MetricCardProps } from '@/components/shared/MetricCard';
+import type { MetricCardProps } from '@/types/metrics';
+import { MetricCard } from '@/components/shared/MetricCard';
 import { ImplementationBar } from '@/components/shared/ImplementationBar';
 
 const metrics: MetricCardProps[] = [
