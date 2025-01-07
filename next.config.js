@@ -2,8 +2,8 @@
 const nextConfig = {
   // Optimized image configuration for Vercel
   images: {
-    domains: [], // Add any external image domains you use
-    formats: ['image/avif', 'image/webp'],
+      domains: [], // Add any external image domains you use
+      formats: ['image/avif', 'image/webp'],
   },
   // Enable React strict mode for better development
   reactStrictMode: true,
@@ -13,4 +13,4 @@ const nextConfig = {
   poweredByHeader: false,
 };
 
-module.exports = nextConfig;
+export default nextConfig;
