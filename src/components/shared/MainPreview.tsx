@@ -10,9 +10,9 @@ const MainPreview: React.FC = () => {
     <div className="relative min-h-screen w-full bg-background">
       <GradientBackground />
       <div className="relative">
-        <div className="flex min-h-screen flex-col items-center justify-center space-y-16 px-4">
-          {/* Title Section */}
-          <div className="space-y-6 text-center">
+        <div className="flex min-h-screen flex-col items-center pt-24 space-y-20 px-4">
+          {/* Title Section - Moved higher up with adjusted spacing */}
+          <div className="space-y-8">
             <h1 className="text-7xl font-bold">
               <span className="bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
                 AI Innovation Hub
@@ -26,8 +26,8 @@ const MainPreview: React.FC = () => {
             </p>
           </div>
 
-          {/* Service Boxes */}
-          <div className="flex flex-wrap justify-center gap-8">
+          {/* Service Boxes - Adjusted gap and layout */}
+          <div className="flex flex-wrap justify-center gap-12">
             <AnimatedServiceBox
               icon={Users}
               title="Enhanced Client Service"
