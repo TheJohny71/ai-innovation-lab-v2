@@ -134,7 +134,7 @@ const DeploymentStatus = () => {
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-6xl font-bold text-white -mt-2">{total}</span>
+            <span className="text-4xl font-bold text-white -mt-2">{total}</span>
             <span className="text-sm text-gray-400 mt-1">total</span>
           </div>
         </div>
@@ -194,7 +194,7 @@ const RegionalImpact = () => {
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-6xl font-bold text-white -mt-2">4</span>
+            <span className="text-4xl font-bold text-white -mt-2">4</span>
             <span className="text-sm text-gray-400 mt-1">regions</span>
           </div>
         </div>
