@@ -12,8 +12,8 @@ const MainPreview: React.FC = () => {
 
       {/* Content Container */}
       <div className="relative flex min-h-screen flex-col items-center">
-        {/* Title Section with exact spacing */}
-        <div className="mt-24 space-y-4 text-center">
+        {/* Title Section - Adjusted spacing */}
+        <div className="mt-16 space-y-6 text-center">
           <h1 className="text-6xl font-bold">
             <span className="bg-gradient-to-r from-[#3B82F6] to-[#2DD4BF] bg-clip-text text-transparent">
               AI Innovation Hub
@@ -27,8 +27,8 @@ const MainPreview: React.FC = () => {
           </p>
         </div>
 
-        {/* Service Boxes with exact spacing */}
-        <div className="mt-16 flex justify-center gap-8">
+        {/* Service Boxes - Adjusted spacing and positioning */}
+        <div className="mt-24 mb-32 flex justify-center gap-12">
           <AnimatedServiceBox
             icon={Users}
             title="Enhanced Client Service"
@@ -46,9 +46,9 @@ const MainPreview: React.FC = () => {
           />
         </div>
 
-        {/* Single Navigation Bar */}
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2">
-          <nav className="rounded-full border border-blue-500/20 bg-[#0F1729]/80 px-8 py-3 backdrop-blur-sm">
+        {/* Navigation Bar - Fixed positioning and overlay issue resolved */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50">
+          <nav className="rounded-full border border-blue-500/20 bg-[#0F1729]/90 px-8 py-3 backdrop-blur-sm shadow-lg">
             <div className="flex gap-8">
               {[
                 'Nexus',
