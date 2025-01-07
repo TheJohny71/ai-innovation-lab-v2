@@ -11,7 +11,7 @@ const MainPreview: React.FC = () => {
       <GradientBackground />
       <div className="relative">
         <div className="flex min-h-screen flex-col items-center justify-start pt-32 px-4">
-          {/* Title Section - Adjusted spacing */}
+          {/* Title Section - With new subtitle */}
           <div className="space-y-5 text-center">
             <h1 className="text-6xl font-bold">
               <span className="bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
@@ -19,7 +19,7 @@ const MainPreview: React.FC = () => {
               </span>
             </h1>
             <h2 className="text-3xl font-medium tracking-wide text-gray-200">
-              AI Powered Legal Innovation
+              Transforming Legal Practice Through AI
             </h2>
             <p className="text-lg tracking-wide text-gray-400">
               Accelerating Innovation Through Cultural Mindset Change
