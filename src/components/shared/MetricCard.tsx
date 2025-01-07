@@ -1,10 +1,25 @@
 import React from 'react';
-import type { MetricCardProps } from '@/types/metrics';
 
-/**
- * Reusable MetricCard component displaying a card with metrics and stats.
- */
-export const MetricCard: React.FC<MetricCardProps> = ({
+// ✅ Define TypeScript types for props
+interface MetricCardProps {
+  icon: React.ComponentType<any>;
+  title: string;
+  value: string;
+  subtitle: string;
+  mainStats: {
+    trend: string;
+  };
+  additionalStats: Record<string, { value: string }>;
+  gradient: {
+    background: string;
+    border: string;
+    icon: string;
+    iconColor: string;
+    text: string;
+  };
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({
   icon: Icon,
   title,
   value,
@@ -15,29 +30,28 @@ export const MetricCard: React.FC<MetricCardProps> = ({
 }) => {
   return (
     <div
-      className={`p-6 rounded-xl border ${gradient.border} ${gradient.bg} hover:shadow-lg transition-shadow`}
+      className={`rounded-xl p-6 ${gradient.background} border ${gradient.border}`}
     >
-      {/* Header Section with Icon */}
-      <div className="flex items-center gap-2 mb-6">
-        <Icon className={`w-6 h-6 ${gradient.text}`} />
-        <span className={`text-sm font-semibold ${gradient.text}`}>
-          {title}
-        </span>
+      <div className="flex justify-between items-start mb-4">
+        <div
+          className={`${gradient.icon} p-2 rounded-lg flex items-center justify-center`}
+        >
+          <Icon className={gradient.iconColor} size={20} />
+        </div>
       </div>
-
-      {/* Main Metric Display */}
-      <div className="mb-6">
-        <p className="text-5xl font-bold text-white">{value}</p>
-        <p className="text-gray-400 text-sm">{subtitle}</p>
-        <p className="text-sm text-gray-300">{mainStats.trend}</p>
+      <div className="space-y-1 mb-4">
+        <h3 className="text-white font-medium text-sm">{title}</h3>
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl font-bold text-white">{value}</span>
+          <span className="text-sm text-gray-400">{subtitle}</span>
+        </div>
+        <p className={`text-sm ${gradient.text}`}>{mainStats.trend}</p>
       </div>
-
-      {/* Additional Stats */}
-      <div className="space-y-2">
-        {Object.entries(additionalStats).map(([label, stat], index) => (
-          <div key={index} className="flex justify-between text-sm">
-            <span className="text-gray-400">{label}</span>
-            <span className="text-gray-300 font-semibold">{stat.value}</span>
+      <div className="grid grid-cols-2 gap-2">
+        {Object.entries(additionalStats).map(([label, stat]) => (
+          <div key={label} className="bg-slate-900/30 rounded-lg p-2">
+            <div className="text-xs text-gray-400 mb-0.5">{label}</div>
+            <div className="text-sm text-white font-medium">{stat.value}</div>
           </div>
         ))}
       </div>
@@ -45,6 +59,5 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   );
 };
 
-// ✅ Export both the component and its type
 export default MetricCard;
 export type { MetricCardProps };
