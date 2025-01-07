@@ -10,21 +10,37 @@ interface AnimatedServiceBoxProps {
 }
 
 export function AnimatedServiceBox({ title, color }: AnimatedServiceBoxProps) {
+  // Updated color palette with more sophisticated combinations
   const colorMap = {
     purple: {
-      stroke: '#8B5CF6',
-      fill: 'rgba(139, 92, 246, 0.03)',
-      background: '#1a1432',
+      stroke: '#BD4BF9', // Vivid electric purple
+      fill: 'rgba(189, 75, 249, 0.03)',
+      background: '#1E1133', // Deep royal purple background
+      glow: 'rgba(189, 75, 249, 0.25)',
+      gradient: {
+        start: '#BD4BF9',
+        end: '#9B51E0', // Softer purple for depth
+      },
     },
     blue: {
-      stroke: '#3B82F6',
-      fill: 'rgba(59, 130, 246, 0.03)',
-      background: '#141d32',
+      stroke: '#0EA5E9', // Vibrant electric blue
+      fill: 'rgba(14, 165, 233, 0.03)',
+      background: '#0F2942', // Rich navy background
+      glow: 'rgba(14, 165, 233, 0.25)',
+      gradient: {
+        start: '#0EA5E9',
+        end: '#2563EB', // Deeper blue for contrast
+      },
     },
     teal: {
-      stroke: '#2DD4BF',
-      fill: 'rgba(45, 212, 191, 0.03)',
-      background: '#143232',
+      stroke: '#06B6D4', // Bright cyan
+      fill: 'rgba(6, 182, 212, 0.03)',
+      background: '#123C3C', // Deep teal background
+      glow: 'rgba(6, 182, 212, 0.25)',
+      gradient: {
+        start: '#06B6D4',
+        end: '#0D9488', // Darker teal for depth
+      },
     },
   };
 
@@ -32,7 +48,7 @@ export function AnimatedServiceBox({ title, color }: AnimatedServiceBoxProps) {
   const secondLine = restWords.join(' ');
 
   return (
-    <svg width="220" height="140" viewBox="-110 -70 220 140">
+    <svg width="260" height="160" viewBox="-130 -80 260 160">
       <defs>
         <filter
           id={`glow-${color}`}
@@ -41,14 +57,15 @@ export function AnimatedServiceBox({ title, color }: AnimatedServiceBoxProps) {
           width="200%"
           height="200%"
         >
-          <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
           <feColorMatrix
             in="blur"
             type="matrix"
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -4"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
           />
         </filter>
 
+        {/* Enhanced gradient with new color stops */}
         <linearGradient
           id={`card-gradient-${color}`}
           x1="0%"
@@ -59,50 +76,86 @@ export function AnimatedServiceBox({ title, color }: AnimatedServiceBoxProps) {
           <stop
             offset="0%"
             stopColor={colorMap[color].background}
-            stopOpacity="1"
+            stopOpacity="0.95"
           />
           <stop
             offset="100%"
             stopColor={colorMap[color].background}
-            stopOpacity="0.8"
+            stopOpacity="0.85"
           />
         </linearGradient>
+
+        {/* Enhanced stroke gradient */}
+        <linearGradient
+          id={`stroke-gradient-${color}`}
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop
+            offset="0%"
+            stopColor={colorMap[color].gradient.start}
+            stopOpacity="1"
+          />
+          <stop
+            offset="100%"
+            stopColor={colorMap[color].gradient.end}
+            stopOpacity="1"
+          />
+        </linearGradient>
+
+        {/* Enhanced glow effect */}
+        <filter id={`enhanced-glow-${color}`}>
+          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+          <feFlood floodColor={colorMap[color].glow} result="glowColor" />
+          <feComposite
+            in="glowColor"
+            in2="coloredBlur"
+            operator="in"
+            result="softGlow"
+          />
+          <feMerge>
+            <feMergeNode in="softGlow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
       </defs>
 
-      {/* Card Background */}
+      {/* Card Background with enhanced styling */}
       <rect
-        x="-110"
-        y="-70"
-        width="220"
-        height="140"
-        rx="15"
+        x="-130"
+        y="-80"
+        width="260"
+        height="160"
+        rx="16"
         fill={`url(#card-gradient-${color})`}
-        stroke={colorMap[color].stroke}
-        strokeWidth="1"
-        filter={`url(#glow-${color})`}
+        stroke={`url(#stroke-gradient-${color})`}
+        strokeWidth="1.5"
+        filter={`url(#enhanced-glow-${color})`}
       >
         <animate
           attributeName="y"
-          values="-70;-72;-70"
+          values="-80;-82;-80"
           dur="12s"
           repeatCount="indefinite"
         />
       </rect>
 
-      {/* Animated Icons */}
+      {/* Animated Icons with updated colors */}
       {color === 'purple' && (
-        <g transform="translate(0, -25)">
+        <g transform="translate(0, -30)">
           <circle
             cx="0"
             cy="0"
-            r="15"
-            stroke={colorMap[color].stroke}
+            r="18"
+            stroke={`url(#stroke-gradient-${color})`}
             strokeWidth="2"
             fill="none"
           >
             <animate
               attributeName="stroke-dasharray"
-              values="0,100;100,100"
+              values="0,120;120,120"
               dur="6s"
               repeatCount="indefinite"
             />
@@ -110,22 +163,22 @@ export function AnimatedServiceBox({ title, color }: AnimatedServiceBoxProps) {
           <circle
             cx="0"
             cy="0"
-            r="10"
+            r="12"
             fill="none"
-            stroke={colorMap[color].stroke}
+            stroke={colorMap[color].gradient.start}
             strokeWidth="1.5"
             strokeDasharray="4,4"
           />
           <circle
             cx="0"
             cy="0"
-            r="5"
-            fill={colorMap[color].stroke}
-            opacity="0.5"
+            r="6"
+            fill={colorMap[color].gradient.start}
+            opacity="0.6"
           >
             <animate
               attributeName="opacity"
-              values="0.5;0.8;0.5"
+              values="0.6;0.9;0.6"
               dur="4s"
               repeatCount="indefinite"
             />
@@ -134,24 +187,24 @@ export function AnimatedServiceBox({ title, color }: AnimatedServiceBoxProps) {
       )}
 
       {color === 'blue' && (
-        <g transform="translate(0, -25)">
+        <g transform="translate(0, -30)">
           <path
-            d="M-15,-10 C0,-10 0,0 15,0"
-            stroke={colorMap[color].stroke}
+            d="M-18,-12 C0,-12 0,0 18,0"
+            stroke={`url(#stroke-gradient-${color})`}
             strokeWidth="2"
             fill="none"
             opacity="0.8"
           >
             <animate
               attributeName="d"
-              values="M-15,-10 C0,-10 0,0 15,0;M-15,-5 C0,-5 0,5 15,5;M-15,-10 C0,-10 0,0 15,0"
+              values="M-18,-12 C0,-12 0,0 18,0;M-18,-6 C0,-6 0,6 18,6;M-18,-12 C0,-12 0,0 18,0"
               dur="6s"
               repeatCount="indefinite"
             />
           </path>
           <path
-            d="M-15,0 C0,0 0,10 15,10"
-            stroke={colorMap[color].stroke}
+            d="M-18,0 C0,0 0,12 18,12"
+            stroke={colorMap[color].gradient.start}
             strokeWidth="2"
             fill="none"
             opacity="0.6"
@@ -160,16 +213,16 @@ export function AnimatedServiceBox({ title, color }: AnimatedServiceBoxProps) {
       )}
 
       {color === 'teal' && (
-        <g transform="translate(0, -25)">
+        <g transform="translate(0, -30)">
           <path
-            d="M-12,-5 C-7,-10 -2,-10 3,-5 C8,0 13,0 18,-5"
-            stroke={colorMap[color].stroke}
+            d="M-15,-6 C-9,-12 -2,-12 4,-6 C10,0 16,0 22,-6"
+            stroke={`url(#stroke-gradient-${color})`}
             strokeWidth="2"
             fill="none"
           >
             <animate
               attributeName="stroke-dasharray"
-              values="0,100;100,0"
+              values="0,120;120,0"
               dur="12s"
               repeatCount="indefinite"
             />
@@ -177,20 +230,20 @@ export function AnimatedServiceBox({ title, color }: AnimatedServiceBoxProps) {
         </g>
       )}
 
-      {/* Title Text */}
+      {/* Title Text with enhanced contrast */}
       <text
-        y="15"
-        fill="#E5E7EB"
+        y="20"
+        fill="#F3F4F6"
         textAnchor="middle"
-        className="text-lg font-medium"
+        className="text-xl font-medium tracking-wide"
       >
         {firstWord}
       </text>
       <text
-        y="45"
-        fill="#E5E7EB"
+        y="50"
+        fill="#F3F4F6"
         textAnchor="middle"
-        className="text-lg font-medium"
+        className="text-xl font-medium tracking-wide"
       >
         {secondLine}
       </text>
