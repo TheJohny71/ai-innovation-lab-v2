@@ -26,7 +26,7 @@ const config = {
         'glow-pulse': 'glowPulse 4s ease-in-out infinite',
         'particle-float': 'particleFloat 20s ease-in-out infinite',
         'spin-slow': 'spin 3s linear infinite',
-        'wave': 'wave 2s ease-in-out infinite',
+        wave: 'wave 2s ease-in-out infinite',
       },
       keyframes: {
         float: {

@@ -36,7 +36,12 @@
     left: -100%;
     width: 200%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, theme('colors.blue.400'), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      theme('colors.blue.400'),
+      transparent
+    );
     animation: wave 3s linear infinite;
   }
 
@@ -49,7 +54,12 @@
     content: '';
     position: absolute;
     inset: -4px;
-    background: conic-gradient(from 0deg, transparent, theme('colors.teal.400'), transparent);
+    background: conic-gradient(
+      from 0deg,
+      transparent,
+      theme('colors.teal.400'),
+      transparent
+    );
     animation: rotate 3s linear infinite;
   }
 }
