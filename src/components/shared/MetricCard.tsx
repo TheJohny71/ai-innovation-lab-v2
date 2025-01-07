@@ -45,4 +45,6 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   );
 };
 
+// ✅ Export both the component and its type
 export default MetricCard;
+export type { MetricCardProps };
