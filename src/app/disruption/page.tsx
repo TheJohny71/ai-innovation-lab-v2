@@ -37,31 +37,26 @@ const MetricCard = ({
   gradient,
 }: MetricCardProps) => (
   <div
-    className={`rounded-xl p-6 ${gradient.background} border ${gradient.border}`}
+    className={`rounded-xl p-6 ${gradient.background} border ${gradient.border} transition-all duration-300`}
   >
-    <div className="mb-6">
-      <div className={`${gradient.icon} p-2 rounded-lg w-fit`}>
-        <Icon className={`${gradient.iconColor} w-5 h-5`} />
+    <div className="flex justify-between items-start mb-4">
+      <div className={`${gradient.icon} p-2 rounded-lg flex items-center justify-center`}>
+        <Icon className={gradient.iconColor} size={20} />
       </div>
     </div>
-    <div className="space-y-1 mb-6">
-      <h3 className="text-white text-sm font-medium">{title}</h3>
-      <div className="space-y-1">
-        <div className="flex items-baseline gap-2">
-          <span className="text-3xl font-bold text-white">{value}</span>
-          <span className="text-sm text-gray-400">{subtitle}</span>
-        </div>
-        <p className={`text-sm ${gradient.text}`}>{mainStats.trend}</p>
+    <div className="space-y-1 mb-4">
+      <h3 className="text-white font-medium text-sm">{title}</h3>
+      <div className="flex items-baseline gap-2">
+        <span className="text-2xl font-bold text-white">{value}</span>
+        <span className="text-sm text-gray-400">{subtitle}</span>
       </div>
+      <p className={`text-sm ${gradient.text}`}>{mainStats.trend}</p>
     </div>
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-2">
       {Object.entries(additionalStats).map(([label, stat]) => (
-        <div
-          key={label}
-          className={`${gradient.background} rounded-lg bg-opacity-30 p-2`}
-        >
-          <p className="text-gray-400 text-xs mb-1">{label}</p>
-          <p className="text-white text-sm font-medium">{stat.value}</p>
+        <div key={label} className="bg-slate-900/30 rounded-lg p-2">
+          <div className="text-xs text-gray-400 mb-0.5">{label}</div>
+          <div className="text-sm text-white font-medium">{stat.value}</div>
         </div>
       ))}
     </div>
@@ -69,7 +64,7 @@ const MetricCard = ({
 );
 
 const ImplementationTypes = () => (
-  <div className="bg-indigo-950 bg-opacity-50 rounded-xl p-6 border border-indigo-500/20">
+  <div className="bg-gradient-to-br from-indigo-950 to-purple-900 rounded-xl p-6 border border-purple-500/20">
     <h2 className="text-base font-semibold text-white mb-1">
       Implementation Types
     </h2>
@@ -83,13 +78,16 @@ const ImplementationTypes = () => (
     ].map((item) => (
       <div key={item.name} className="mb-4 last:mb-0">
         <div className="flex justify-between text-sm mb-1.5">
-          <span className="text-gray-300">{item.name}</span>
-          <span className="text-gray-400">{item.value}</span>
+          <span className="text-gray-300 text-sm truncate pr-2">{item.name}</span>
+          <span className="text-gray-400 text-sm">{item.value}</span>
         </div>
-        <div className="w-full bg-black/25 h-1.5 rounded-full">
+        <div className="w-full bg-black/25 rounded-full h-1">
           <div
-            className="h-full bg-blue-500 rounded-full"
-            style={{ width: `${(item.value / 14) * 100}%` }}
+            className="h-full rounded-full transition-all duration-500"
+            style={{
+              width: `${(item.value / 14) * 100}%`,
+              backgroundColor: '#818cf8',
+            }}
           />
         </div>
       </div>
@@ -100,51 +98,55 @@ const ImplementationTypes = () => (
 const DeploymentStatus = () => {
   const data = [
     { name: 'Active', value: 24, color: '#10b981' },
-    { name: 'Development', value: 4, color: '#6366f1' },
-    { name: 'Planning', value: 3, color: '#8b5cf6' },
+    { name: 'Development', value: 4, color: '#818cf8' },
+    { name: 'Planning', value: 3, color: '#c084fc' },
   ];
+  const total = data.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <div className="bg-emerald-950 bg-opacity-50 rounded-xl p-6 border border-emerald-500/20">
-      <h2 className="text-base font-semibold text-white mb-6">
+    <div className="bg-gradient-to-br from-emerald-950 to-cyan-900 rounded-xl p-6 border border-emerald-500/20">
+      <h2 className="text-base font-semibold text-white mb-1">
         Deployment Status
       </h2>
       <div className="flex flex-col">
-        <div className="h-48 relative">
+        <div className="h-48 flex justify-center relative">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={data}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                startAngle={90}
-                endAngle={450}
+                innerRadius={50}
+                outerRadius={70}
+                paddingAngle={2}
                 dataKey="value"
+                startAngle={90}
+                endAngle={-270}
               >
                 {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
+                  <Cell key={index} fill={entry.color} />
                 ))}
               </Pie>
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-2xl font-bold text-white">31</span>
+            <span className="text-2xl font-bold text-white">{total}</span>
             <span className="text-sm text-gray-400">Total</span>
           </div>
         </div>
         <div className="mt-4 space-y-2">
           {data.map((item) => (
             <div key={item.name} className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center">
                 <div
-                  className="w-2.5 h-2.5 rounded-full"
+                  className="w-2.5 h-2.5 rounded-full mr-2"
                   style={{ backgroundColor: item.color }}
                 />
                 <span className="text-gray-300 text-sm">{item.name}</span>
               </div>
-              <span className="text-gray-300 text-sm">{item.value}</span>
+              <span className="text-gray-300 text-sm font-medium">
+                {item.value}
+              </span>
             </div>
           ))}
         </div>
@@ -162,26 +164,27 @@ const RegionalImpact = () => {
   ];
 
   return (
-    <div className="bg-blue-950 bg-opacity-50 rounded-xl p-6 border border-blue-500/20">
-      <h2 className="text-base font-semibold text-white mb-6">
+    <div className="bg-gradient-to-br from-blue-950 to-slate-900 rounded-xl p-6 border border-blue-500/20">
+      <h2 className="text-base font-semibold text-white mb-1">
         Regional Impact
       </h2>
       <div className="flex flex-col">
-        <div className="h-48 relative">
+        <div className="h-48 flex justify-center">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={data}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                startAngle={90}
-                endAngle={450}
+                innerRadius={50}
+                outerRadius={70}
+                paddingAngle={2}
                 dataKey="value"
+                startAngle={90}
+                endAngle={-270}
               >
                 {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
+                  <Cell key={index} fill={entry.color} />
                 ))}
               </Pie>
             </PieChart>
@@ -190,9 +193,9 @@ const RegionalImpact = () => {
         <div className="mt-4 space-y-2">
           {data.map((item) => (
             <div key={item.name} className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center">
                 <div
-                  className="w-2.5 h-2.5 rounded-full"
+                  className="w-2.5 h-2.5 rounded-full mr-2"
                   style={{ backgroundColor: item.color }}
                 />
                 <span className="text-gray-300 text-sm">{item.name}</span>
@@ -220,7 +223,7 @@ const metrics: MetricCardProps[] = [
       'Pilot Phase': { value: '7' },
     },
     gradient: {
-      background: 'bg-gradient-to-br from-purple-900 to-indigo-900',
+      background: 'bg-gradient-to-br from-indigo-950 to-purple-900',
       border: 'border-purple-500/20',
       text: 'text-purple-400',
       icon: 'bg-purple-900/50',
@@ -240,7 +243,7 @@ const metrics: MetricCardProps[] = [
       Regions: { value: '4' },
     },
     gradient: {
-      background: 'bg-gradient-to-br from-blue-900 to-slate-900',
+      background: 'bg-gradient-to-br from-blue-950 to-slate-900',
       border: 'border-blue-500/20',
       text: 'text-blue-400',
       icon: 'bg-blue-900/50',
@@ -260,7 +263,7 @@ const metrics: MetricCardProps[] = [
       'Use Cases': { value: '12' },
     },
     gradient: {
-      background: 'bg-gradient-to-br from-emerald-900 to-teal-900',
+      background: 'bg-gradient-to-br from-emerald-950 to-cyan-900',
       border: 'border-emerald-500/20',
       text: 'text-emerald-400',
       icon: 'bg-emerald-900/50',
@@ -280,7 +283,7 @@ const metrics: MetricCardProps[] = [
       Pipeline: { value: '5' },
     },
     gradient: {
-      background: 'bg-gradient-to-br from-purple-900 to-violet-900',
+      background: 'bg-gradient-to-br from-violet-950 to-indigo-900',
       border: 'border-violet-500/20',
       text: 'text-violet-400',
       icon: 'bg-violet-900/50',
