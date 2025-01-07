@@ -32,6 +32,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
     <div
       className={`rounded-xl p-6 ${gradient.background} border ${gradient.border}`}
     >
+      {/* Icon Section */}
       <div className="flex justify-between items-start mb-4">
         <div
           className={`${gradient.icon} p-2 rounded-lg flex items-center justify-center`}
@@ -39,6 +40,8 @@ const MetricCard: React.FC<MetricCardProps> = ({
           <Icon className={gradient.iconColor} size={20} />
         </div>
       </div>
+
+      {/* Title and Stats */}
       <div className="space-y-1 mb-4">
         <h3 className="text-white font-medium text-sm">{title}</h3>
         <div className="flex items-baseline gap-2">
@@ -47,6 +50,8 @@ const MetricCard: React.FC<MetricCardProps> = ({
         </div>
         <p className={`text-sm ${gradient.text}`}>{mainStats.trend}</p>
       </div>
+
+      {/* Additional Stats Section */}
       <div className="grid grid-cols-2 gap-2">
         {Object.entries(additionalStats).map(([label, stat]) => (
           <div key={label} className="bg-slate-900/30 rounded-lg p-2">

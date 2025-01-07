@@ -1,14 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
+// ✅ TypeScript Interface for Props
 interface ContainerProps {
-  children: React.ReactNode;
+  children: ReactNode; // Specifically ReactNode for proper typing of children
   className?: string;
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
 }
 
+// ✅ Map for Tailwind max-width utilities
 const maxWidthClasses = {
   sm: 'max-w-screen-sm',
   md: 'max-w-screen-md',
@@ -18,11 +20,12 @@ const maxWidthClasses = {
   full: 'max-w-full',
 };
 
-export function Container({
+// ✅ Functional Component with Proper Prop Handling
+export const Container: React.FC<ContainerProps> = ({
   children,
   className = '',
   maxWidth = 'xl',
-}: ContainerProps) {
+}) => {
   return (
     <div
       className={cn(
@@ -31,7 +34,10 @@ export function Container({
         className
       )}
     >
+      {/* ✅ Ensures Proper Handling of Single/Multiple Children */}
       {children}
     </div>
   );
-}
+};
+
+export default Container;
