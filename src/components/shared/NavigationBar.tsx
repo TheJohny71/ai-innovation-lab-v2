@@ -24,11 +24,14 @@ export function NavigationBar() {
               <Link
                 key={item.name}
                 href={item.path}
-                className={`px-3 py-1.5 text-sm transition-colors duration-200 ${
-                  isActive(item.path)
-                    ? 'text-cyan-400'
-                    : 'text-gray-400/90 hover:text-white'
-                }`}
+                className={`
+                  relative px-3 py-1.5 text-sm transition-all duration-200
+                  ${
+                    isActive(item.path)
+                      ? 'text-cyan-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-cyan-400 after:transform after:scale-x-100'
+                      : 'text-gray-400/90 hover:text-white after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-cyan-400 after:transform after:scale-x-0 after:transition-transform hover:after:scale-x-100'
+                  }
+                `}
               >
                 {item.name}
               </Link>

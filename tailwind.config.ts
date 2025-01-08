@@ -8,26 +8,23 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   safelist: [
-    // Background colors
+    // Existing safelist items
     'bg-purple-950',
     'bg-blue-950',
     'bg-emerald-950',
     'bg-violet-950',
     'bg-indigo-950',
-    // Text colors
     'text-purple-400',
     'text-blue-400',
     'text-emerald-400',
     'text-violet-400',
     'text-indigo-400',
     'text-teal-400',
-    // Border colors
     'border-purple-500/20',
     'border-blue-500/20',
     'border-emerald-500/20',
     'border-violet-500/20',
     'border-indigo-500/20',
-    // Gradient backgrounds
     'from-indigo-950',
     'from-blue-950',
     'from-emerald-950',
@@ -36,7 +33,6 @@ const config: Config = {
     'to-slate-900',
     'to-cyan-900',
     'to-indigo-900',
-    // New additions for main page
     'w-10',
     'w-12',
     'h-10',
@@ -50,6 +46,17 @@ const config: Config = {
     'via-blue-300',
     'to-teal-400/90',
     'text-gray-400/90',
+    // New additions for navigation
+    'after:absolute',
+    'after:bottom-0',
+    'after:left-0',
+    'after:w-full',
+    'after:h-0.5',
+    'after:bg-cyan-400',
+    'after:transform',
+    'after:scale-x-0',
+    'after:scale-x-100',
+    'after:transition-transform',
   ],
   theme: {
     extend: {
@@ -71,7 +78,6 @@ const config: Config = {
           '50%': { transform: 'translateY(-20px)' },
         },
       },
-      // Added for backdrop blur variations
       backdropBlur: {
         xs: '2px',
       },
