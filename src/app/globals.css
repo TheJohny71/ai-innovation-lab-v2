@@ -2,37 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+  }
 }
 
-.service-box {
-  transform-style: preserve-3d;
-  transition: transform 0.3s ease-out;
-}
+@layer components {
+  .nav-item {
+    position: relative;
+    overflow: hidden;
+  }
 
-.service-box:hover {
-  transform: translateZ(20px) rotateX(5deg);
-}
+  .nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
 
-.nav-item {
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-item::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #60a5fa, transparent);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-}
-
-.nav-item:hover::after {
-  transform: translateX(0);
+  .nav-item:hover::after {
+    transform: translateX(0);
+  }
 }
