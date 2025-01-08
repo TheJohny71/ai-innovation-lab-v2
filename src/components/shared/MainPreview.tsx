@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 // Enhanced particle system
 const ParticleEffect = () => (
-  <div className="absolute inset-0 overflow-hidden">
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
     {[...Array(20)].map((_, i) => (
       <div
         key={i}
@@ -31,12 +31,12 @@ const ParticleEffect = () => (
 
 const MainPreview: React.FC = () => {
   return (
-    <div className="fixed inset-0 bg-background overflow-hidden">
+    <div className="relative min-h-screen bg-background overflow-x-hidden">
       <GradientBackground />
       <ParticleEffect />
 
-      <div className="relative h-full">
-        <div className="flex h-full flex-col items-center justify-between px-4 pt-24 pb-12">
+      <div className="relative min-h-screen">
+        <div className="flex min-h-screen flex-col items-center justify-between px-4 pt-32 pb-24">
           {/* Enhanced Title Section */}
           <motion.div
             className="space-y-8 text-center relative"
@@ -78,7 +78,7 @@ const MainPreview: React.FC = () => {
           </motion.div>
 
           {/* Enhanced Service Boxes */}
-          <div className="flex justify-center gap-8 -mt-20 perspective-1000">
+          <div className="flex justify-center gap-8 mb-24 perspective-1000">
             <AnimatedServiceBox
               icon={Users}
               title="Enhanced Client Service"
@@ -95,36 +95,6 @@ const MainPreview: React.FC = () => {
               color="teal"
             />
           </div>
-
-          {/* Enhanced Navigation */}
-          <motion.nav
-            className="flex gap-8 rounded-full border border-blue-500/20 bg-gradient-to-r from-blue-500/5 via-blue-400/5 to-blue-500/5 px-8 py-3 mb-8 backdrop-blur-md relative"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-          >
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/10 via-transparent to-blue-500/10 animate-pulse" />
-
-            {[
-              'Nexus',
-              'Accelerate',
-              'Disruption',
-              'Mindset',
-              'Future-Ready',
-            ].map((item, index) => (
-              <motion.button
-                key={item}
-                className="text-gray-200 hover:text-blue-400 transition-all relative group"
-                whileHover={{ scale: 1.05 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
-              >
-                {item}
-                <div className="absolute -inset-x-2 -inset-y-1 rounded-lg border border-blue-500/0 group-hover:border-blue-500/20 transition-all" />
-              </motion.button>
-            ))}
-          </motion.nav>
         </div>
       </div>
     </div>
