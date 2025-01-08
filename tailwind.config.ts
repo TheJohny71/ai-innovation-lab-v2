@@ -1,4 +1,3 @@
-// tailwind.config.ts
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -16,6 +15,7 @@ const config: Config = {
     'bg-indigo-950',
     'bg-black/20',
     'bg-black/25',
+    'bg-slate-800/50',
     // Text colors
     'text-purple-400',
     'text-blue-400',
@@ -40,11 +40,16 @@ const config: Config = {
     'to-cyan-900',
     'to-indigo-900',
     'to-blue-400',
+    // Grid and layout
+    'grid-cols-1',
+    'md:grid-cols-2',
+    'md:grid-cols-3',
+    'gap-4',
+    'gap-6',
     // New additions
-    'w-10',
-    'w-12',
-    'h-10',
-    'h-12',
+    'w-2.5',
+    'h-2.5',
+    'h-48',
     'backdrop-blur-sm',
     'backdrop-blur-md',
     'bg-white/[0.01]',
@@ -58,6 +63,10 @@ const config: Config = {
     'h-1.5',
     'rounded-full',
     'bg-gradient-to-r',
+    'bg-gradient-to-br',
+    // Hover states
+    'hover:bg-indigo-600',
+    'hover:bg-white/5',
   ],
   theme: {
     extend: {

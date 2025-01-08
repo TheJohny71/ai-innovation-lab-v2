@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
+import { LucideIcon } from 'lucide-react';
 
 interface MetricCardProps {
-  icon: React.ComponentType<any>;
+  icon: LucideIcon;
   title: string;
   value: string;
   subtitle: string;
@@ -33,7 +34,6 @@ export function MetricCard({
     <div
       className={`rounded-xl p-6 ${gradient.background} border ${gradient.border} backdrop-blur-sm`}
     >
-      {/* Icon Section */}
       <div className="flex justify-between items-start mb-4">
         <div
           className={`${gradient.icon} p-2 rounded-lg flex items-center justify-center`}
@@ -42,7 +42,6 @@ export function MetricCard({
         </div>
       </div>
 
-      {/* Title and Stats */}
       <div className="space-y-2 mb-4">
         <h3 className="text-sm font-medium text-gray-300">{title}</h3>
         <div className="flex items-baseline gap-2">
@@ -52,7 +51,6 @@ export function MetricCard({
         <p className={`text-sm ${gradient.text}`}>{mainStats.trend}</p>
       </div>
 
-      {/* Additional Stats Section */}
       <div className="grid grid-cols-2 gap-2">
         {Object.entries(additionalStats).map(([label, stat]) => (
           <div

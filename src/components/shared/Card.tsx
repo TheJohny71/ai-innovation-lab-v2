@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { cn } from '@/lib/utils';
 
 interface CardProps {
   children: React.ReactNode;
@@ -18,17 +17,15 @@ export function Card({
   glow = false,
   gradient,
 }: CardProps) {
-  return (
-    <div
-      className={cn(
-        'rounded-xl border border-white/10 backdrop-blur-sm transition-all duration-300',
-        hover && 'hover:scale-105 hover:border-white/20',
-        glow && `shadow-lg ${gradient ? gradient : 'shadow-indigo-500/20'}`,
-        gradient || 'bg-gray-900/50',
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
+  const classes = [
+    'rounded-xl border border-white/10 backdrop-blur-sm transition-all duration-300',
+    hover && 'hover:scale-105 hover:border-white/20',
+    glow && `shadow-lg ${gradient ? gradient : 'shadow-indigo-500/20'}`,
+    gradient || 'bg-gray-900/50',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return <div className={classes}>{children}</div>;
 }

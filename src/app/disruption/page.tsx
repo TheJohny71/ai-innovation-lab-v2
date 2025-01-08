@@ -1,19 +1,18 @@
 'use client';
 
 import React from 'react';
-import { Box, Globe, TrendingUp, Zap, ExternalLink } from 'lucide-react';
+import { Box, Globe, ExternalLink, type LucideIcon } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/shared/Button';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { MetricCard } from '@/components/shared/MetricCard';
 
-// Define types for clarity
 interface AdditionalStat {
   value: string;
 }
 
 interface MetricDefinition {
-  icon: React.ComponentType;
+  icon: LucideIcon;
   title: string;
   value: string;
   subtitle: string;
@@ -30,21 +29,22 @@ interface MetricDefinition {
   };
 }
 
-// Components that were missing
 function ImplementationTypes() {
+  const types = [
+    { name: 'Document Analysis & Review', value: 14 },
+    { name: 'Legal Research', value: 11 },
+    { name: 'Contract Management', value: 9 },
+    { name: 'Knowledge Management', value: 8 },
+    { name: 'Client Service Automation', value: 7 },
+  ];
+
   return (
     <div className="rounded-xl p-6 bg-gradient-to-br from-indigo-950 to-purple-900 border border-purple-500/20 backdrop-blur-sm">
       <h2 className="text-base font-semibold text-white mb-1">
         Implementation Types
       </h2>
       <p className="text-gray-400 text-sm mb-6">By practice area</p>
-      {[
-        { name: 'Document Analysis & Review', value: 14 },
-        { name: 'Legal Research', value: 11 },
-        { name: 'Contract Management', value: 9 },
-        { name: 'Knowledge Management', value: 8 },
-        { name: 'Client Service Automation', value: 7 },
-      ].map((item) => (
+      {types.map((item) => (
         <div key={item.name} className="mb-4 last:mb-0">
           <div className="flex justify-between text-sm mb-1.5">
             <span className="text-gray-300 truncate pr-2">{item.name}</span>
@@ -179,7 +179,7 @@ function RegionalImpact() {
     </div>
   );
 }
-// Define metrics data with proper typing
+
 const metrics: MetricDefinition[] = [
   {
     icon: Box,
@@ -221,7 +221,6 @@ const metrics: MetricDefinition[] = [
       iconColor: 'text-blue-400',
     },
   },
-  // ... rest of your metrics data
 ];
 
 export default function DisruptionPage() {
@@ -262,13 +261,13 @@ export default function DisruptionPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-4">
-            {metrics.map((card, index) => (
-              <MetricCard key={index} {...card} />
+          <div className="grid md:grid-cols-2 gap-4">
+            {metrics.map((metric, index) => (
+              <MetricCard key={index} {...metric} />
             ))}
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-3 gap-4">
             <ImplementationTypes />
             <DeploymentStatus />
             <RegionalImpact />
