@@ -7,66 +7,64 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   safelist: [
-    // Background colors
-    'bg-purple-950',
-    'bg-blue-950',
-    'bg-emerald-950',
-    'bg-violet-950',
-    'bg-indigo-950',
+    // Your existing safelist
+    ...// New additions for updated design
+    // Background colors and opacities
+    'bg-slate-800/40',
+    'bg-slate-700/40',
+    'bg-slate-800/30',
     'bg-black/20',
-    'bg-black/25',
-    'bg-slate-800/50',
-    // Text colors
-    'text-purple-400',
-    'text-blue-400',
-    'text-emerald-400',
-    'text-violet-400',
-    'text-indigo-400',
-    'text-teal-400',
-    // Border colors
-    'border-purple-500/20',
-    'border-blue-500/20',
-    'border-emerald-500/20',
-    'border-violet-500/20',
-    'border-indigo-500/20',
-    // Gradient backgrounds
-    'from-indigo-950',
-    'from-blue-950',
-    'from-emerald-950',
-    'from-violet-950',
-    'from-purple-400',
-    'to-purple-900',
-    'to-slate-900',
-    'to-cyan-900',
-    'to-indigo-900',
-    'to-blue-400',
-    // Grid and layout
-    'grid-cols-1',
-    'md:grid-cols-2',
-    'md:grid-cols-3',
+    'from-gray-400/80',
+    'to-gray-500/60',
+
+    // Text colors and opacities
+    'text-white/80',
+    'text-blue-400/80',
+    'text-gray-200',
+    'text-gray-300',
+    'text-gray-400',
+
+    // Sizes and spacing
+    'w-10',
+    'h-10',
+    'text-xs',
+    'text-base',
+    'text-4xl',
+    'space-y-2',
+    'space-y-3',
+    'space-y-4',
+    'mb-1',
+    'mb-6',
+    'gap-2',
     'gap-4',
-    'gap-6',
-    // New additions
-    'w-2.5',
-    'h-2.5',
-    'h-48',
-    'backdrop-blur-sm',
-    'backdrop-blur-md',
-    'bg-white/[0.01]',
-    'bg-white/[0.02]',
-    'bg-white/[0.03]',
-    'from-blue-400/90',
-    'via-blue-300',
-    'to-teal-400/90',
-    'text-gray-400/90',
-    // Progress bar related
-    'h-1.5',
+
+    // Layout
+    'min-w-0',
+    'truncate',
+    'grid-cols-2',
+    'lg:grid-cols-4',
+
+    // Flexbox
+    'items-start',
+    'items-center',
+    'justify-center',
+    'flex-col',
+
+    // Positioning
+    'relative',
+    'absolute',
+    'inset-0',
+
+    // Charts specific
+    'rounded-lg',
+    'rounded-xl',
     'rounded-full',
-    'bg-gradient-to-r',
-    'bg-gradient-to-br',
-    // Hover states
-    'hover:bg-indigo-600',
-    'hover:bg-white/5',
+
+    // Others
+    'font-medium',
+    'font-semibold',
+    'font-bold',
+    'pr-2',
   ],
   theme: {
     extend: {
