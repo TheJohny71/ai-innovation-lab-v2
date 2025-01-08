@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { Container } from '@/components/shared/Container';
 import {
@@ -35,39 +36,51 @@ const solutions = [
   },
 ];
 
-export default function SolutionsPage() {
+export default function AcceleratePage() {
   return (
     <BaseLayout>
-      <Section className="pt-32">
-        <Container>
-          <SectionHeader>
-            <SectionTitle>
-              <GradientText className="from-purple-400 via-blue-400 to-teal-400">
-                AI Solutions
-              </GradientText>
-            </SectionTitle>
-            <p className="mt-6 text-xl text-gray-400">
-              Innovative AI solutions for modern challenges
-            </p>
-          </SectionHeader>
+      <div className="relative h-full overflow-hidden">
+        {/* Background Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-900/80" />
 
-          <div className="mt-16 grid gap-8 md:grid-cols-2">
-            {solutions.map((solution, index) => (
-              <Card key={index} hover className="p-8">
-                <h3 className="mb-4 text-2xl font-semibold">
-                  <GradientText className={solution.gradient}>
-                    {solution.title}
-                  </GradientText>
-                </h3>
-                <p className="mb-6 text-gray-400">{solution.description}</p>
-                <Button variant="outline" className="w-full">
-                  Learn More
-                </Button>
-              </Card>
-            ))}
-          </div>
-        </Container>
-      </Section>
+        <Section>
+          <Container>
+            <SectionHeader>
+              <SectionTitle>
+                <GradientText className="from-purple-400 via-blue-400 to-teal-400">
+                  AI Solutions
+                </GradientText>
+              </SectionTitle>
+              <p className="mt-6 text-xl text-gray-400">
+                Innovative AI solutions for modern challenges
+              </p>
+            </SectionHeader>
+
+            <div className="mt-16 grid gap-8 md:grid-cols-2">
+              {solutions.map((solution, index) => (
+                <Card
+                  key={index}
+                  hover
+                  className="group p-8 transition-all duration-300"
+                >
+                  <h3 className="mb-4 text-2xl font-semibold">
+                    <GradientText className={solution.gradient}>
+                      {solution.title}
+                    </GradientText>
+                  </h3>
+                  <p className="mb-6 text-gray-400">{solution.description}</p>
+                  <Button
+                    variant="outline"
+                    className="w-full backdrop-blur-sm transition-all duration-300 group-hover:border-white/20"
+                  >
+                    Learn More
+                  </Button>
+                </Card>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      </div>
     </BaseLayout>
   );
 }

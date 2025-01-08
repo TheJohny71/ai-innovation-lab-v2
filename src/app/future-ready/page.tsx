@@ -1,27 +1,43 @@
-// src/app/page.tsx (updated)
 'use client';
 
 import React from 'react';
 import { BaseLayout } from '@/components/shared/BaseLayout';
-import { FeatureSection } from '@/components/shared/FeatureSection';
+import { Container } from '@/components/shared/Container';
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+} from '@/components/shared/Section';
+import { GradientText } from '@/components/shared/GradientText';
+import { Card } from '@/components/shared/Card';
+import { Clock } from 'lucide-react';
 
-export default function Home() {
+export default function FutureReadyPage() {
   return (
     <BaseLayout>
-      <div className="container mx-auto px-8 h-full flex flex-col justify-between py-12">
-        <div className="space-y-6 max-w-4xl mx-auto text-center mt-8 mb-16">
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-blue-300 to-teal-400 bg-clip-text text-transparent px-8">
-            AI Innovation Hub
-          </h1>
-          <h2 className="text-3xl text-gray-200 font-light tracking-wide">
-            Transforming Legal Practice Through AI
-          </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto mt-4">
-            Accelerating Innovation Through Cultural Mindset Change
-          </p>
-        </div>
+      <div className="relative h-full overflow-hidden">
+        {/* Background Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-900/80" />
 
-        <FeatureSection />
+        <Section className="flex h-[calc(100vh-200px)] items-center justify-center">
+          <Container>
+            <Card className="mx-auto max-w-2xl p-12 text-center">
+              <Clock className="mx-auto mb-6 h-16 w-16 text-blue-400" />
+              <SectionTitle>
+                <GradientText className="from-purple-400 via-blue-400 to-teal-400">
+                  Future Ready
+                </GradientText>
+              </SectionTitle>
+              <p className="mt-6 text-xl text-gray-400">
+                Our vision for the future of legal practice is coming soon.
+              </p>
+              <p className="mt-4 text-sm text-gray-500">
+                We're preparing something exciting. Check back later for
+                updates.
+              </p>
+            </Card>
+          </Container>
+        </Section>
       </div>
     </BaseLayout>
   );

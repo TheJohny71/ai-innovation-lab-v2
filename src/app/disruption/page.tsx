@@ -1,9 +1,10 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
 import { Box, Globe, TrendingUp, Zap, ExternalLink } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/shared/Button';
+import { BaseLayout } from '@/components/shared/BaseLayout';
 
 type AdditionalStat = {
   value: string;
@@ -300,71 +301,57 @@ const metrics: MetricCardProps[] = [
   },
 ];
 
-export default function DisruptionIndex() {
+export default function DisruptionPage() {
   return (
-    <div className="min-h-screen bg-slate-900 p-6 flex flex-col">
-      <div className="max-w-7xl mx-auto w-full space-y-6 flex-grow">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h1 className="text-4xl font-bold text-white mb-2">
-              Law Firm{' '}
-              <span className="text-blue-400">AI Disruption Index</span>
-            </h1>
-            <p className="text-gray-400 text-base">
-              Tracking AI innovation in global law firms
-            </p>
+    <BaseLayout>
+      <div className="min-h-screen p-6 flex flex-col">
+        <div className="max-w-7xl mx-auto w-full space-y-6 flex-grow">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h1 className="text-4xl font-bold text-white mb-2">
+                Law Firm{' '}
+                <span className="text-blue-400">AI Disruption Index</span>
+              </h1>
+              <p className="text-gray-400 text-base">
+                Tracking AI innovation in global law firms
+              </p>
+            </div>
+            <Button
+              variant="default"
+              className="bg-indigo-500 hover:bg-indigo-600 gap-2 inline-flex items-center"
+            >
+              Access Dataset
+              <ExternalLink size={16} />
+            </Button>
           </div>
-          <Button
-            variant="default"
-            className="bg-indigo-500 hover:bg-indigo-600 gap-2 inline-flex items-center"
-          >
-            Access Dataset
-            <ExternalLink size={16} />
-          </Button>
-        </div>
 
-        <div className="bg-slate-800/50 rounded-lg p-4 text-sm text-gray-300 mb-6">
-          <p className="mb-1">
-            Analysis derived from 31 verified AI implementations across leading
-            global law firms.
-          </p>
-          <div className="flex justify-between items-center">
-            <p>
-              Data aggregated using AI-powered research across publicly
-              available sources and industry announcements.
+          <div className="bg-slate-800/50 rounded-lg p-4 text-sm text-gray-300 mb-6">
+            <p className="mb-1">
+              Analysis derived from 31 verified AI implementations across
+              leading global law firms.
             </p>
-            <p className="text-gray-400">Last updated: December 26, 2024</p>
+            <div className="flex justify-between items-center">
+              <p>
+                Data aggregated using AI-powered research across publicly
+                available sources and industry announcements.
+              </p>
+              <p className="text-gray-400">Last updated: December 26, 2024</p>
+            </div>
           </div>
-        </div>
 
-        <div className="grid grid-cols-4 gap-4">
-          {metrics.map((card, index) => (
-            <MetricCard key={index} {...card} />
-          ))}
-        </div>
+          <div className="grid grid-cols-4 gap-4">
+            {metrics.map((card, index) => (
+              <MetricCard key={index} {...card} />
+            ))}
+          </div>
 
-        <div className="grid grid-cols-3 gap-4">
-          <ImplementationTypes />
-          <DeploymentStatus />
-          <RegionalImpact />
+          <div className="grid grid-cols-3 gap-4">
+            <ImplementationTypes />
+            <DeploymentStatus />
+            <RegionalImpact />
+          </div>
         </div>
       </div>
-
-      <div className="max-w-7xl mx-auto w-full mt-8">
-        <div className="flex justify-center gap-4">
-          <Button variant="outline">Nexus</Button>
-          <Button variant="outline">Accelerate</Button>
-          <Button
-            variant="default"
-            className="bg-indigo-500 hover:bg-indigo-600"
-          >
-            Disruption
-          </Button>
-          <Button variant="outline">Mindset</Button>
-          <Button variant="outline">Mindset</Button>
-          <Button variant="outline">Future-Ready</Button>
-        </div>
-      </div>
-    </div>
+    </BaseLayout>
   );
 }
