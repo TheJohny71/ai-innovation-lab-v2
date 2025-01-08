@@ -6,7 +6,10 @@ export function GradientBackground() {
   return (
     <div className="fixed inset-0 -z-10">
       <div className="absolute inset-0 animated-gradient opacity-90" />
-      <svg className="absolute inset-0 h-full w-full opacity-30" preserveAspectRatio="xMidYMid slice">
+      <svg
+        className="absolute inset-0 h-full w-full opacity-30"
+        preserveAspectRatio="xMidYMid slice"
+      >
         <defs>
           <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
@@ -26,7 +29,7 @@ export function GradientBackground() {
             </feMerge>
           </filter>
         </defs>
-        
+
         {/* Particle effect */}
         {[...Array(20)].map((_, i) => (
           <circle

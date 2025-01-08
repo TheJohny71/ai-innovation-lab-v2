@@ -13,8 +13,8 @@ const config: Config = {
         foreground: 'hsl(var(--foreground))',
       },
       animation: {
-        'gradient': 'gradient 15s ease infinite',
-        'float': 'float 10s ease-in-out infinite',
+        gradient: 'gradient 15s ease infinite',
+        float: 'float 10s ease-in-out infinite',
       },
       keyframes: {
         gradient: {
