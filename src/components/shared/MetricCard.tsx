@@ -1,6 +1,7 @@
+'use client';
+
 import React from 'react';
 
-// ✅ Define TypeScript types for props
 interface MetricCardProps {
   icon: React.ComponentType<any>;
   title: string;
@@ -19,7 +20,7 @@ interface MetricCardProps {
   };
 }
 
-const MetricCard: React.FC<MetricCardProps> = ({
+export function MetricCard({
   icon: Icon,
   title,
   value,
@@ -27,10 +28,10 @@ const MetricCard: React.FC<MetricCardProps> = ({
   mainStats,
   additionalStats,
   gradient,
-}) => {
+}: MetricCardProps) {
   return (
     <div
-      className={`rounded-xl p-6 ${gradient.background} border ${gradient.border}`}
+      className={`rounded-xl p-6 ${gradient.background} border ${gradient.border} backdrop-blur-sm`}
     >
       {/* Icon Section */}
       <div className="flex justify-between items-start mb-4">
@@ -42,8 +43,8 @@ const MetricCard: React.FC<MetricCardProps> = ({
       </div>
 
       {/* Title and Stats */}
-      <div className="space-y-1 mb-4">
-        <h3 className="text-white font-medium text-sm">{title}</h3>
+      <div className="space-y-2 mb-4">
+        <h3 className="text-sm font-medium text-gray-300">{title}</h3>
         <div className="flex items-baseline gap-2">
           <span className="text-2xl font-bold text-white">{value}</span>
           <span className="text-sm text-gray-400">{subtitle}</span>
@@ -54,15 +55,17 @@ const MetricCard: React.FC<MetricCardProps> = ({
       {/* Additional Stats Section */}
       <div className="grid grid-cols-2 gap-2">
         {Object.entries(additionalStats).map(([label, stat]) => (
-          <div key={label} className="bg-slate-900/30 rounded-lg p-2">
-            <div className="text-xs text-gray-400 mb-0.5">{label}</div>
-            <div className="text-sm text-white font-medium">{stat.value}</div>
+          <div
+            key={label}
+            className="bg-black/20 backdrop-blur-sm rounded-lg p-2"
+          >
+            <div className="text-xs text-gray-400 mb-1">{label}</div>
+            <div className="text-sm font-medium text-white">{stat.value}</div>
           </div>
         ))}
       </div>
     </div>
   );
-};
+}
 
-export default MetricCard;
 export type { MetricCardProps };

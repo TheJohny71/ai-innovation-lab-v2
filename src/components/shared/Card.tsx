@@ -21,9 +21,10 @@ export function Card({
   return (
     <div
       className={cn(
-        'rounded-xl border border-white/10 bg-gray-900/50 backdrop-blur-sm transition-all duration-300',
+        'rounded-xl border border-white/10 backdrop-blur-sm transition-all duration-300',
         hover && 'hover:scale-105 hover:border-white/20',
         glow && `shadow-lg ${gradient ? gradient : 'shadow-indigo-500/20'}`,
+        gradient || 'bg-gray-900/50',
         className
       )}
     >
