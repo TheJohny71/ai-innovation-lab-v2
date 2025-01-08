@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import type { ImplementationType } from '@/types/metrics';
 

@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import type { DeploymentStatusData } from '@/types/metrics';

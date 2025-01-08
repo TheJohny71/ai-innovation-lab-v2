@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import type { RegionalImpactData } from '@/types/metrics';
@@ -36,7 +35,9 @@ export const RegionalImpact: React.FC<RegionalImpactProps> = ({ data }) => {
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-bold text-white">{totalRegions}</span>
+            <span className="text-4xl font-bold text-white">
+              {totalRegions}
+            </span>
             <span className="text-sm text-gray-400">regions</span>
           </div>
         </div>

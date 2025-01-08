@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps, ComponentType } from 'react';
 import { LucideIcon } from 'lucide-react';
 
 export interface MetricCardStats {
@@ -6,15 +6,13 @@ export interface MetricCardStats {
   change?: string;
 }
 
-export interface MetricCardProps {
-  icon: typeof LucideIcon | React.ComponentType<any>;
+export interface MetricCardProps extends ComponentProps<'div'> {
+  icon: ComponentType<ComponentProps<LucideIcon>>;
   title: string;
   value: string;
   subtitle: string;
-  mainStats: {
-    trend: string;
-  };
-  additionalStats: Record<string, MetricCardStats>;
+  trend: string;
+  stats: Record<string, string>;
   gradient: {
     background: string;
     border: string;

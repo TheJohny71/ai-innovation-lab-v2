@@ -1,16 +1,22 @@
-// File: src/components/shared/MetricCard.tsx
 'use client';
 
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
+import { LucideProps } from 'lucide-react';
 
 interface MetricCardProps {
-  icon: LucideIcon;
+  icon: React.ComponentType<LucideProps>;
   title: string;
   value: string;
   subtitle: string;
   trend: string;
   stats: Record<string, string>;
+  gradient: {
+    background: string;
+    border: string;
+    icon: string;
+    iconColor: string;
+    text: string;
+  };
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({
@@ -20,19 +26,20 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   subtitle,
   trend,
   stats,
+  gradient,
 }) => (
-  <div className="rounded-xl bg-slate-800/40 border border-white/10 p-6 relative backdrop-blur-sm">
+  <div className={`rounded-xl ${gradient.background} border ${gradient.border} p-6 relative backdrop-blur-sm`}>
     <div className="flex justify-between items-start mb-6">
       <h3 className="text-gray-200 text-sm font-medium">{title}</h3>
-      <div className="bg-slate-700/40 w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm">
-        <Icon className="text-white/80" size={20} />
+      <div className={`${gradient.icon} w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm`}>
+        <Icon className={gradient.iconColor} size={20} />
       </div>
     </div>
 
     <div className="space-y-2 mb-6">
       <div className="text-4xl font-bold text-white">{value}</div>
       <div className="text-gray-300 text-sm">{subtitle}</div>
-      <div className="text-blue-400/80 text-sm">{trend}</div>
+      <div className={`${gradient.text} text-sm`}>{trend}</div>
     </div>
 
     <div className="grid grid-cols-2 gap-4">

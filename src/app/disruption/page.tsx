@@ -1,4 +1,3 @@
-// File: src/app/disruption/page.tsx
 'use client';
 
 import React from 'react';
@@ -18,14 +17,12 @@ const dashboardData: Metrics = {
       title: 'Total Initiatives',
       value: '31',
       subtitle: 'Verified',
-      mainStats: {
-        trend: 'From 25 firms',
-      },
-      additionalStats: {
-        'Unique Firms': { value: '25' },
-        'AmLaw 100': { value: '19' },
-        'Active Projects': { value: '24' },
-        'Pilot Phase': { value: '7' },
+      trend: 'From 25 firms',
+      stats: {
+        'Unique Firms': '25',
+        'AmLaw 100': '19',
+        'Active Projects': '24',
+        'Pilot Phase': '7',
       },
       gradient: {
         background: 'bg-slate-800/40',
@@ -40,14 +37,12 @@ const dashboardData: Metrics = {
       title: 'Global Reach',
       value: '18',
       subtitle: 'deployments',
-      mainStats: {
-        trend: 'Global Scale 58%',
-      },
-      additionalStats: {
-        'Global Firms': { value: '18' },
-        'US Focus': { value: '13' },
-        Coverage: { value: '58%' },
-        Regions: { value: '4' },
+      trend: 'Global Scale 58%',
+      stats: {
+        'Global Firms': '18',
+        'US Focus': '13',
+        Coverage: '58%',
+        Regions: '4',
       },
       gradient: {
         background: 'bg-slate-800/40',
@@ -62,14 +57,12 @@ const dashboardData: Metrics = {
       title: 'Active Projects',
       value: '24',
       subtitle: 'in production',
-      mainStats: {
-        trend: '77% Active Rate',
-      },
-      additionalStats: {
-        Development: { value: '4' },
-        Planning: { value: '3' },
-        'Success Rate': { value: '89%' },
-        'Use Cases': { value: '12' },
+      trend: '77% Active Rate',
+      stats: {
+        Development: '4',
+        Planning: '3',
+        'Success Rate': '89%',
+        'Use Cases': '12',
       },
       gradient: {
         background: 'bg-slate-800/40',
@@ -84,14 +77,12 @@ const dashboardData: Metrics = {
       title: '2024 Launches',
       value: '8',
       subtitle: 'in 2024',
-      mainStats: {
-        trend: 'vs. 6 in 2023',
-      },
-      additionalStats: {
-        '2023 Total': { value: '6' },
-        '2022 Total': { value: '4' },
-        Growth: { value: '33%' },
-        Pipeline: { value: '5' },
+      trend: 'vs. 6 in 2023',
+      stats: {
+        '2023 Total': '6',
+        '2022 Total': '4',
+        Growth: '33%',
+        Pipeline: '5',
       },
       gradient: {
         background: 'bg-slate-800/40',
