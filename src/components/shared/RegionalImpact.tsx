@@ -3,20 +3,14 @@
 
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import type { RegionalImpactData } from '@/types/metrics';
 
-interface RegionalData {
-  name: string;
-  value: number;
-  color: string;
+interface RegionalImpactProps {
+  data: RegionalImpactData[];
 }
 
-export const RegionalImpact: React.FC = () => {
-  const data: RegionalData[] = [
-    { name: 'North America', value: 42, color: '#94A3B8' },
-    { name: 'Europe', value: 28, color: '#64748B' },
-    { name: 'Asia Pacific', value: 18, color: '#475569' },
-    { name: 'Other Regions', value: 12, color: '#334155' },
-  ];
+export const RegionalImpact: React.FC<RegionalImpactProps> = ({ data }) => {
+  const totalRegions = data.length;
 
   return (
     <div className="rounded-xl bg-slate-800/40 border border-white/10 p-6 backdrop-blur-sm">
@@ -43,7 +37,9 @@ export const RegionalImpact: React.FC = () => {
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-bold text-white">4</span>
+            <span className="text-4xl font-bold text-white">
+              {totalRegions}
+            </span>
             <span className="text-sm text-gray-400">regions</span>
           </div>
         </div>

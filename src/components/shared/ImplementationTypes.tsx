@@ -2,20 +2,16 @@
 'use client';
 
 import React from 'react';
+import type { ImplementationType } from '@/types/metrics';
 
-interface ImplementationType {
-  name: string;
-  value: number;
+interface ImplementationTypesProps {
+  types: ImplementationType[];
 }
 
-export const ImplementationTypes: React.FC = () => {
-  const types: ImplementationType[] = [
-    { name: 'Document Analysis & Review', value: 14 },
-    { name: 'Legal Research', value: 12 },
-    { name: 'Contract Management', value: 10 },
-    { name: 'Knowledge Management', value: 8 },
-    { name: 'Client Service Automation', value: 6 },
-  ];
+export const ImplementationTypes: React.FC<ImplementationTypesProps> = ({
+  types,
+}) => {
+  const maxCount = Math.max(...types.map((type) => type.count));
 
   return (
     <div className="rounded-xl bg-slate-800/40 border border-white/10 p-6 backdrop-blur-sm">
@@ -26,12 +22,12 @@ export const ImplementationTypes: React.FC = () => {
           <div key={item.name} className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-300 truncate pr-2">{item.name}</span>
-              <span className="text-gray-400">{item.value}</span>
+              <span className="text-gray-400">{item.count}</span>
             </div>
             <div className="w-full bg-black/20 rounded-full h-1.5">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-gray-400/80 to-gray-500/60"
-                style={{ width: `${(item.value / 14) * 100}%` }}
+                style={{ width: `${(item.count / maxCount) * 100}%` }}
               />
             </div>
           </div>

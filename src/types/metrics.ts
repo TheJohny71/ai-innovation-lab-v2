@@ -1,4 +1,6 @@
+// File: src/types/metrics.ts
 import React from 'react';
+import { LucideIcon } from 'lucide-react';
 
 export interface MetricCardStats {
   value: string;
@@ -6,7 +8,7 @@ export interface MetricCardStats {
 }
 
 export interface MetricCardProps {
-  icon: React.ComponentType<any>; // Updated to allow flexibility for icons
+  icon: typeof LucideIcon | React.ComponentType<any>;
   title: string;
   value: string;
   subtitle: string;
@@ -15,21 +17,34 @@ export interface MetricCardProps {
   };
   additionalStats: Record<string, MetricCardStats>;
   gradient: {
+    background: string;
     border: string;
-    bg: string;
+    icon: string;
+    iconColor: string;
     text: string;
   };
 }
 
+export interface ImplementationType {
+  name: string;
+  count: number;
+}
+
+export interface DeploymentStatusData {
+  active: number;
+  development: number;
+  planning: number;
+}
+
+export interface RegionalImpactData {
+  name: string;
+  value: number;
+  color: string;
+}
+
 export interface Metrics {
   cards: MetricCardProps[];
-  implementationTypes: Array<{
-    name: string;
-    count: number;
-  }>;
-  deploymentStatus: {
-    active: number;
-    development: number;
-    planning: number;
-  };
+  implementationTypes: ImplementationType[];
+  deploymentStatus: DeploymentStatusData;
+  regionalImpact: RegionalImpactData[];
 }

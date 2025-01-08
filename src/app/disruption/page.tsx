@@ -9,61 +9,118 @@ import { MetricCard } from '@/components/shared/MetricCard';
 import { ImplementationTypes } from '@/components/shared/ImplementationTypes';
 import { DeploymentStatus } from '@/components/shared/DeploymentStatus';
 import { RegionalImpact } from '@/components/shared/RegionalImpact';
+import type { Metrics } from '@/types/metrics';
 
-const metrics = [
-  {
-    icon: Box,
-    title: 'Total Initiatives',
-    value: '31',
-    subtitle: 'Verified',
-    trend: 'From 25 firms',
-    stats: {
-      'Unique Firms': '25',
-      'AmLaw 100': '19',
-      'Active Projects': '24',
-      'Pilot Phase': '7',
+const dashboardData: Metrics = {
+  cards: [
+    {
+      icon: Box,
+      title: 'Total Initiatives',
+      value: '31',
+      subtitle: 'Verified',
+      mainStats: {
+        trend: 'From 25 firms',
+      },
+      additionalStats: {
+        'Unique Firms': { value: '25' },
+        'AmLaw 100': { value: '19' },
+        'Active Projects': { value: '24' },
+        'Pilot Phase': { value: '7' },
+      },
+      gradient: {
+        background: 'bg-slate-800/40',
+        border: 'border-white/10',
+        icon: 'bg-slate-700/40',
+        iconColor: 'text-white/80',
+        text: 'text-blue-400/80',
+      },
     },
-  },
-  {
-    icon: Globe,
-    title: 'Global Reach',
-    value: '18',
-    subtitle: 'deployments',
-    trend: 'Global Scale 58%',
-    stats: {
-      'Global Firms': '18',
-      'US Focus': '13',
-      Coverage: '58%',
-      Regions: '4',
+    {
+      icon: Globe,
+      title: 'Global Reach',
+      value: '18',
+      subtitle: 'deployments',
+      mainStats: {
+        trend: 'Global Scale 58%',
+      },
+      additionalStats: {
+        'Global Firms': { value: '18' },
+        'US Focus': { value: '13' },
+        Coverage: { value: '58%' },
+        Regions: { value: '4' },
+      },
+      gradient: {
+        background: 'bg-slate-800/40',
+        border: 'border-white/10',
+        icon: 'bg-slate-700/40',
+        iconColor: 'text-white/80',
+        text: 'text-blue-400/80',
+      },
     },
-  },
-  {
-    icon: TrendingUp,
-    title: 'Active Projects',
-    value: '24',
-    subtitle: 'in production',
-    trend: '77% Active Rate',
-    stats: {
-      Development: '4',
-      Planning: '3',
-      'Success Rate': '89%',
-      'Use Cases': '12',
+    {
+      icon: TrendingUp,
+      title: 'Active Projects',
+      value: '24',
+      subtitle: 'in production',
+      mainStats: {
+        trend: '77% Active Rate',
+      },
+      additionalStats: {
+        Development: { value: '4' },
+        Planning: { value: '3' },
+        'Success Rate': { value: '89%' },
+        'Use Cases': { value: '12' },
+      },
+      gradient: {
+        background: 'bg-slate-800/40',
+        border: 'border-white/10',
+        icon: 'bg-slate-700/40',
+        iconColor: 'text-white/80',
+        text: 'text-blue-400/80',
+      },
     },
-  },
-  {
-    icon: Zap,
-    title: '2024 Launches',
-    value: '8',
-    subtitle: 'in 2024',
-    trend: 'vs. 6 in 2023',
-    stats: {
-      '2023 Total': '6',
-      '2022 Total': '4',
-      Growth: '33%',
-      Pipeline: '5',
+    {
+      icon: Zap,
+      title: '2024 Launches',
+      value: '8',
+      subtitle: 'in 2024',
+      mainStats: {
+        trend: 'vs. 6 in 2023',
+      },
+      additionalStats: {
+        '2023 Total': { value: '6' },
+        '2022 Total': { value: '4' },
+        Growth: { value: '33%' },
+        Pipeline: { value: '5' },
+      },
+      gradient: {
+        background: 'bg-slate-800/40',
+        border: 'border-white/10',
+        icon: 'bg-slate-700/40',
+        iconColor: 'text-white/80',
+        text: 'text-blue-400/80',
+      },
     },
+  ],
+  implementationTypes: [
+    { name: 'Document Analysis & Review', count: 14 },
+    { name: 'Legal Research', count: 12 },
+    { name: 'Contract Management', count: 10 },
+    { name: 'Knowledge Management', count: 8 },
+    { name: 'Client Service Automation', count: 6 },
+  ],
+  deploymentStatus: {
+    active: 24,
+    development: 4,
+    planning: 3,
   },
-];
+  regionalImpact: [
+    { name: 'North America', value: 42, color: '#94A3B8' },
+    { name: 'Europe', value: 28, color: '#64748B' },
+    { name: 'Asia Pacific', value: 18, color: '#475569' },
+    { name: 'Other Regions', value: 12, color: '#334155' },
+  ],
+};
 
 export default function DisruptionPage() {
   return (
@@ -103,16 +160,16 @@ export default function DisruptionPage() {
 
           {/* Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {metrics.map((metric, index) => (
+            {dashboardData.cards.map((metric, index) => (
               <MetricCard key={index} {...metric} />
             ))}
           </div>
 
           {/* Bottom Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ImplementationTypes />
-            <DeploymentStatus />
-            <RegionalImpact />
+            <ImplementationTypes types={dashboardData.implementationTypes} />
+            <DeploymentStatus data={dashboardData.deploymentStatus} />
+            <RegionalImpact data={dashboardData.regionalImpact} />
           </div>
         </div>
       </div>

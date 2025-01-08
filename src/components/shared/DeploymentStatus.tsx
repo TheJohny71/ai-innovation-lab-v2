@@ -3,19 +3,20 @@
 
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import type { DeploymentStatusData } from '@/types/metrics';
 
-interface DeploymentStatusData {
-  name: string;
-  value: number;
-  color: string;
+interface DeploymentStatusProps {
+  data: DeploymentStatusData;
 }
 
-export const DeploymentStatus: React.FC = () => {
-  const data: DeploymentStatusData[] = [
-    { name: 'Active', value: 24, color: '#94A3B8' },
-    { name: 'Development', value: 4, color: '#64748B' },
-    { name: 'Planning', value: 3, color: '#475569' },
+export const DeploymentStatus: React.FC<DeploymentStatusProps> = ({ data }) => {
+  const chartData = [
+    { name: 'Active', value: data.active, color: '#94A3B8' },
+    { name: 'Development', value: data.development, color: '#64748B' },
+    { name: 'Planning', value: data.planning, color: '#475569' },
   ];
+
+  const total = chartData.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <div className="rounded-xl bg-slate-800/40 border border-white/10 p-6 backdrop-blur-sm">
@@ -25,7 +26,7 @@ export const DeploymentStatus: React.FC = () => {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={data}
+                data={chartData}
                 cx="50%"
                 cy="50%"
                 innerRadius={50}
@@ -35,19 +36,19 @@ export const DeploymentStatus: React.FC = () => {
                 startAngle={90}
                 endAngle={-270}
               >
-                {data.map((entry, index) => (
+                {chartData.map((entry, index) => (
                   <Cell key={index} fill={entry.color} />
                 ))}
               </Pie>
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-bold text-white">31</span>
+            <span className="text-4xl font-bold text-white">{total}</span>
             <span className="text-sm text-gray-400">total</span>
           </div>
         </div>
         <div className="mt-4 space-y-3">
-          {data.map((item) => (
+          {chartData.map((item) => (
             <div key={item.name} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div
