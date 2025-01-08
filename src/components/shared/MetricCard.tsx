@@ -28,10 +28,14 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   stats,
   gradient,
 }) => (
-  <div className={`rounded-xl ${gradient.background} border ${gradient.border} p-6 relative backdrop-blur-sm`}>
+  <div
+    className={`rounded-xl ${gradient.background} border ${gradient.border} p-6 relative backdrop-blur-sm`}
+  >
     <div className="flex justify-between items-start mb-6">
       <h3 className="text-gray-200 text-sm font-medium">{title}</h3>
-      <div className={`${gradient.icon} w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm`}>
+      <div
+        className={`${gradient.icon} w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm`}
+      >
         <Icon className={gradient.iconColor} size={20} />
       </div>
     </div>
