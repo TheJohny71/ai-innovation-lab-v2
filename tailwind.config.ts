@@ -20,6 +20,7 @@ const config: Config = {
     'text-emerald-400',
     'text-violet-400',
     'text-indigo-400',
+    'text-teal-400',
     // Border colors
     'border-purple-500/20',
     'border-blue-500/20',
@@ -35,6 +36,20 @@ const config: Config = {
     'to-slate-900',
     'to-cyan-900',
     'to-indigo-900',
+    // New additions for main page
+    'w-10',
+    'w-12',
+    'h-10',
+    'h-12',
+    'backdrop-blur-sm',
+    'backdrop-blur-md',
+    'bg-white/[0.01]',
+    'bg-white/[0.02]',
+    'bg-white/[0.03]',
+    'from-blue-400/90',
+    'via-blue-300',
+    'to-teal-400/90',
+    'text-gray-400/90',
   ],
   theme: {
     extend: {
@@ -55,6 +70,10 @@ const config: Config = {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-20px)' },
         },
+      },
+      // Added for backdrop blur variations
+      backdropBlur: {
+        xs: '2px',
       },
     },
   },
