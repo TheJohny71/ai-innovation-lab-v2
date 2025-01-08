@@ -1,66 +1,28 @@
+// src/app/page.tsx (updated)
 'use client';
 
+import React from 'react';
 import { BaseLayout } from '@/components/shared/BaseLayout';
-import { Container } from '@/components/shared/Container';
-import {
-  Section,
-  SectionHeader,
-  SectionTitle,
-} from '@/components/shared/Section';
-import { GradientText } from '@/components/shared/GradientText';
-import { Card } from '@/components/shared/Card';
-import { Button } from '@/components/shared/Button';
+import { FeatureSection } from '@/components/shared/FeatureSection';
 
-export default function FutureReadyPage() {
+export default function Home() {
   return (
     <BaseLayout>
-      <Section className="pt-32">
-        <Container>
-          <SectionHeader>
-            <SectionTitle>
-              <GradientText>Future-Ready Solutions</GradientText>
-            </SectionTitle>
-          </SectionHeader>
+      <div className="container mx-auto px-8 h-full flex flex-col justify-between py-12">
+        <div className="space-y-6 max-w-4xl mx-auto text-center mt-8 mb-16">
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-blue-300 to-teal-400 bg-clip-text text-transparent px-8">
+            AI Innovation Hub
+          </h1>
+          <h2 className="text-3xl text-gray-200 font-light tracking-wide">
+            Transforming Legal Practice Through AI
+          </h2>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto mt-4">
+            Accelerating Innovation Through Cultural Mindset Change
+          </p>
+        </div>
 
-          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            <Card hover className="p-6">
-              <h3 className="mb-4 text-xl font-semibold">
-                <GradientText>AI Integration</GradientText>
-              </h3>
-              <p className="mb-4 text-gray-400">
-                Advanced AI solutions for future-ready legal practices
-              </p>
-              <Button variant="outline" className="w-full">
-                Learn More
-              </Button>
-            </Card>
-
-            <Card hover className="p-6">
-              <h3 className="mb-4 text-xl font-semibold">
-                <GradientText>Digital Transformation</GradientText>
-              </h3>
-              <p className="mb-4 text-gray-400">
-                Comprehensive digital transformation strategies
-              </p>
-              <Button variant="outline" className="w-full">
-                Learn More
-              </Button>
-            </Card>
-
-            <Card hover className="p-6">
-              <h3 className="mb-4 text-xl font-semibold">
-                <GradientText>Innovation Framework</GradientText>
-              </h3>
-              <p className="mb-4 text-gray-400">
-                Structured approach to future-ready implementation
-              </p>
-              <Button variant="outline" className="w-full">
-                Learn More
-              </Button>
-            </Card>
-          </div>
-        </Container>
-      </Section>
+        <FeatureSection />
+      </div>
     </BaseLayout>
   );
 }

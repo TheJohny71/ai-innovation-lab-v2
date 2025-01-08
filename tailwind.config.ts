@@ -16,15 +16,8 @@ const config: Config = {
         pulse: 'pulse 8s ease-in-out infinite',
         float: 'float 10s ease-in-out infinite',
       },
-      keyframes: {
-        pulse: {
-          '0%, 100%': { transform: 'scale(2) rotate(0deg)' },
-          '50%': { transform: 'scale(2.2) rotate(180deg)' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
-        },
+      backdropBlur: {
+        xs: '2px',
       },
     },
   },

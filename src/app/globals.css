@@ -9,26 +9,9 @@
   }
 }
 
-@layer components {
-  .nav-item {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .nav-item::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #60a5fa, transparent);
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-
-  .nav-item:hover::after {
-    transform: translateX(0);
+@layer utilities {
+  .backdrop-blur-xs {
+    backdrop-filter: blur(2px);
   }
 }
 
