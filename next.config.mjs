@@ -1,15 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-      appDir: true,
-    },
-    webpack: (config) => {
-      config.module.rules.push({
-        test: /\.css$/i,
-        use: ['postcss-loader'],
-      });
-      return config;
-    },
-  };
+    reactStrictMode: true,
+  }
   
-  export default nextConfig;
+  export default nextConfig
