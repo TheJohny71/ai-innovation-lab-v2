@@ -2,30 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom base styles */
 :root {
   --background: 222.2 84% 4.9%;
   --foreground: 210 40% 98%;
-}
-
-/* Custom utilities */
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-/* Custom animations */
-.animate-float {
-  animation: float 15s ease-in-out infinite;
-}
-
-.glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.animate-enhanced-pulse {
-  animation: enhanced-pulse 3s ease-in-out infinite;
 }
 
 .service-box {
@@ -56,29 +35,4 @@
 
 .nav-item:hover::after {
   transform: translateX(0);
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0) translateX(0);
-  }
-  25% {
-    transform: translateY(-10px) translateX(5px);
-  }
-  75% {
-    transform: translateY(10px) translateX(-5px);
-  }
-}
-
-@keyframes enhanced-pulse {
-  0%,
-  100% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
 }

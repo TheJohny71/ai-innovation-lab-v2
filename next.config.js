@@ -11,6 +11,14 @@ const nextConfig = {
   output: 'standalone',
   // Optimize for Vercel deployment
   poweredByHeader: false,
+  // Enable webpack postcss support
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.css$/,
+      use: ['postcss-loader'],
+    });
+    return config;
+  },
 };
 
 export default nextConfig;
