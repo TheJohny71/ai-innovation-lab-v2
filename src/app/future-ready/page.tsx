@@ -32,7 +32,7 @@ export default function FutureReadyPage() {
                 Our vision for the future of legal practice is coming soon.
               </p>
               <p className="mt-4 text-sm text-gray-500">
-                We're preparing something exciting. Check back later for
+                We&apos;re preparing something exciting. Check back later for
                 updates.
               </p>
             </Card>
