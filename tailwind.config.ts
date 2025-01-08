@@ -13,14 +13,13 @@ const config: Config = {
         foreground: 'hsl(var(--foreground))',
       },
       animation: {
-        gradient: 'gradient 15s ease infinite',
+        pulse: 'pulse 8s ease-in-out infinite',
         float: 'float 10s ease-in-out infinite',
       },
       keyframes: {
-        gradient: {
-          '0%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
-          '100%': { backgroundPosition: '0% 50%' },
+        pulse: {
+          '0%, 100%': { transform: 'scale(2) rotate(0deg)' },
+          '50%': { transform: 'scale(2.2) rotate(180deg)' },
         },
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
