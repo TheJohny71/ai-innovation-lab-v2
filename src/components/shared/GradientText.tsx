@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { cn } from '@/lib/utils';
 
 interface GradientTextProps {
   children: React.ReactNode;
@@ -6,11 +9,7 @@ interface GradientTextProps {
 }
 
 export function GradientText({ children, className = '' }: GradientTextProps) {
-  return (
-    <span
-      className={`bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent ${className}`}
-    >
-      {children}
-    </span>
-  );
+  const baseGradient = 'bg-clip-text text-transparent font-bold';
+
+  return <span className={cn(baseGradient, className)}>{children}</span>;
 }

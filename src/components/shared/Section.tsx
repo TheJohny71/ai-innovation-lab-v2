@@ -21,7 +21,7 @@ export function SectionHeader({ children }: { children: React.ReactNode }) {
 
 export function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
+    <h2 className="text-5xl font-bold tracking-tight text-white sm:text-6xl">
       {children}
     </h2>
   );
@@ -32,5 +32,5 @@ export function SectionDescription({
 }: {
   children: React.ReactNode;
 }) {
-  return <p className="text-xl text-gray-400">{children}</p>;
+  return <p className="text-2xl text-white/90">{children}</p>;
 }

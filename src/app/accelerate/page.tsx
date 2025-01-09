@@ -17,63 +17,66 @@ const solutions = [
   {
     title: 'Alfie',
     subtitle: 'Modern Leave Management',
-    description: 'Enterprise-grade leave management system with Apple-quality design and AI-powered features.',
-    gradient: 'from-blue-400 to-indigo-400',
+    description:
+      'Enterprise-grade leave management system with Apple-quality design and AI-powered features.',
+    gradient: 'bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500',
     features: [
       'Apple-Quality Interface',
       'Smart Leave Suggestions',
       'Team Calendar Integration',
-      'Enterprise Security & SSO'
-    ]
+      'Enterprise Security & SSO',
+    ],
   },
   {
     title: 'Legal Research',
     subtitle: 'Advanced Research Platform',
     description: 'Advanced research capabilities powered by machine learning',
-    gradient: 'from-violet-400 to-purple-400',
-    features: []
+    gradient: 'bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500',
+    features: [],
   },
   {
     title: 'LexLiber',
     subtitle: 'Digital Law Library Assistant',
-    description: 'Integrated book catalog system providing seamless access to the Research Department collection.',
-    gradient: 'from-emerald-400 to-teal-400',
+    description:
+      'Integrated book catalog system providing seamless access to the Research Department collection.',
+    gradient: 'bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500',
     features: [
       'Smart Title & Call Number Search',
       'Real-time Availability Tracking',
       'Multi-Edition Consolidation',
-      'Interactive Catalog Browsing'
+      'Interactive Catalog Browsing',
     ],
     interface: (
       <div className="mb-6 overflow-hidden rounded-lg">
-        <img 
+        <img
           src="/images/lexliber-interface.png"
           alt="LexLiber Interface"
           className="w-full object-cover rounded-lg border border-white/10"
         />
       </div>
-    )
+    ),
   },
   {
     title: 'Seneca AI Assistant',
     subtitle: 'Interactive Research Guide',
-    description: 'Comprehensive onboarding system for McDermott Research Department resources and processes.',
-    gradient: 'from-cyan-400 to-blue-400',
+    description:
+      'Comprehensive onboarding system for McDermott Research Department resources and processes.',
+    gradient: 'bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500',
     features: [
       'Practice Area-Specific Research Tips',
       'Interactive Database Catalog',
       'Research Tool Navigation',
-      'Smart Book Search & Filtering'
+      'Smart Book Search & Filtering',
     ],
     interface: (
       <div className="mb-6 overflow-hidden rounded-lg">
-        <img 
+        <img
           src="/images/seneca-interface.png"
           alt="Seneca AI Assistant Interface"
           className="w-full object-cover rounded-lg border border-white/10"
         />
       </div>
-    )
+    ),
   },
 ];
 
@@ -94,15 +97,11 @@ export default function AcceleratePage() {
           <Container>
             <SectionHeader>
               <SectionTitle>
-                {/* Increased text size and adjusted gradient for better visibility */}
-                <h1 className="text-5xl font-bold mb-6">
-                  <GradientText className="from-white via-white to-gray-200">
-                    AI Solutions
-                  </GradientText>
-                </h1>
+                <GradientText className="bg-gradient-to-r from-white via-gray-100 to-gray-300">
+                  AI Solutions
+                </GradientText>
               </SectionTitle>
-              {/* Increased opacity and weight of subtitle */}
-              <p className="mt-6 text-2xl font-medium text-gray-200">
+              <p className="mt-6 text-2xl font-medium text-white/90">
                 Innovative AI solutions for modern challenges
               </p>
             </SectionHeader>
@@ -115,15 +114,17 @@ export default function AcceleratePage() {
                   className="group overflow-hidden transition-all duration-300"
                 >
                   <div className="p-8">
-                    <h3 className="text-2xl font-semibold mb-2">
+                    <h3 className="text-2xl font-bold mb-2">
                       <GradientText className={solution.gradient}>
                         {solution.title}
                       </GradientText>
                     </h3>
                     {solution.subtitle && (
-                      <p className="text-sm text-cyan-400 mb-3">{solution.subtitle}</p>
+                      <p className="text-sm text-cyan-400 mb-3">
+                        {solution.subtitle}
+                      </p>
                     )}
-                    <p className="text-gray-300 mb-6">{solution.description}</p>
+                    <p className="text-white/80 mb-6">{solution.description}</p>
 
                     {/* Interface Preview */}
                     {expandedCard === index && solution.interface && (
@@ -131,19 +132,26 @@ export default function AcceleratePage() {
                     )}
 
                     {/* Features Section */}
-                    {expandedCard === index && solution.features && solution.features.length > 0 && (
-                      <div className="mb-6">
-                        <h4 className="text-lg font-semibold mb-4 text-white">Key Features</h4>
-                        <ul className="space-y-3">
-                          {solution.features.map((feature, featureIndex) => (
-                            <li key={featureIndex} className="flex items-center gap-3">
-                              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                              <span className="text-gray-200">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    {expandedCard === index &&
+                      solution.features &&
+                      solution.features.length > 0 && (
+                        <div className="mb-6">
+                          <h4 className="text-lg font-semibold mb-4 text-white">
+                            Key Features
+                          </h4>
+                          <ul className="space-y-3">
+                            {solution.features.map((feature, featureIndex) => (
+                              <li
+                                key={featureIndex}
+                                className="flex items-center gap-3"
+                              >
+                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                                <span className="text-white/80">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
                     <Button
                       onClick={() => toggleCard(index)}
