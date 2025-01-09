@@ -17,66 +17,63 @@ const solutions = [
   {
     title: 'Alfie',
     subtitle: 'Modern Leave Management',
-    description:
-      'Enterprise-grade leave management system with Apple-quality design and AI-powered features.',
+    description: 'Enterprise-grade leave management system with Apple-quality design and AI-powered features.',
     gradient: 'from-blue-400 to-indigo-400',
     features: [
       'Apple-Quality Interface',
       'Smart Leave Suggestions',
       'Team Calendar Integration',
-      'Enterprise Security & SSO',
-    ],
+      'Enterprise Security & SSO'
+    ]
   },
   {
     title: 'Legal Research',
     subtitle: 'Advanced Research Platform',
     description: 'Advanced research capabilities powered by machine learning',
     gradient: 'from-violet-400 to-purple-400',
-    features: [],
+    features: []
   },
   {
     title: 'LexLiber',
     subtitle: 'Digital Law Library Assistant',
-    description:
-      'Integrated book catalog system providing seamless access to the Research Department collection.',
+    description: 'Integrated book catalog system providing seamless access to the Research Department collection.',
     gradient: 'from-emerald-400 to-teal-400',
     features: [
       'Smart Title & Call Number Search',
       'Real-time Availability Tracking',
       'Multi-Edition Consolidation',
-      'Interactive Catalog Browsing',
+      'Interactive Catalog Browsing'
     ],
     interface: (
       <div className="mb-6 overflow-hidden rounded-lg">
-        <img
+        <img 
           src="/images/lexliber-interface.png"
           alt="LexLiber Interface"
           className="w-full object-cover rounded-lg border border-white/10"
         />
       </div>
-    ),
+    )
   },
   {
     title: 'Seneca AI Assistant',
     subtitle: 'Interactive Research Guide',
-    description:
-      'Comprehensive onboarding system for McDermott Research Department resources and processes.',
+    description: 'Comprehensive onboarding system for McDermott Research Department resources and processes.',
     gradient: 'from-cyan-400 to-blue-400',
     features: [
       'Practice Area-Specific Research Tips',
       'Interactive Database Catalog',
       'Research Tool Navigation',
-      'Smart Book Search & Filtering',
+      'Smart Book Search & Filtering'
     ],
     interface: (
       <div className="mb-6 overflow-hidden rounded-lg">
-        <img
+        <img 
           src="/images/seneca-interface.png"
           alt="Seneca AI Assistant Interface"
           className="w-full object-cover rounded-lg border border-white/10"
         />
       </div>
-    ),
+    )
   },
 ];
 
@@ -124,9 +121,7 @@ export default function AcceleratePage() {
                       </GradientText>
                     </h3>
                     {solution.subtitle && (
-                      <p className="text-sm text-cyan-400 mb-3">
-                        {solution.subtitle}
-                      </p>
+                      <p className="text-sm text-cyan-400 mb-3">{solution.subtitle}</p>
                     )}
                     <p className="text-gray-300 mb-6">{solution.description}</p>
 
@@ -136,26 +131,19 @@ export default function AcceleratePage() {
                     )}
 
                     {/* Features Section */}
-                    {expandedCard === index &&
-                      solution.features &&
-                      solution.features.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className="text-lg font-semibold mb-4 text-white">
-                            Key Features
-                          </h4>
-                          <ul className="space-y-3">
-                            {solution.features.map((feature, featureIndex) => (
-                              <li
-                                key={featureIndex}
-                                className="flex items-center gap-3"
-                              >
-                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                                <span className="text-gray-200">{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                    {expandedCard === index && solution.features && solution.features.length > 0 && (
+                      <div className="mb-6">
+                        <h4 className="text-lg font-semibold mb-4 text-white">Key Features</h4>
+                        <ul className="space-y-3">
+                          {solution.features.map((feature, featureIndex) => (
+                            <li key={featureIndex} className="flex items-center gap-3">
+                              <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                              <span className="text-gray-200">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
                     <Button
                       onClick={() => toggleCard(index)}
