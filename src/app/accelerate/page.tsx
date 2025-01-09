@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { Container } from '@/components/shared/Container';
 import {
@@ -47,11 +48,12 @@ const solutions = [
       'Interactive Catalog Browsing',
     ],
     interface: (
-      <div className="mb-6 overflow-hidden rounded-lg">
-        <img
+      <div className="mb-6 overflow-hidden rounded-lg relative h-[300px]">
+        <Image
           src="/images/lexliber-interface.png"
           alt="LexLiber Interface"
-          className="w-full object-cover rounded-lg border border-white/10"
+          fill
+          className="object-cover rounded-lg border border-white/10"
         />
       </div>
     ),
@@ -69,11 +71,12 @@ const solutions = [
       'Smart Book Search & Filtering',
     ],
     interface: (
-      <div className="mb-6 overflow-hidden rounded-lg">
-        <img
+      <div className="mb-6 overflow-hidden rounded-lg relative h-[300px]">
+        <Image
           src="/images/seneca-interface.png"
           alt="Seneca AI Assistant Interface"
-          className="w-full object-cover rounded-lg border border-white/10"
+          fill
+          className="object-cover rounded-lg border border-white/10"
         />
       </div>
     ),
