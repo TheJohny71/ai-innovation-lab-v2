@@ -13,6 +13,21 @@
   .backdrop-blur-xs {
     backdrop-filter: blur(2px);
   }
+
+  .bg-gradient-paint {
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    animation: shine 2s linear infinite;
+  }
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
 }
 
 @keyframes pulse {

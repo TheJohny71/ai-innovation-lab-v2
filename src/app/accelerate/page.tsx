@@ -20,7 +20,7 @@ const solutions = [
     subtitle: 'Modern Leave Management',
     description:
       'Enterprise-grade leave management system with Apple-quality design and AI-powered features.',
-    gradient: 'bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500',
+    gradient: 'bg-gradient-to-r from-rose-500 via-fuchsia-600 to-indigo-600',
     features: [
       'Apple-Quality Interface',
       'Smart Leave Suggestions',
@@ -32,7 +32,7 @@ const solutions = [
     title: 'Legal Research',
     subtitle: 'Advanced Research Platform',
     description: 'Advanced research capabilities powered by machine learning',
-    gradient: 'bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500',
+    gradient: 'bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600',
     features: [],
   },
   {
@@ -40,7 +40,7 @@ const solutions = [
     subtitle: 'Digital Law Library Assistant',
     description:
       'Integrated book catalog system providing seamless access to the Research Department collection.',
-    gradient: 'bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500',
+    gradient: 'bg-gradient-to-r from-emerald-500 via-teal-600 to-cyan-600',
     features: [
       'Smart Title & Call Number Search',
       'Real-time Availability Tracking',
@@ -63,7 +63,7 @@ const solutions = [
     subtitle: 'Interactive Research Guide',
     description:
       'Comprehensive onboarding system for McDermott Research Department resources and processes.',
-    gradient: 'bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500',
+    gradient: 'bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600',
     features: [
       'Practice Area-Specific Research Tips',
       'Interactive Database Catalog',
@@ -100,11 +100,11 @@ export default function AcceleratePage() {
           <Container>
             <SectionHeader>
               <SectionTitle>
-                <GradientText className="bg-gradient-to-r from-white via-gray-100 to-gray-300">
+                <GradientText className="bg-gradient-to-r from-white via-white to-gray-100">
                   AI Solutions
                 </GradientText>
               </SectionTitle>
-              <p className="mt-6 text-2xl font-medium text-white/90">
+              <p className="mt-6 text-2xl font-medium bg-gradient-to-r from-white to-gray-100">
                 Innovative AI solutions for modern challenges
               </p>
             </SectionHeader>
@@ -123,11 +123,11 @@ export default function AcceleratePage() {
                       </GradientText>
                     </h3>
                     {solution.subtitle && (
-                      <p className="text-sm text-cyan-400 mb-3">
+                      <p className="text-sm text-cyan-400 font-medium mb-3">
                         {solution.subtitle}
                       </p>
                     )}
-                    <p className="text-white/80 mb-6">{solution.description}</p>
+                    <p className="text-white mb-6">{solution.description}</p>
 
                     {/* Interface Preview */}
                     {expandedCard === index && solution.interface && (
@@ -149,7 +149,7 @@ export default function AcceleratePage() {
                                 className="flex items-center gap-3"
                               >
                                 <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                                <span className="text-white/80">{feature}</span>
+                                <span className="text-white">{feature}</span>
                               </li>
                             ))}
                           </ul>
