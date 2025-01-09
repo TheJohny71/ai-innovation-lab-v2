@@ -13,22 +13,13 @@ import { Card } from '@/components/shared/Card';
 import { Button } from '@/components/shared/Button';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
-interface Solution {
-  title: string;
-  subtitle?: string;
-  description: string;
-  gradient: string;
-  features?: string[];
-  interface?: React.ReactNode;
-}
-
-const solutions: Solution[] = [
+const solutions = [
   {
     title: 'Alfie',
     subtitle: 'Modern Leave Management',
     description:
       'Enterprise-grade leave management system with Apple-quality design and AI-powered features.',
-    gradient: 'from-purple-400 to-blue-400',
+    gradient: 'from-blue-400 to-indigo-400',
     features: [
       'Apple-Quality Interface',
       'Smart Leave Suggestions',
@@ -40,7 +31,7 @@ const solutions: Solution[] = [
     title: 'Legal Research',
     subtitle: 'Advanced Research Platform',
     description: 'Advanced research capabilities powered by machine learning',
-    gradient: 'from-blue-400 to-teal-400',
+    gradient: 'from-violet-400 to-purple-400',
     features: [],
   },
   {
@@ -48,7 +39,7 @@ const solutions: Solution[] = [
     subtitle: 'Digital Law Library Assistant',
     description:
       'Integrated book catalog system providing seamless access to the Research Department collection.',
-    gradient: 'from-teal-400 to-cyan-400',
+    gradient: 'from-emerald-400 to-teal-400',
     features: [
       'Smart Title & Call Number Search',
       'Real-time Availability Tracking',
@@ -70,7 +61,7 @@ const solutions: Solution[] = [
     subtitle: 'Interactive Research Guide',
     description:
       'Comprehensive onboarding system for McDermott Research Department resources and processes.',
-    gradient: 'from-cyan-400 to-purple-400',
+    gradient: 'from-cyan-400 to-blue-400',
     features: [
       'Practice Area-Specific Research Tips',
       'Interactive Database Catalog',
@@ -106,11 +97,15 @@ export default function AcceleratePage() {
           <Container>
             <SectionHeader>
               <SectionTitle>
-                <GradientText className="from-purple-400 via-blue-400 to-teal-400">
-                  AI Solutions
-                </GradientText>
+                {/* Increased text size and adjusted gradient for better visibility */}
+                <h1 className="text-5xl font-bold mb-6">
+                  <GradientText className="from-white via-white to-gray-200">
+                    AI Solutions
+                  </GradientText>
+                </h1>
               </SectionTitle>
-              <p className="mt-6 text-xl text-gray-400">
+              {/* Increased opacity and weight of subtitle */}
+              <p className="mt-6 text-2xl font-medium text-gray-200">
                 Innovative AI solutions for modern challenges
               </p>
             </SectionHeader>
@@ -133,7 +128,7 @@ export default function AcceleratePage() {
                         {solution.subtitle}
                       </p>
                     )}
-                    <p className="text-gray-400 mb-6">{solution.description}</p>
+                    <p className="text-gray-300 mb-6">{solution.description}</p>
 
                     {/* Interface Preview */}
                     {expandedCard === index && solution.interface && (
@@ -145,7 +140,7 @@ export default function AcceleratePage() {
                       solution.features &&
                       solution.features.length > 0 && (
                         <div className="mb-6">
-                          <h4 className="text-lg font-semibold mb-4">
+                          <h4 className="text-lg font-semibold mb-4 text-white">
                             Key Features
                           </h4>
                           <ul className="space-y-3">
@@ -155,7 +150,7 @@ export default function AcceleratePage() {
                                 className="flex items-center gap-3"
                               >
                                 <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                                <span className="text-gray-300">{feature}</span>
+                                <span className="text-gray-200">{feature}</span>
                               </li>
                             ))}
                           </ul>
