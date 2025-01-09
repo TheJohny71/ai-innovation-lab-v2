@@ -9,7 +9,6 @@ import {
   SectionHeader,
   SectionTitle,
 } from '@/components/shared/Section';
-import { GradientText } from '@/components/shared/GradientText';
 import { Card } from '@/components/shared/Card';
 import { Button } from '@/components/shared/Button';
 import { ChevronUp, ChevronDown } from 'lucide-react';
@@ -20,7 +19,8 @@ const solutions = [
     subtitle: 'Modern Leave Management',
     description:
       'Enterprise-grade leave management system with Apple-quality design and AI-powered features.',
-    gradient: 'bg-gradient-to-r from-rose-500 via-fuchsia-600 to-indigo-600',
+    gradient: 'text-[rgb(168,85,247)]', // Innovation Readiness purple
+    subtitleColor: 'text-[rgb(168,85,247)]/80',
     features: [
       'Apple-Quality Interface',
       'Smart Leave Suggestions',
@@ -32,7 +32,8 @@ const solutions = [
     title: 'Legal Research',
     subtitle: 'Advanced Research Platform',
     description: 'Advanced research capabilities powered by machine learning',
-    gradient: 'bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600',
+    gradient: 'text-[rgb(59,130,246)]', // Team Engagement blue
+    subtitleColor: 'text-[rgb(59,130,246)]/80',
     features: [],
   },
   {
@@ -40,7 +41,8 @@ const solutions = [
     subtitle: 'Digital Law Library Assistant',
     description:
       'Integrated book catalog system providing seamless access to the Research Department collection.',
-    gradient: 'bg-gradient-to-r from-emerald-500 via-teal-600 to-cyan-600',
+    gradient: 'text-[rgb(45,212,191)]', // Success Rate teal
+    subtitleColor: 'text-[rgb(45,212,191)]/80',
     features: [
       'Smart Title & Call Number Search',
       'Real-time Availability Tracking',
@@ -63,7 +65,8 @@ const solutions = [
     subtitle: 'Interactive Research Guide',
     description:
       'Comprehensive onboarding system for McDermott Research Department resources and processes.',
-    gradient: 'bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600',
+    gradient: 'text-[rgb(34,211,238)]', // Growth Mindset cyan
+    subtitleColor: 'text-[rgb(34,211,238)]/80',
     features: [
       'Practice Area-Specific Research Tips',
       'Interactive Database Catalog',
@@ -100,11 +103,9 @@ export default function AcceleratePage() {
           <Container>
             <SectionHeader>
               <SectionTitle>
-                <GradientText className="bg-gradient-to-r from-white via-white to-gray-100">
-                  AI Solutions
-                </GradientText>
+                <h1 className="text-5xl font-bold text-white">AI Solutions</h1>
               </SectionTitle>
-              <p className="mt-6 text-2xl font-medium bg-gradient-to-r from-white to-gray-100">
+              <p className="mt-6 text-2xl font-medium text-white">
                 Innovative AI solutions for modern challenges
               </p>
             </SectionHeader>
@@ -117,13 +118,13 @@ export default function AcceleratePage() {
                   className="group overflow-hidden transition-all duration-300"
                 >
                   <div className="p-8">
-                    <h3 className="text-2xl font-bold mb-2">
-                      <GradientText className={solution.gradient}>
-                        {solution.title}
-                      </GradientText>
+                    <h3
+                      className={`text-2xl font-bold mb-2 ${solution.gradient}`}
+                    >
+                      {solution.title}
                     </h3>
                     {solution.subtitle && (
-                      <p className="text-sm text-cyan-400 font-medium mb-3">
+                      <p className={`text-sm mb-3 ${solution.subtitleColor}`}>
                         {solution.subtitle}
                       </p>
                     )}
