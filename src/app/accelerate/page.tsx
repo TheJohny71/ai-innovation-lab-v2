@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { Container } from '@/components/shared/Container';
 import {
@@ -11,32 +11,91 @@ import {
 import { GradientText } from '@/components/shared/GradientText';
 import { Card } from '@/components/shared/Card';
 import { Button } from '@/components/shared/Button';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 
-const solutions = [
+interface Solution {
+  title: string;
+  subtitle?: string;
+  description: string;
+  gradient: string;
+  features?: string[];
+  interface?: React.ReactNode;
+}
+
+const solutions: Solution[] = [
   {
-    title: 'Document Analysis',
+    title: 'Alfie',
+    subtitle: 'Modern Leave Management',
     description:
-      'AI-powered document review and analysis for improved efficiency',
+      'Enterprise-grade leave management system with Apple-quality design and AI-powered features.',
     gradient: 'from-purple-400 to-blue-400',
+    features: [
+      'Apple-Quality Interface',
+      'Smart Leave Suggestions',
+      'Team Calendar Integration',
+      'Enterprise Security & SSO',
+    ],
   },
   {
     title: 'Legal Research',
+    subtitle: 'Advanced Research Platform',
     description: 'Advanced research capabilities powered by machine learning',
     gradient: 'from-blue-400 to-teal-400',
+    features: [],
   },
   {
-    title: 'Contract Management',
-    description: 'Automated contract review and management solutions',
+    title: 'LexLiber',
+    subtitle: 'Digital Law Library Assistant',
+    description:
+      'Integrated book catalog system providing seamless access to the Research Department collection.',
     gradient: 'from-teal-400 to-cyan-400',
+    features: [
+      'Smart Title & Call Number Search',
+      'Real-time Availability Tracking',
+      'Multi-Edition Consolidation',
+      'Interactive Catalog Browsing',
+    ],
+    interface: (
+      <div className="mb-6 overflow-hidden rounded-lg">
+        <img
+          src="/images/lexliber-interface.png"
+          alt="LexLiber Interface"
+          className="w-full object-cover rounded-lg border border-white/10"
+        />
+      </div>
+    ),
   },
   {
-    title: 'Knowledge Management',
-    description: 'AI-enhanced knowledge sharing and organization',
+    title: 'Seneca AI Assistant',
+    subtitle: 'Interactive Research Guide',
+    description:
+      'Comprehensive onboarding system for McDermott Research Department resources and processes.',
     gradient: 'from-cyan-400 to-purple-400',
+    features: [
+      'Practice Area-Specific Research Tips',
+      'Interactive Database Catalog',
+      'Research Tool Navigation',
+      'Smart Book Search & Filtering',
+    ],
+    interface: (
+      <div className="mb-6 overflow-hidden rounded-lg">
+        <img
+          src="/images/seneca-interface.png"
+          alt="Seneca AI Assistant Interface"
+          className="w-full object-cover rounded-lg border border-white/10"
+        />
+      </div>
+    ),
   },
 ];
 
 export default function AcceleratePage() {
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+
+  const toggleCard = (index: number) => {
+    setExpandedCard(expandedCard === index ? null : index);
+  };
+
   return (
     <BaseLayout>
       <div className="relative h-full overflow-hidden">
@@ -61,20 +120,64 @@ export default function AcceleratePage() {
                 <Card
                   key={index}
                   hover
-                  className="group p-8 transition-all duration-300"
+                  className="group overflow-hidden transition-all duration-300"
                 >
-                  <h3 className="mb-4 text-2xl font-semibold">
-                    <GradientText className={solution.gradient}>
-                      {solution.title}
-                    </GradientText>
-                  </h3>
-                  <p className="mb-6 text-gray-400">{solution.description}</p>
-                  <Button
-                    variant="outline"
-                    className="w-full backdrop-blur-sm transition-all duration-300 group-hover:border-white/20"
-                  >
-                    Learn More
-                  </Button>
+                  <div className="p-8">
+                    <h3 className="text-2xl font-semibold mb-2">
+                      <GradientText className={solution.gradient}>
+                        {solution.title}
+                      </GradientText>
+                    </h3>
+                    {solution.subtitle && (
+                      <p className="text-sm text-cyan-400 mb-3">
+                        {solution.subtitle}
+                      </p>
+                    )}
+                    <p className="text-gray-400 mb-6">{solution.description}</p>
+
+                    {/* Interface Preview */}
+                    {expandedCard === index && solution.interface && (
+                      <div className="mb-6">{solution.interface}</div>
+                    )}
+
+                    {/* Features Section */}
+                    {expandedCard === index &&
+                      solution.features &&
+                      solution.features.length > 0 && (
+                        <div className="mb-6">
+                          <h4 className="text-lg font-semibold mb-4">
+                            Key Features
+                          </h4>
+                          <ul className="space-y-3">
+                            {solution.features.map((feature, featureIndex) => (
+                              <li
+                                key={featureIndex}
+                                className="flex items-center gap-3"
+                              >
+                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                                <span className="text-gray-300">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                    <Button
+                      onClick={() => toggleCard(index)}
+                      variant="outline"
+                      className="w-full backdrop-blur-sm transition-all duration-300 group-hover:border-white/20"
+                    >
+                      {expandedCard === index ? (
+                        <>
+                          Show Less <ChevronUp className="ml-2 h-4 w-4" />
+                        </>
+                      ) : (
+                        <>
+                          Learn More <ChevronDown className="ml-2 h-4 w-4" />
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </Card>
               ))}
             </div>
