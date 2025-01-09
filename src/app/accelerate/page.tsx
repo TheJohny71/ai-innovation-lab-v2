@@ -1,26 +1,31 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
-import { BaseLayout } from '@/components/shared/BaseLayout';
-import { Container } from '@/components/shared/Container';
-import {
-  Section,
-  SectionHeader,
-  SectionTitle,
-} from '@/components/shared/Section';
-import { Card } from '@/components/shared/Card';
-import { Button } from '@/components/shared/Button';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
-const solutions = [
+interface Solution {
+  title: string;
+  subtitle: string;
+  description: string;
+  category: string;
+  gradient: string;
+  textColor: string;
+  borderHover: string;
+  cardGradient: string;
+  features: string[];
+}
+
+const solutions: Solution[] = [
   {
     title: 'Alfie',
     subtitle: 'Modern Leave Management',
     description:
       'Enterprise-grade leave management system with Apple-quality design and AI-powered features.',
-    gradient: 'text-[rgb(168,85,247)]', // Innovation Readiness purple
-    subtitleColor: 'text-[rgb(168,85,247)]/80',
+    category: 'Practice Management',
+    gradient: 'bg-purple-500/10',
+    textColor: 'text-purple-400',
+    borderHover: 'hover:border-purple-500/30',
+    cardGradient: 'from-purple-500/10 via-transparent to-transparent',
     features: [
       'Apple-Quality Interface',
       'Smart Leave Suggestions',
@@ -29,156 +34,154 @@ const solutions = [
     ],
   },
   {
-    title: 'Legal Research',
-    subtitle: 'Advanced Research Platform',
-    description: 'Advanced research capabilities powered by machine learning',
-    gradient: 'text-[rgb(59,130,246)]', // Team Engagement blue
-    subtitleColor: 'text-[rgb(59,130,246)]/80',
-    features: [],
-  },
-  {
     title: 'LexLiber',
     subtitle: 'Digital Law Library Assistant',
     description:
       'Integrated book catalog system providing seamless access to the Research Department collection.',
-    gradient: 'text-[rgb(45,212,191)]', // Success Rate teal
-    subtitleColor: 'text-[rgb(45,212,191)]/80',
+    category: 'Knowledge Management',
+    gradient: 'bg-teal-500/10',
+    textColor: 'text-teal-400',
+    borderHover: 'hover:border-teal-500/30',
+    cardGradient: 'from-teal-500/10 via-transparent to-transparent',
     features: [
       'Smart Title & Call Number Search',
       'Real-time Availability Tracking',
       'Multi-Edition Consolidation',
       'Interactive Catalog Browsing',
     ],
-    interface: (
-      <div className="mb-6 overflow-hidden rounded-lg relative h-[300px]">
-        <Image
-          src="/images/lexliber-interface.png"
-          alt="LexLiber Interface"
-          fill
-          className="object-cover rounded-lg border border-white/10"
-        />
-      </div>
-    ),
   },
   {
     title: 'Seneca AI Assistant',
     subtitle: 'Interactive Research Guide',
     description:
-      'Comprehensive onboarding system for McDermott Research Department resources and processes.',
-    gradient: 'text-[rgb(34,211,238)]', // Growth Mindset cyan
-    subtitleColor: 'text-[rgb(34,211,238)]/80',
+      'Comprehensive onboarding system for Research Department resources and processes.',
+    category: 'Research',
+    gradient: 'bg-cyan-500/10',
+    textColor: 'text-cyan-400',
+    borderHover: 'hover:border-cyan-500/30',
+    cardGradient: 'from-cyan-500/10 via-transparent to-transparent',
     features: [
       'Practice Area-Specific Research Tips',
       'Interactive Database Catalog',
       'Research Tool Navigation',
       'Smart Book Search & Filtering',
     ],
-    interface: (
-      <div className="mb-6 overflow-hidden rounded-lg relative h-[300px]">
-        <Image
-          src="/images/seneca-interface.png"
-          alt="Seneca AI Assistant Interface"
-          fill
-          className="object-cover rounded-lg border border-white/10"
-        />
-      </div>
-    ),
   },
 ];
 
 export default function AcceleratePage() {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
-  const toggleCard = (index: number) => {
+  const toggleCard = (index: number): void => {
     setExpandedCard(expandedCard === index ? null : index);
   };
 
   return (
-    <BaseLayout>
-      <div className="relative h-full overflow-hidden">
-        {/* Background Gradient */}
+    <div className="min-h-screen bg-slate-900">
+      <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-900/80" />
 
-        <Section>
-          <Container>
-            <SectionHeader>
-              <SectionTitle>
-                <h1 className="text-5xl font-bold text-white">AI Solutions</h1>
-              </SectionTitle>
-              <p className="mt-6 text-2xl font-medium text-white">
-                Innovative AI solutions for modern challenges
-              </p>
-            </SectionHeader>
+        {/* Main Content Section */}
+        <div className="relative px-6 py-24 mx-auto max-w-7xl">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-5xl font-bold mb-6">
+              <span className="text-white">AI </span>
+              <span className="text-blue-400">Acceleration</span>
+            </h1>
+            <p className="text-2xl text-white/80">
+              Because fast isn't fast enough
+            </p>
+          </div>
 
-            <div className="mt-16 grid gap-8 md:grid-cols-2">
-              {solutions.map((solution, index) => (
-                <Card
-                  key={index}
-                  hover
-                  className="group overflow-hidden transition-all duration-300"
-                >
-                  <div className="p-8">
-                    <h3
-                      className={`text-2xl font-bold mb-2 ${solution.gradient}`}
-                    >
-                      {solution.title}
-                    </h3>
-                    {solution.subtitle && (
-                      <p className={`text-sm mb-3 ${solution.subtitleColor}`}>
+          {/* Solutions Grid */}
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {solutions.map((solution, index) => (
+              <div
+                key={index}
+                className={`group relative bg-slate-800/50 rounded-xl border border-white/5 overflow-hidden transition-all ${solution.borderHover}`}
+              >
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${solution.cardGradient} opacity-0 group-hover:opacity-100 transition-opacity`}
+                />
+                <div className="p-8 relative">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3
+                        className={`text-2xl font-bold ${solution.textColor}`}
+                      >
+                        {solution.title}
+                      </h3>
+                      <p className={`text-sm ${solution.textColor}/80 mt-1`}>
                         {solution.subtitle}
                       </p>
-                    )}
-                    <p className="text-white mb-6">{solution.description}</p>
-
-                    {/* Interface Preview */}
-                    {expandedCard === index && solution.interface && (
-                      <div className="mb-6">{solution.interface}</div>
-                    )}
-
-                    {/* Features Section */}
-                    {expandedCard === index &&
-                      solution.features &&
-                      solution.features.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className="text-lg font-semibold mb-4 text-white">
-                            Key Features
-                          </h4>
-                          <ul className="space-y-3">
-                            {solution.features.map((feature, featureIndex) => (
-                              <li
-                                key={featureIndex}
-                                className="flex items-center gap-3"
-                              >
-                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                                <span className="text-white">{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                    <Button
-                      onClick={() => toggleCard(index)}
-                      variant="outline"
-                      className="w-full backdrop-blur-sm transition-all duration-300 group-hover:border-white/20"
+                    </div>
+                    <span
+                      className={`px-3 py-1 rounded-full ${solution.gradient} ${solution.textColor} text-xs font-medium`}
                     >
-                      {expandedCard === index ? (
-                        <>
-                          Show Less <ChevronUp className="ml-2 h-4 w-4" />
-                        </>
-                      ) : (
-                        <>
-                          Learn More <ChevronDown className="ml-2 h-4 w-4" />
-                        </>
-                      )}
-                    </Button>
+                      {solution.category}
+                    </span>
                   </div>
-                </Card>
-              ))}
-            </div>
-          </Container>
-        </Section>
+
+                  <p className="text-white/80 mb-6">{solution.description}</p>
+
+                  <div className="mb-6 space-y-3">
+                    {solution.features
+                      .slice(0, 3)
+                      .map((feature, featureIndex) => (
+                        <div
+                          key={featureIndex}
+                          className="text-white/80 text-sm flex items-center gap-2"
+                        >
+                          <div
+                            className={`w-1 h-1 rounded-full ${solution.textColor}`}
+                          />
+                          {feature}
+                        </div>
+                      ))}
+                  </div>
+
+                  <button
+                    onClick={() => toggleCard(index)}
+                    className="w-full py-3 rounded-lg bg-white/5 text-white font-medium hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+                  >
+                    {expandedCard === index ? (
+                      <>
+                        Hide Details <ChevronUp className="w-4 h-4" />
+                      </>
+                    ) : (
+                      <>
+                        View Details <ChevronDown className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+
+                  {expandedCard === index && (
+                    <div className="mt-6 pt-6 border-t border-white/10">
+                      <h4 className="text-white font-medium mb-4">
+                        All Features
+                      </h4>
+                      <div className="space-y-3">
+                        {solution.features.map((feature, featureIndex) => (
+                          <div
+                            key={featureIndex}
+                            className="text-white/80 text-sm flex items-center gap-2"
+                          >
+                            <div
+                              className={`w-1 h-1 rounded-full ${solution.textColor}`}
+                            />
+                            {feature}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </BaseLayout>
+    </div>
   );
 }
