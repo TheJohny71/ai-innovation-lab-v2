@@ -21,7 +21,7 @@ const SolutionCard = ({ solution }: { solution: Solution }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => {
-    setIsExpanded(prev => !prev);
+    setIsExpanded((prev) => !prev);
   };
 
   // Function to render feature list with consistent styling
@@ -32,7 +32,7 @@ const SolutionCard = ({ solution }: { solution: Solution }) => {
           key={index}
           className="text-white/80 text-sm flex items-center gap-2"
         >
-          <div 
+          <div
             className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${solution.textColor}`}
           />
           <span>{feature}</span>
@@ -165,7 +165,7 @@ export default function AcceleratePage() {
     <div className="min-h-screen bg-slate-900">
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-900/80" />
-        
+
         <div className="relative px-6 py-24 mx-auto max-w-7xl">
           {/* Header */}
           <div className="text-center mb-16">
