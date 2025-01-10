@@ -4,7 +4,6 @@ import React, { useState, useMemo } from 'react';
 import { Search, ChevronUp, ChevronDown } from 'lucide-react';
 import { NavigationBar } from '@/components/shared/NavigationBar';
 
-// Define interfaces directly in the page file
 interface Solution {
   id: string;
   title: string;
@@ -43,7 +42,66 @@ const solutions: Solution[] = [
       'Custom Workflow Builder',
     ],
   },
-  // ... other solutions
+  {
+    id: 'lexliber',
+    title: 'LexLiber',
+    subtitle: 'Digital Law Library Assistant',
+    description:
+      'Integrated book catalog system providing seamless access to the Research Department collection.',
+    category: 'Knowledge Management',
+    gradient: 'bg-teal-500/10',
+    textColor: 'text-teal-400',
+    borderHover: 'hover:border-teal-500/30',
+    cardGradient: 'from-teal-500/10 via-transparent to-transparent',
+    features: [
+      'Smart Title & Call Number Search',
+      'Real-time Availability Tracking',
+      'Multi-Edition Consolidation',
+      'Interactive Catalog Browsing',
+      'Citation Integration',
+      'Advanced Search Filters',
+    ],
+  },
+  {
+    id: 'seneca',
+    title: 'Seneca AI Assistant',
+    subtitle: 'Interactive Research Guide',
+    description:
+      'Comprehensive onboarding system for Research Department resources and processes.',
+    category: 'Research',
+    gradient: 'bg-cyan-500/10',
+    textColor: 'text-cyan-400',
+    borderHover: 'hover:border-cyan-500/30',
+    cardGradient: 'from-cyan-500/10 via-transparent to-transparent',
+    features: [
+      'Practice Area-Specific Research Tips',
+      'Interactive Database Catalog',
+      'Research Tool Navigation',
+      'Smart Book Search & Filtering',
+      'Custom Research Paths',
+      'AI-Powered Suggestions',
+    ],
+  },
+  {
+    id: 'lexpilot',
+    title: 'LexPilot',
+    subtitle: 'Test. Validate. Pilot Legal AI Solutions with Confidence.',
+    description:
+      'Advanced testing and validation platform for legal AI solutions using Azure Digital Twins technology.',
+    category: 'Practice Management',
+    gradient: 'bg-indigo-500/10',
+    textColor: 'text-indigo-400',
+    borderHover: 'hover:border-indigo-500/30',
+    cardGradient: 'from-indigo-500/10 via-transparent to-transparent',
+    features: [
+      'Realistic Workflow Simulation using Azure Digital Twins',
+      'AI Performance Benchmarking & Analytics',
+      'Controlled, Risk-Free Testing Environment',
+      'Enterprise Security & Compliance with Azure Standards',
+      'Integration with Azure AI & Machine Learning Tools',
+      'Customizable Scenarios for Legal Process Simulation',
+    ],
+  },
 ];
 
 const Card: React.FC<CardProps> = ({ solution }) => {
@@ -157,7 +215,7 @@ const AcceleratePage: React.FC = () => {
             </span>
           </h1>
           <p className="text-lg text-slate-400 font-light">
-            Because fast isn't fast enough
+            Because fast isn&apos;t fast enough
           </p>
         </div>
 
