@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
 interface Solution {
+  id: string;
   title: string;
   subtitle: string;
   description: string;
@@ -17,6 +18,7 @@ interface Solution {
 
 const solutions: Solution[] = [
   {
+    id: 'alfie',
     title: 'Alfie',
     subtitle: 'Modern Leave Management',
     description:
@@ -34,6 +36,7 @@ const solutions: Solution[] = [
     ],
   },
   {
+    id: 'lexliber',
     title: 'LexLiber',
     subtitle: 'Digital Law Library Assistant',
     description:
@@ -51,6 +54,7 @@ const solutions: Solution[] = [
     ],
   },
   {
+    id: 'seneca',
     title: 'Seneca AI Assistant',
     subtitle: 'Interactive Research Guide',
     description:
@@ -70,10 +74,18 @@ const solutions: Solution[] = [
 ];
 
 export default function AcceleratePage() {
-  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
 
-  const toggleCard = (index: number): void => {
-    setExpandedCard(expandedCard === index ? null : index);
+  const toggleCard = (id: string): void => {
+    setExpandedCards((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
   };
 
   return (
@@ -96,36 +108,43 @@ export default function AcceleratePage() {
 
           {/* Solutions Grid */}
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {solutions.map((solution, index) => (
+            {solutions.map((solution) => (
               <div
-                key={index}
-                className={`group relative bg-slate-800/50 rounded-xl border border-white/5 overflow-hidden transition-all ${solution.borderHover}`}
+                key={solution.id}
+                className={`group relative bg-slate-800/50 rounded-xl border border-white/5 overflow-hidden transition-all ${solution.borderHover} flex flex-col`}
               >
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${solution.cardGradient} opacity-0 group-hover:opacity-100 transition-opacity`}
                 />
-                <div className="p-8 relative">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
+                <div className="p-8 relative flex flex-col h-full">
+                  {/* Header Section */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex-1 min-w-0 pr-4">
                       <h3
-                        className={`text-2xl font-bold ${solution.textColor}`}
+                        className={`text-2xl font-bold ${solution.textColor} mb-2`}
                       >
                         {solution.title}
                       </h3>
-                      <p className={`text-sm ${solution.textColor}/80 mt-1`}>
+                      <p className={`text-sm ${solution.textColor}/80`}>
                         {solution.subtitle}
                       </p>
                     </div>
-                    <span
-                      className={`px-3 py-1 rounded-full ${solution.gradient} ${solution.textColor} text-xs font-medium`}
-                    >
-                      {solution.category}
-                    </span>
+                    <div className="flex-shrink-0">
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full ${solution.gradient} ${solution.textColor} text-xs font-medium whitespace-nowrap`}
+                      >
+                        {solution.category}
+                      </span>
+                    </div>
                   </div>
 
-                  <p className="text-white/80 mb-6">{solution.description}</p>
+                  {/* Description */}
+                  <p className="text-white/80 mb-6 flex-grow">
+                    {solution.description}
+                  </p>
 
-                  <div className="mb-6 space-y-3">
+                  {/* Features Preview */}
+                  <div className="space-y-3 mb-6">
                     {solution.features
                       .slice(0, 3)
                       .map((feature, featureIndex) => (
@@ -134,18 +153,19 @@ export default function AcceleratePage() {
                           className="text-white/80 text-sm flex items-center gap-2"
                         >
                           <div
-                            className={`w-1 h-1 rounded-full ${solution.textColor}`}
+                            className={`w-1 h-1 rounded-full ${solution.textColor} flex-shrink-0`}
                           />
-                          {feature}
+                          <span className="line-clamp-1">{feature}</span>
                         </div>
                       ))}
                   </div>
 
+                  {/* Button */}
                   <button
-                    onClick={() => toggleCard(index)}
-                    className="w-full py-3 rounded-lg bg-white/5 text-white font-medium hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+                    onClick={() => toggleCard(solution.id)}
+                    className="w-full py-3 rounded-lg bg-white/5 text-white font-medium hover:bg-white/10 transition-colors flex items-center justify-center gap-2 mt-auto"
                   >
-                    {expandedCard === index ? (
+                    {expandedCards.has(solution.id) ? (
                       <>
                         Hide Details <ChevronUp className="w-4 h-4" />
                       </>
@@ -156,7 +176,8 @@ export default function AcceleratePage() {
                     )}
                   </button>
 
-                  {expandedCard === index && (
+                  {/* Expanded Content */}
+                  {expandedCards.has(solution.id) && (
                     <div className="mt-6 pt-6 border-t border-white/10">
                       <h4 className="text-white font-medium mb-4">
                         All Features
@@ -168,9 +189,9 @@ export default function AcceleratePage() {
                             className="text-white/80 text-sm flex items-center gap-2"
                           >
                             <div
-                              className={`w-1 h-1 rounded-full ${solution.textColor}`}
+                              className={`w-1 h-1 rounded-full ${solution.textColor} flex-shrink-0`}
                             />
-                            {feature}
+                            <span>{feature}</span>
                           </div>
                         ))}
                       </div>
