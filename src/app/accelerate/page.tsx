@@ -73,27 +73,112 @@ const solutions: Solution[] = [
   },
 ];
 
+// Separate Card component for better state isolation
+const SolutionCard = ({ solution }: { solution: Solution }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div
+      className={`relative bg-slate-800/50 rounded-xl border border-white/5 
+                 transition-all duration-300 ease-in-out ${solution.borderHover}`}
+    >
+      {/* Background Gradient */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-br ${solution.cardGradient} 
+                   opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+      />
+
+      {/* Card Content */}
+      <div className="relative p-8 flex flex-col min-h-[400px]">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex-1 min-w-0 pr-4">
+            <h3 className={`text-2xl font-bold ${solution.textColor} mb-2`}>
+              {solution.title}
+            </h3>
+            <p className={`text-sm ${solution.textColor}/80`}>
+              {solution.subtitle}
+            </p>
+          </div>
+          <span
+            className={`inline-block px-3 py-1 rounded-full ${solution.gradient} 
+                      ${solution.textColor} text-xs font-medium whitespace-nowrap`}
+          >
+            {solution.category}
+          </span>
+        </div>
+
+        {/* Description */}
+        <p className="text-white/80 mb-6">{solution.description}</p>
+
+        {/* Initial Features */}
+        {!isExpanded && (
+          <div className="space-y-3 mb-6">
+            {solution.features.slice(0, 3).map((feature, index) => (
+              <div
+                key={`preview-${index}`}
+                className="text-white/80 text-sm flex items-center gap-2"
+              >
+                <div
+                  className={`w-1 h-1 rounded-full ${solution.textColor} flex-shrink-0`}
+                />
+                <span className="line-clamp-1">{feature}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Expanded Content */}
+        <div
+          className={`transition-all duration-300 ease-in-out overflow-hidden
+                    ${isExpanded ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'}`}
+        >
+          <div className="pt-6 border-t border-white/10">
+            <h4 className="text-white font-medium mb-4">All Features</h4>
+            <div className="space-y-3">
+              {solution.features.map((feature, index) => (
+                <div
+                  key={`full-${index}`}
+                  className="text-white/80 text-sm flex items-center gap-2"
+                >
+                  <div
+                    className={`w-1 h-1 rounded-full ${solution.textColor} flex-shrink-0`}
+                  />
+                  <span>{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Button */}
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="mt-auto w-full py-3 rounded-lg bg-white/5 text-white font-medium 
+                   hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+        >
+          {isExpanded ? (
+            <>
+              Hide Details <ChevronUp className="w-4 h-4" />
+            </>
+          ) : (
+            <>
+              View Details <ChevronDown className="w-4 h-4" />
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default function AcceleratePage() {
-  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
-
-  const toggleCard = (id: string): void => {
-    setExpandedCards((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
-    });
-  };
-
   return (
     <div className="min-h-screen bg-slate-900">
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-900/80" />
 
-        {/* Main Content Section */}
+        {/* Main Content */}
         <div className="relative px-6 py-24 mx-auto max-w-7xl">
           {/* Header */}
           <div className="text-center mb-16">
@@ -109,112 +194,7 @@ export default function AcceleratePage() {
           {/* Solutions Grid */}
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {solutions.map((solution) => (
-              <div
-                key={solution.id}
-                className={`group relative bg-slate-800/50 rounded-xl border border-white/5 
-                           overflow-hidden transition-all duration-300 ease-in-out ${solution.borderHover} 
-                           flex flex-col`}
-              >
-                {/* Background Gradient */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${solution.cardGradient} 
-                             opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                />
-
-                {/* Card Content */}
-                <div className="p-8 relative flex flex-col h-full">
-                  {/* Header Section */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex-1 min-w-0 pr-4">
-                      <h3
-                        className={`text-2xl font-bold ${solution.textColor} mb-2`}
-                      >
-                        {solution.title}
-                      </h3>
-                      <p className={`text-sm ${solution.textColor}/80`}>
-                        {solution.subtitle}
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <span
-                        className={`inline-block px-3 py-1 rounded-full ${solution.gradient} 
-                                  ${solution.textColor} text-xs font-medium whitespace-nowrap`}
-                      >
-                        {solution.category}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-white/80 mb-6 flex-grow">
-                    {solution.description}
-                  </p>
-
-                  {/* Features Preview */}
-                  <div className="space-y-3 mb-6">
-                    {solution.features
-                      .slice(0, 3)
-                      .map((feature, featureIndex) => (
-                        <div
-                          key={featureIndex}
-                          className="text-white/80 text-sm flex items-center gap-2"
-                        >
-                          <div
-                            className={`w-1 h-1 rounded-full ${solution.textColor} flex-shrink-0`}
-                          />
-                          <span className="line-clamp-1">{feature}</span>
-                        </div>
-                      ))}
-                  </div>
-
-                  {/* View Details Button */}
-                  <button
-                    onClick={() => toggleCard(solution.id)}
-                    className="w-full py-3 rounded-lg bg-white/5 text-white font-medium 
-                             hover:bg-white/10 transition-colors flex items-center 
-                             justify-center gap-2 mt-auto"
-                  >
-                    {expandedCards.has(solution.id) ? (
-                      <>
-                        Hide Details <ChevronUp className="w-4 h-4" />
-                      </>
-                    ) : (
-                      <>
-                        View Details <ChevronDown className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
-
-                  {/* Expanded Content */}
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out
-                              ${
-                                expandedCards.has(solution.id)
-                                  ? 'max-h-[500px] opacity-100 mt-6'
-                                  : 'max-h-0 opacity-0'
-                              }`}
-                  >
-                    <div className="pt-6 border-t border-white/10">
-                      <h4 className="text-white font-medium mb-4">
-                        All Features
-                      </h4>
-                      <div className="space-y-3">
-                        {solution.features.map((feature, featureIndex) => (
-                          <div
-                            key={featureIndex}
-                            className="text-white/80 text-sm flex items-center gap-2"
-                          >
-                            <div
-                              className={`w-1 h-1 rounded-full ${solution.textColor} flex-shrink-0`}
-                            />
-                            <span>{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <SolutionCard key={solution.id} solution={solution} />
             ))}
           </div>
         </div>
