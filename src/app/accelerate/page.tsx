@@ -1,6 +1,7 @@
-// app/accelerate/page.tsx
-import type { Solution } from '@/types/metrics';
+// src/app/accelerate/page.tsx
+
 import SolutionCard from '@/components/shared/SolutionCard';
+import type { Solution } from '@/types/metrics';
 
 const solutions: Solution[] = [
   {
@@ -19,6 +20,8 @@ const solutions: Solution[] = [
       'Smart Leave Suggestions',
       'Team Calendar Integration',
       'Enterprise Security & SSO',
+      'Advanced Analytics Dashboard',
+      'Custom Workflow Builder',
     ],
   },
   {
@@ -37,6 +40,8 @@ const solutions: Solution[] = [
       'Real-time Availability Tracking',
       'Multi-Edition Consolidation',
       'Interactive Catalog Browsing',
+      'Citation Integration',
+      'Advanced Search Filters',
     ],
   },
   {
@@ -55,6 +60,8 @@ const solutions: Solution[] = [
       'Interactive Database Catalog',
       'Research Tool Navigation',
       'Smart Book Search & Filtering',
+      'Custom Research Paths',
+      'AI-Powered Suggestions',
     ],
   },
 ];

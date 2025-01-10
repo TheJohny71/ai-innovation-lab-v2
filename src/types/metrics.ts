@@ -1,3 +1,4 @@
+// src/types/metrics.ts
 import { ComponentProps, ComponentType } from 'react';
 import { LucideIcon } from 'lucide-react';
 
@@ -39,6 +40,12 @@ export interface RegionalImpactData {
   color: string;
 }
 
+export interface SolutionFeature {
+  title: string;
+  description?: string;
+  isCore?: boolean;
+}
+
 export interface Solution {
   id: string;
   title: string;
@@ -50,6 +57,10 @@ export interface Solution {
   borderHover: string;
   cardGradient: string;
   features: string[];
+  coreFeatures?: string[];
+  advancedFeatures?: string[];
+  status?: 'active' | 'beta' | 'coming-soon';
+  href?: string;
 }
 
 export interface Metrics {
@@ -57,5 +68,5 @@ export interface Metrics {
   implementationTypes: ImplementationType[];
   deploymentStatus: DeploymentStatusData;
   regionalImpact: RegionalImpactData[];
-  solutions?: Solution[]; // Making it optional to maintain backward compatibility
+  solutions: Solution[]; // Made required since it's a core part now
 }
