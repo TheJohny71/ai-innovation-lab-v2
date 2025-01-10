@@ -106,39 +106,61 @@ const solutions: Solution[] = [
   },
 ];
 
-const Card: React.FC<CardProps> = React.memo(
-  ({ solution, isOpen, onToggle }) => {
-    const coreFeatures = solution.features.slice(0, 3);
-    const advancedFeatures = solution.features.slice(3);
+const Card: React.FC<CardProps> = ({ solution, isOpen, onToggle }) => {
+  const coreFeatures = solution.features.slice(0, 3);
+  const advancedFeatures = solution.features.slice(3);
 
-    return (
-      <div className="flex flex-col h-full bg-white/5 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/10">
-        <div className="flex-1 p-6">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className={`text-2xl font-medium ${solution.textColor}`}>
-              {solution.title}
-            </h3>
-            <span
-              className={`text-xs font-medium tracking-wide px-2 py-1 rounded-full ${solution.gradient} ${solution.textColor}`}
-            >
-              {solution.category}
-            </span>
+  return (
+    <div className="flex flex-col h-full bg-white/5 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/10">
+      <div className="flex-1 p-6">
+        <div className="flex justify-between items-start mb-4">
+          <h3 className={`text-2xl font-medium ${solution.textColor}`}>
+            {solution.title}
+          </h3>
+          <span
+            className={`text-xs font-medium tracking-wide px-2 py-1 rounded-full ${solution.gradient} ${solution.textColor}`}
+          >
+            {solution.category}
+          </span>
+        </div>
+
+        <p className="text-slate-300 text-sm mb-1">{solution.subtitle}</p>
+        <p className="text-slate-400 text-sm mb-4 line-clamp-2">
+          {solution.description}
+        </p>
+
+        <div className="space-y-4">
+          <div>
+            <h4 className="text-white text-sm mb-2 font-medium">
+              Core Features
+            </h4>
+            <ul className="grid gap-2">
+              {coreFeatures.map((feature, index) => (
+                <li
+                  key={`${solution.id}-core-${index}`}
+                  className="text-slate-300 flex items-center text-sm"
+                >
+                  <div
+                    className={`w-1 h-1 rounded-full mr-2 ${solution.textColor}`}
+                  />
+                  {feature}
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <p className="text-slate-300 text-sm mb-1">{solution.subtitle}</p>
-          <p className="text-slate-400 text-sm mb-4 line-clamp-2">
-            {solution.description}
-          </p>
-
-          <div className="space-y-4">
-            <div>
+          {isOpen && (
+            <div
+              id={`${solution.id}-advanced-features`}
+              className="animate-fadeIn"
+            >
               <h4 className="text-white text-sm mb-2 font-medium">
-                Core Features
+                Advanced Features
               </h4>
               <ul className="grid gap-2">
-                {coreFeatures.map((feature, index) => (
+                {advancedFeatures.map((feature, index) => (
                   <li
-                    key={`${solution.id}-core-${index}`}
+                    key={`${solution.id}-advanced-${index}`}
                     className="text-slate-300 flex items-center text-sm"
                   >
                     <div
@@ -149,55 +171,32 @@ const Card: React.FC<CardProps> = React.memo(
                 ))}
               </ul>
             </div>
-
-            {isOpen && (
-              <div className="animate-fadeIn">
-                <h4 className="text-white text-sm mb-2 font-medium">
-                  Advanced Features
-                </h4>
-                <ul className="grid gap-2">
-                  {advancedFeatures.map((feature, index) => (
-                    <li
-                      key={`${solution.id}-advanced-${index}`}
-                      className="text-slate-300 flex items-center text-sm"
-                    >
-                      <div
-                        className={`w-1 h-1 rounded-full mr-2 ${solution.textColor}`}
-                      />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+          )}
         </div>
-
-        <button
-          onClick={onToggle}
-          className="w-full p-2 text-white flex items-center justify-center bg-white/5 hover:bg-white/10 transition-all duration-300"
-          aria-expanded={isOpen}
-          aria-controls={`${solution.id}-advanced-features`}
-        >
-          <div className="flex items-center space-x-2">
-            <span className="text-sm">
-              {isOpen ? 'Show Less' : 'Show More'}
-            </span>
-            {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </div>
-        </button>
       </div>
-    );
-  }
-);
 
-Card.displayName = 'Card';
+      <button
+        onClick={onToggle}
+        className="w-full p-2 text-white flex items-center justify-center bg-white/5 hover:bg-white/10 transition-all duration-300"
+        aria-expanded={isOpen}
+        aria-controls={`${solution.id}-advanced-features`}
+      >
+        <div className="flex items-center space-x-2">
+          <span className="text-sm">{isOpen ? 'Show Less' : 'Show More'}</span>
+          {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        </div>
+      </button>
+    </div>
+  );
+};
 
 const AcceleratePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<string>('');
   const [openCardId, setOpenCardId] = useState<string | null>(null);
 
+  // Toggles a specific card by ID.
+  // If the same ID is clicked, close it; otherwise open the newly clicked card.
   const toggleCard = (id: string) => {
     setOpenCardId((prev) => (prev === id ? null : id));
   };
