@@ -90,7 +90,7 @@ export default function AcceleratePage() {
               <span className="text-blue-400">Acceleration</span>
             </h1>
             <p className="text-2xl text-white/80">
-              Because fast isn't fast enough
+              Because fast isn&apos;t fast enough
             </p>
           </div>
 
