@@ -31,10 +31,22 @@ const config: Config = {
     'border-white/5',
     'border-white/10',
 
+    // Text colors and styles
+    'text-white',
+    'text-blue-400',
+    'text-gray-300',
+    'text-xs',
+    'text-sm',
+    'text-2xl',
+    'text-5xl',
+    'font-bold',
+    'font-medium',
+
     // Layout classes
     'grid-cols-2',
     'lg:grid-cols-3',
     'gap-8',
+    'space-y-2',
     'space-y-3',
     'px-6',
     'py-24',
@@ -48,13 +60,26 @@ const config: Config = {
     'px-3',
     'py-1',
     'py-3',
-    'w-1',
-    'h-1',
+    'pt-6',
+    'w-1.5',
+    'h-1.5',
+    'w-2',
+    'h-2',
     'w-4',
     'h-4',
 
+    // Flex and Grid utilities
+    'flex',
+    'grid',
+    'items-start',
+    'items-center',
+    'justify-between',
+    'justify-center',
+    'flex-shrink-0',
+    'gap-2',
+
     // Animation and transition classes
-    'max-h-96',
+    'max-h-[500px]',
     'max-h-0',
     'opacity-0',
     'opacity-100',
@@ -80,6 +105,10 @@ const config: Config = {
     'min-w-0',
     'whitespace-nowrap',
     'line-clamp-1',
+    'text-center',
+    'min-h-screen',
+    'bg-slate-900',
+    'inline-flex',
   ],
   theme: {
     extend: {
@@ -89,6 +118,9 @@ const config: Config = {
       },
       transitionProperty: {
         'max-height': 'max-height',
+      },
+      backgroundImage: {
+        'gradient-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
       },
     },
   },

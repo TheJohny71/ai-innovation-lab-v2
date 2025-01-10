@@ -39,9 +39,23 @@ export interface RegionalImpactData {
   color: string;
 }
 
+export interface Solution {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  category: string;
+  gradient: string;
+  textColor: string;
+  borderHover: string;
+  cardGradient: string;
+  features: string[];
+}
+
 export interface Metrics {
   cards: MetricCardProps[];
   implementationTypes: ImplementationType[];
   deploymentStatus: DeploymentStatusData;
   regionalImpact: RegionalImpactData[];
+  solutions?: Solution[]; // Making it optional to maintain backward compatibility
 }
