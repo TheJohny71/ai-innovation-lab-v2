@@ -1,6 +1,7 @@
 'use client';
+
 import React, { useState } from 'react';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import type { Solution } from '@/types/metrics';
 
 interface SolutionCardProps {
@@ -10,105 +11,57 @@ interface SolutionCardProps {
 const SolutionCard = ({ solution }: SolutionCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const CustomBullet = () => (
-    <div
-      className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${solution.textColor}`}
-      style={{ backgroundColor: 'currentColor' }}
-      aria-hidden="true"
-    />
-  );
+  const FeatureList = ({ features }: { features: string[] }) => {
+    return (
+      <ul className="space-y-4">
+        {features.map((feature, index) => (
+          <li key={index} className="flex items-center space-x-3">
+            <div className={`w-1.5 h-1.5 rounded-full ${solution.textColor}`} />
+            <span className="text-slate-300">{feature}</span>
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
   return (
-    <div
-      className={`relative overflow-hidden rounded-xl bg-gradient-to-b ${solution.cardGradient}`}
-    >
-      <div
-        className={`h-full p-8 backdrop-blur-sm border rounded-xl 
-                   border-white/5 bg-slate-800/50 transition-all duration-300 
-                   ${solution.borderHover}`}
-      >
-        <div className="flex items-start justify-between mb-4">
-          <h3 className={`text-2xl font-bold ${solution.textColor}`}>
-            {solution.title}
-          </h3>
-          <span
-            className={`inline-flex px-3 py-1 rounded-full text-xs font-medium
-                     ${solution.gradient} ${solution.textColor}`}
-          >
-            {solution.category}
-          </span>
-        </div>
+    <div className="rounded-xl bg-slate-900/50 backdrop-blur-sm overflow-hidden">
+      <div className="p-8">
+        <div className="flex flex-col space-y-6">
+          <div>
+            <span
+              className={`text-sm font-medium px-3 py-1 rounded-full ${solution.gradient} ${solution.textColor}`}
+            >
+              {solution.category}
+            </span>
+            <h3 className={`text-2xl font-bold mt-4 ${solution.textColor}`}>
+              {solution.title}
+            </h3>
+            <p className="text-slate-300 mt-2">{solution.subtitle}</p>
+            <p className="text-slate-400 mt-4">{solution.description}</p>
+          </div>
 
-        <p className="text-gray-300 mb-4">{solution.subtitle}</p>
-        <p className="text-white/80 mb-6">{solution.description}</p>
+          <div className="space-y-6">
+            <FeatureList features={solution.features.slice(0, 3)} />
 
-        <div className="space-y-6">
-          {isExpanded ? (
-            <>
-              <div>
-                <h4 className="text-white font-medium mb-4">Core Features</h4>
-                <div className="space-y-3">
-                  {solution.features.slice(0, 3).map((feature, idx) => (
-                    <div
-                      key={`${solution.id}-core-${idx}`}
-                      className="text-gray-300 text-sm flex items-center gap-2"
-                    >
-                      <CustomBullet />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
+            {isExpanded && (
+              <div className="mt-6">
+                <FeatureList features={solution.features.slice(3)} />
               </div>
-              <div>
-                <h4 className="text-white font-medium mb-4">
-                  Advanced Features
-                </h4>
-                <div className="space-y-3">
-                  {solution.features.slice(3).map((feature, idx) => (
-                    <div
-                      key={`${solution.id}-advanced-${idx}`}
-                      className="text-gray-300 text-sm flex items-center gap-2"
-                    >
-                      <CustomBullet />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="space-y-3">
-              {solution.features.slice(0, 3).map((feature, idx) => (
-                <div
-                  key={`${solution.id}-preview-${idx}`}
-                  className="text-gray-300 text-sm flex items-center gap-2"
-                >
-                  <CustomBullet />
-                  <span>{feature}</span>
-                </div>
-              ))}
-            </div>
-          )}
+            )}
+          </div>
         </div>
-
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full mt-6 py-3 rounded-lg bg-white/5 text-white font-medium 
-                   hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
-          type="button"
-          aria-expanded={isExpanded}
-        >
-          {isExpanded ? (
-            <>
-              Hide Details <ChevronUp className="w-4 h-4" />
-            </>
-          ) : (
-            <>
-              View Details <ChevronDown className="w-4 h-4" />
-            </>
-          )}
-        </button>
       </div>
+
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full p-4 text-white bg-slate-800/50 hover:bg-slate-800/70 transition-colors flex items-center justify-center space-x-2"
+      >
+        <span>{isExpanded ? 'View Less' : 'View Details'}</span>
+        <ChevronDown
+          className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+        />
+      </button>
     </div>
   );
 };
