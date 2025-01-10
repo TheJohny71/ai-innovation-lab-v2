@@ -1,37 +1,75 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import type { Solution } from '@/types/metrics';
 
 interface SolutionCardProps {
   solution: Solution;
+  index: number; // Add index for debugging
 }
 
-const SolutionCard = ({ solution }: SolutionCardProps) => {
-  const [isExpanded, setIsExpanded] = React.useState(false);
+const SolutionCard = ({ solution, index }: SolutionCardProps) => {
+  // Create a unique identifier for this instance
+  const cardId = useRef(`card-${solution.id}-${index}`);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  // Explicit handler with stopPropagation
-  const handleToggle = (e: React.MouseEvent) => {
+  // Debug mount behavior
+  useEffect(() => {
+    console.log(`Card ${cardId.current} mounted`);
+    return () => console.log(`Card ${cardId.current} unmounted`);
+  }, []);
+
+  // Debug state changes
+  useEffect(() => {
+    console.log(`Card ${cardId.current} expanded state: ${isExpanded}`);
+  }, [isExpanded]);
+
+  const handleToggle = useCallback((e: React.MouseEvent) => {
+    // Log the event target
+    console.log('Event target:', e.target);
+    console.log('Current target:', e.currentTarget);
+
+    // Ensure event handling
     e.preventDefault();
     e.stopPropagation();
-    setIsExpanded((prev) => !prev);
-  };
 
-  // Custom bullet with the solution's color
-  const CustomBullet = () => (
-    <div
-      className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${solution.textColor}`}
-      style={{ backgroundColor: 'currentColor' }}
-    />
+    // Debug click handler
+    console.log(`Toggle clicked for card ${cardId.current}`);
+
+    setIsExpanded((prev) => {
+      console.log(
+        `Updating state for ${cardId.current} from ${prev} to ${!prev}`
+      );
+      return !prev;
+    });
+  }, []);
+
+  const CustomBullet = useCallback(
+    () => (
+      <div
+        className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${solution.textColor}`}
+        style={{ backgroundColor: 'currentColor' }}
+        aria-hidden="true"
+      />
+    ),
+    [solution.textColor]
   );
 
+  // Prevent event bubbling at the container level
+  const containerProps = {
+    onClick: (e: React.MouseEvent) => {
+      e.stopPropagation();
+    },
+    onMouseDown: (e: React.MouseEvent) => {
+      e.stopPropagation();
+    },
+    className: `bg-slate-800/50 rounded-xl border border-white/5 p-8
+               transition-all duration-300 ease-in-out ${solution.borderHover}`,
+  };
+
   return (
-    <div
-      className={`bg-slate-800/50 rounded-xl border border-white/5 p-8
-                 transition-all duration-300 ease-in-out ${solution.borderHover}`}
-    >
-      {/* Header */}
+    <div {...containerProps}>
       <div className="flex items-start justify-between mb-4">
         <h3 className={`text-2xl font-bold ${solution.textColor}`}>
           {solution.title}
@@ -44,18 +82,15 @@ const SolutionCard = ({ solution }: SolutionCardProps) => {
         </span>
       </div>
 
-      {/* Subtitle & Description */}
       <p className="text-gray-300 mb-4">{solution.subtitle}</p>
       <p className="text-white/80 mb-6">{solution.description}</p>
 
-      {/* Features */}
       <div className="mb-6">
         {!isExpanded ? (
-          // Initial features (first 3)
           <div className="space-y-3">
-            {solution.features.slice(0, 3).map((feature, index) => (
+            {solution.features.slice(0, 3).map((feature, idx) => (
               <div
-                key={`${solution.id}-${index}`}
+                key={`${cardId.current}-initial-${idx}`}
                 className="text-gray-300 text-sm flex items-center gap-2"
               >
                 <CustomBullet />
@@ -64,14 +99,13 @@ const SolutionCard = ({ solution }: SolutionCardProps) => {
             ))}
           </div>
         ) : (
-          // All features when expanded
           <div className="space-y-6">
             <div>
               <h4 className="text-white font-medium mb-4">Core Features</h4>
               <div className="space-y-3">
-                {solution.features.slice(0, 3).map((feature, index) => (
+                {solution.features.slice(0, 3).map((feature, idx) => (
                   <div
-                    key={`${solution.id}-core-${index}`}
+                    key={`${cardId.current}-core-${idx}`}
                     className="text-gray-300 text-sm flex items-center gap-2"
                   >
                     <CustomBullet />
@@ -86,9 +120,9 @@ const SolutionCard = ({ solution }: SolutionCardProps) => {
                 Advanced Capabilities
               </h4>
               <div className="space-y-3">
-                {solution.features.slice(3).map((feature, index) => (
+                {solution.features.slice(3).map((feature, idx) => (
                   <div
-                    key={`${solution.id}-advanced-${index}`}
+                    key={`${cardId.current}-advanced-${idx}`}
                     className="text-gray-300 text-sm flex items-center gap-2"
                   >
                     <CustomBullet />
@@ -101,12 +135,13 @@ const SolutionCard = ({ solution }: SolutionCardProps) => {
         )}
       </div>
 
-      {/* Toggle Button */}
       <button
         onClick={handleToggle}
+        onMouseDown={(e) => e.stopPropagation()} // Additional event blocking
         className="w-full mt-6 py-3 rounded-lg bg-white/5 text-white font-medium 
                  hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
         type="button"
+        data-card-id={cardId.current} // For debugging
       >
         {isExpanded ? (
           <>
@@ -122,4 +157,8 @@ const SolutionCard = ({ solution }: SolutionCardProps) => {
   );
 };
 
-export default SolutionCard;
+// We need to modify how the component is exported and used
+export default React.memo(SolutionCard, (prev, next) => {
+  // Only re-render if the solution data changes
+  return prev.solution.id === next.solution.id && prev.index === next.index;
+});
