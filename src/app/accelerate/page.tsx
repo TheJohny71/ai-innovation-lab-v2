@@ -196,13 +196,10 @@ Card.displayName = 'Card';
 const AcceleratePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<string>('');
-  const [openCardIds, setOpenCardIds] = useState<Record<string, boolean>>({});
+  const [openCardId, setOpenCardId] = useState<string | null>(null);
 
   const toggleCard = (id: string) => {
-    setOpenCardIds((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+    setOpenCardId((prev) => (prev === id ? null : id));
   };
 
   const categories = useMemo(
@@ -276,7 +273,7 @@ const AcceleratePage: React.FC = () => {
               <Card
                 key={solution.id}
                 solution={solution}
-                isOpen={openCardIds[solution.id] || false}
+                isOpen={openCardId === solution.id}
                 onToggle={() => toggleCard(solution.id)}
               />
             ))
