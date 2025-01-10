@@ -12,16 +12,18 @@ interface SolutionCardProps {
 const SolutionCard: React.FC<SolutionCardProps> = ({ solution }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleExpand = () => {
+  const toggleExpand = (e: React.MouseEvent) => {
+    e.preventDefault();
     setIsExpanded(!isExpanded);
   };
 
-  const FeatureList = ({ features }: { features: string[] }) => (
+  // Separate components for initial and expanded feature lists
+  const InitialFeatureList = ({ features }: { features: string[] }) => (
     <div className="space-y-3">
-      {features.map((feature, index) => (
+      {features.slice(0, 3).map((feature, index) => (
         <div
           key={index}
-          className="text-white/80 text-sm flex items-center gap-2"
+          className="text-gray-300 text-sm flex items-center gap-2"
         >
           <Circle
             className={`w-2 h-2 ${solution.textColor} flex-shrink-0`}
@@ -30,6 +32,42 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution }) => {
           <span>{feature}</span>
         </div>
       ))}
+    </div>
+  );
+
+  const ExpandedFeatureList = ({ features }: { features: string[] }) => (
+    <div className="space-y-4">
+      <h4 className="text-white font-medium">Core Features</h4>
+      <div className="space-y-3">
+        {features.slice(0, 3).map((feature, index) => (
+          <div
+            key={index}
+            className="text-gray-300 text-sm flex items-center gap-2"
+          >
+            <Circle
+              className={`w-2 h-2 ${solution.textColor} flex-shrink-0`}
+              fill="currentColor"
+            />
+            <span>{feature}</span>
+          </div>
+        ))}
+      </div>
+
+      <h4 className="text-white font-medium pt-4">Advanced Capabilities</h4>
+      <div className="space-y-3">
+        {features.slice(3).map((feature, index) => (
+          <div
+            key={index + 3}
+            className="text-gray-300 text-sm flex items-center gap-2"
+          >
+            <Circle
+              className={`w-2 h-2 ${solution.textColor} flex-shrink-0`}
+              fill="currentColor"
+            />
+            <span>{feature}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 
@@ -53,19 +91,16 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution }) => {
       <p className="text-gray-300 mb-4">{solution.subtitle}</p>
       <p className="text-white/80 mb-6">{solution.description}</p>
 
-      {!isExpanded && (
-        <div className="mb-6">
-          <FeatureList features={solution.features.slice(0, 3)} />
-        </div>
-      )}
+      {/* Features Section */}
+      <div className="mb-6">
+        {isExpanded ? (
+          <ExpandedFeatureList features={solution.features} />
+        ) : (
+          <InitialFeatureList features={solution.features} />
+        )}
+      </div>
 
-      {isExpanded && (
-        <div className="border-t border-white/10 pt-6">
-          <h4 className="text-white font-medium mb-4">All Features</h4>
-          <FeatureList features={solution.features} />
-        </div>
-      )}
-
+      {/* Control Button */}
       <button
         onClick={toggleExpand}
         className="w-full mt-6 py-3 rounded-lg bg-white/5 text-white font-medium 
