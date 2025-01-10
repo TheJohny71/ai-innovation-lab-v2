@@ -19,6 +19,8 @@ interface Solution {
 
 interface CardProps {
   solution: Solution;
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
 const solutions: Solution[] = [
@@ -104,14 +106,13 @@ const solutions: Solution[] = [
   },
 ];
 
-const Card: React.FC<CardProps> = ({ solution }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Card: React.FC<CardProps> = ({ solution, isOpen, onToggle }) => {
   const coreFeatures = solution.features.slice(0, 3);
   const advancedFeatures = solution.features.slice(3);
 
   return (
-    <div className="h-full bg-white/5 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/10">
-      <div className="p-6">
+    <div className="flex flex-col h-full bg-white/5 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/10">
+      <div className="flex-1 p-6">
         <div className="flex justify-between items-start mb-4">
           <h3 className={`text-2xl font-medium ${solution.textColor}`}>
             {solution.title}
@@ -134,7 +135,7 @@ const Card: React.FC<CardProps> = ({ solution }) => {
               Core Features
             </h4>
             <ul className="grid gap-2">
-              {coreFeatures.map((feature: string, index: number) => (
+              {coreFeatures.map((feature, index) => (
                 <li
                   key={`${solution.id}-core-${index}`}
                   className="text-slate-300 flex items-center text-sm"
@@ -148,31 +149,31 @@ const Card: React.FC<CardProps> = ({ solution }) => {
             </ul>
           </div>
 
-          <div
-            className={`transition-all duration-300 ${isOpen ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0'} overflow-hidden`}
-          >
-            <h4 className="text-white text-sm mb-2 font-medium">
-              Advanced Features
-            </h4>
-            <ul className="grid gap-2">
-              {advancedFeatures.map((feature: string, index: number) => (
-                <li
-                  key={`${solution.id}-advanced-${index}`}
-                  className="text-slate-300 flex items-center text-sm"
-                >
-                  <div
-                    className={`w-1 h-1 rounded-full mr-2 ${solution.textColor}`}
-                  />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {isOpen && (
+            <div className="animate-fadeIn">
+              <h4 className="text-white text-sm mb-2 font-medium">
+                Advanced Features
+              </h4>
+              <ul className="grid gap-2">
+                {advancedFeatures.map((feature, index) => (
+                  <li
+                    key={`${solution.id}-advanced-${index}`}
+                    className="text-slate-300 flex items-center text-sm"
+                  >
+                    <div
+                      className={`w-1 h-1 rounded-full mr-2 ${solution.textColor}`}
+                    />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={onToggle}
         className="w-full p-2 text-white flex items-center justify-center bg-white/5 hover:bg-white/10 transition-all duration-300"
         aria-expanded={isOpen}
         aria-controls={`${solution.id}-advanced-features`}
@@ -189,6 +190,19 @@ const Card: React.FC<CardProps> = ({ solution }) => {
 const AcceleratePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<string>('');
+  const [openCardIds, setOpenCardIds] = useState<Set<string>>(new Set());
+
+  const toggleCard = (id: string) => {
+    setOpenCardIds((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
 
   const categories = useMemo(
     () => [...new Set(solutions.map((solution) => solution.category))],
@@ -258,7 +272,12 @@ const AcceleratePage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSolutions.length > 0 ? (
             filteredSolutions.map((solution) => (
-              <Card key={solution.id} solution={solution} />
+              <Card
+                key={solution.id}
+                solution={solution}
+                isOpen={openCardIds.has(solution.id)}
+                onToggle={() => toggleCard(solution.id)}
+              />
             ))
           ) : (
             <div className="col-span-full text-center py-12">
