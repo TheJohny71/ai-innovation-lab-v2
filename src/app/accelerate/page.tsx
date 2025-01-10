@@ -16,6 +16,10 @@ interface Solution {
   features: string[];
 }
 
+interface SolutionCardProps {
+  solution: Solution;
+}
+
 const solutions: Solution[] = [
   {
     id: 'alfie',
@@ -71,103 +75,82 @@ const solutions: Solution[] = [
       'Smart Book Search & Filtering',
     ],
   },
-];
+] as const;
 
-// Separate Card component for better state isolation
-const SolutionCard = ({ solution }: { solution: Solution }) => {
+const SolutionCard: React.FC<SolutionCardProps> = ({ solution }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div
-      className={`relative bg-slate-800/50 rounded-xl border border-white/5 
+      className={`bg-slate-800/50 rounded-xl border border-white/5 p-8
                  transition-all duration-300 ease-in-out ${solution.borderHover}`}
     >
-      {/* Background Gradient */}
-      <div
-        className={`absolute inset-0 bg-gradient-to-br ${solution.cardGradient} 
-                   opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-      />
+      {/* Header with Category Tag */}
+      <div className="flex items-start justify-between mb-4">
+        <h3 className={`text-2xl font-bold ${solution.textColor}`}>
+          {solution.title}
+        </h3>
+        <span
+          className={`inline-flex px-3 py-1 rounded-full ${solution.gradient} 
+                    ${solution.textColor} text-xs font-medium`}
+        >
+          {solution.category}
+        </span>
+      </div>
 
-      {/* Card Content */}
-      <div className="relative p-8 flex flex-col min-h-[400px]">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex-1 min-w-0 pr-4">
-            <h3 className={`text-2xl font-bold ${solution.textColor} mb-2`}>
-              {solution.title}
-            </h3>
-            <p className={`text-sm ${solution.textColor}/80`}>
-              {solution.subtitle}
-            </p>
-          </div>
-          <span
-            className={`inline-block px-3 py-1 rounded-full ${solution.gradient} 
-                      ${solution.textColor} text-xs font-medium whitespace-nowrap`}
+      {/* Subtitle */}
+      <p className="text-gray-300 mb-4">{solution.subtitle}</p>
+
+      {/* Description */}
+      <p className="text-white/80 mb-6">{solution.description}</p>
+
+      {/* Features List (Always Visible) */}
+      <div className="space-y-2 mb-6">
+        {solution.features.slice(0, 3).map((feature, index) => (
+          <div
+            key={`preview-${index}`}
+            className="text-white/80 text-sm flex items-center gap-2"
           >
-            {solution.category}
-          </span>
-        </div>
+            <div className={`w-1 h-1 rounded-full ${solution.textColor}`} />
+            <span>{feature}</span>
+          </div>
+        ))}
+      </div>
 
-        {/* Description */}
-        <p className="text-white/80 mb-6">{solution.description}</p>
-
-        {/* Initial Features */}
-        {!isExpanded && (
-          <div className="space-y-3 mb-6">
-            {solution.features.slice(0, 3).map((feature, index) => (
+      {/* Expanded Section */}
+      {isExpanded && (
+        <div className="border-t border-white/10 pt-6 mt-6">
+          <h4 className="text-white font-medium mb-4">All Features</h4>
+          <div className="space-y-2">
+            {solution.features.map((feature, index) => (
               <div
-                key={`preview-${index}`}
+                key={`full-${index}`}
                 className="text-white/80 text-sm flex items-center gap-2"
               >
-                <div
-                  className={`w-1 h-1 rounded-full ${solution.textColor} flex-shrink-0`}
-                />
-                <span className="line-clamp-1">{feature}</span>
+                <div className={`w-1 h-1 rounded-full ${solution.textColor}`} />
+                <span>{feature}</span>
               </div>
             ))}
           </div>
-        )}
-
-        {/* Expanded Content */}
-        <div
-          className={`transition-all duration-300 ease-in-out overflow-hidden
-                    ${isExpanded ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'}`}
-        >
-          <div className="pt-6 border-t border-white/10">
-            <h4 className="text-white font-medium mb-4">All Features</h4>
-            <div className="space-y-3">
-              {solution.features.map((feature, index) => (
-                <div
-                  key={`full-${index}`}
-                  className="text-white/80 text-sm flex items-center gap-2"
-                >
-                  <div
-                    className={`w-1 h-1 rounded-full ${solution.textColor} flex-shrink-0`}
-                  />
-                  <span>{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
+      )}
 
-        {/* Button */}
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-auto w-full py-3 rounded-lg bg-white/5 text-white font-medium 
-                   hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
-        >
-          {isExpanded ? (
-            <>
-              Hide Details <ChevronUp className="w-4 h-4" />
-            </>
-          ) : (
-            <>
-              View Details <ChevronDown className="w-4 h-4" />
-            </>
-          )}
-        </button>
-      </div>
+      {/* Control Button */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full mt-6 py-3 rounded-lg bg-white/5 text-white font-medium 
+                 hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+      >
+        {isExpanded ? (
+          <>
+            Hide Details <ChevronUp className="w-4 h-4" />
+          </>
+        ) : (
+          <>
+            View Details <ChevronDown className="w-4 h-4" />
+          </>
+        )}
+      </button>
     </div>
   );
 };
@@ -178,7 +161,6 @@ export default function AcceleratePage() {
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-900/80" />
 
-        {/* Main Content */}
         <div className="relative px-6 py-24 mx-auto max-w-7xl">
           {/* Header */}
           <div className="text-center mb-16">
