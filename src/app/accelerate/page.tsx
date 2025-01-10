@@ -111,11 +111,17 @@ export default function AcceleratePage() {
             {solutions.map((solution) => (
               <div
                 key={solution.id}
-                className={`group relative bg-slate-800/50 rounded-xl border border-white/5 overflow-hidden transition-all ${solution.borderHover} flex flex-col`}
+                className={`group relative bg-slate-800/50 rounded-xl border border-white/5 
+                           overflow-hidden transition-all duration-300 ease-in-out ${solution.borderHover} 
+                           flex flex-col`}
               >
+                {/* Background Gradient */}
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${solution.cardGradient} opacity-0 group-hover:opacity-100 transition-opacity`}
+                  className={`absolute inset-0 bg-gradient-to-br ${solution.cardGradient} 
+                             opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
                 />
+
+                {/* Card Content */}
                 <div className="p-8 relative flex flex-col h-full">
                   {/* Header Section */}
                   <div className="flex items-start justify-between mb-6">
@@ -131,7 +137,8 @@ export default function AcceleratePage() {
                     </div>
                     <div className="flex-shrink-0">
                       <span
-                        className={`inline-block px-3 py-1 rounded-full ${solution.gradient} ${solution.textColor} text-xs font-medium whitespace-nowrap`}
+                        className={`inline-block px-3 py-1 rounded-full ${solution.gradient} 
+                                  ${solution.textColor} text-xs font-medium whitespace-nowrap`}
                       >
                         {solution.category}
                       </span>
@@ -160,10 +167,12 @@ export default function AcceleratePage() {
                       ))}
                   </div>
 
-                  {/* Button */}
+                  {/* View Details Button */}
                   <button
                     onClick={() => toggleCard(solution.id)}
-                    className="w-full py-3 rounded-lg bg-white/5 text-white font-medium hover:bg-white/10 transition-colors flex items-center justify-center gap-2 mt-auto"
+                    className="w-full py-3 rounded-lg bg-white/5 text-white font-medium 
+                             hover:bg-white/10 transition-colors flex items-center 
+                             justify-center gap-2 mt-auto"
                   >
                     {expandedCards.has(solution.id) ? (
                       <>
@@ -177,8 +186,15 @@ export default function AcceleratePage() {
                   </button>
 
                   {/* Expanded Content */}
-                  {expandedCards.has(solution.id) && (
-                    <div className="mt-6 pt-6 border-t border-white/10">
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out
+                              ${
+                                expandedCards.has(solution.id)
+                                  ? 'max-h-[500px] opacity-100 mt-6'
+                                  : 'max-h-0 opacity-0'
+                              }`}
+                  >
+                    <div className="pt-6 border-t border-white/10">
                       <h4 className="text-white font-medium mb-4">
                         All Features
                       </h4>
@@ -196,7 +212,7 @@ export default function AcceleratePage() {
                         ))}
                       </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
             ))}
