@@ -1,27 +1,10 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { Search, ChevronUp, ChevronDown } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { NavigationBar } from '@/components/shared/NavigationBar';
-
-interface Solution {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  category: string;
-  gradient: string;
-  textColor: string;
-  borderHover: string;
-  cardGradient: string;
-  features: string[];
-}
-
-interface CardProps {
-  solution: Solution;
-  isOpen: boolean;
-  onToggle: () => void;
-}
+import SolutionCard from '@/components/shared/SolutionCard';
+import type { Solution } from '@/types/metrics';
 
 const solutions: Solution[] = [
   {
@@ -33,8 +16,8 @@ const solutions: Solution[] = [
     category: 'Practice Management',
     gradient: 'bg-purple-500/10',
     textColor: 'text-purple-400',
-    borderHover: 'hover:border-purple-500/30',
     cardGradient: 'from-purple-500/10 via-transparent to-transparent',
+    borderHover: 'hover:border-purple-500/30', // optional
     features: [
       'Apple-Quality Interface',
       'Smart Leave Suggestions',
@@ -53,8 +36,8 @@ const solutions: Solution[] = [
     category: 'Knowledge Management',
     gradient: 'bg-teal-500/10',
     textColor: 'text-teal-400',
-    borderHover: 'hover:border-teal-500/30',
     cardGradient: 'from-teal-500/10 via-transparent to-transparent',
+    borderHover: 'hover:border-teal-500/30',
     features: [
       'Smart Title & Call Number Search',
       'Real-time Availability Tracking',
@@ -73,8 +56,8 @@ const solutions: Solution[] = [
     category: 'Research',
     gradient: 'bg-cyan-500/10',
     textColor: 'text-cyan-400',
-    borderHover: 'hover:border-cyan-500/30',
     cardGradient: 'from-cyan-500/10 via-transparent to-transparent',
+    borderHover: 'hover:border-cyan-500/30',
     features: [
       'Practice Area-Specific Research Tips',
       'Interactive Database Catalog',
@@ -93,8 +76,8 @@ const solutions: Solution[] = [
     category: 'Practice Management',
     gradient: 'bg-indigo-500/10',
     textColor: 'text-indigo-400',
-    borderHover: 'hover:border-indigo-500/30',
     cardGradient: 'from-indigo-500/10 via-transparent to-transparent',
+    borderHover: 'hover:border-indigo-500/30',
     features: [
       'Realistic Workflow Simulation using Azure Digital Twins',
       'AI Performance Benchmarking & Analytics',
@@ -106,123 +89,40 @@ const solutions: Solution[] = [
   },
 ];
 
-const Card: React.FC<CardProps> = ({ solution, isOpen, onToggle }) => {
-  const coreFeatures = solution.features.slice(0, 3);
-  const advancedFeatures = solution.features.slice(3);
-
-  return (
-    <div className="flex flex-col h-full bg-white/5 backdrop-blur-xl rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/10">
-      <div className="flex-1 p-6">
-        <div className="flex justify-between items-start mb-4">
-          <h3 className={`text-2xl font-medium ${solution.textColor}`}>
-            {solution.title}
-          </h3>
-          <span
-            className={`text-xs font-medium tracking-wide px-2 py-1 rounded-full ${solution.gradient} ${solution.textColor}`}
-          >
-            {solution.category}
-          </span>
-        </div>
-
-        <p className="text-slate-300 text-sm mb-1">{solution.subtitle}</p>
-        <p className="text-slate-400 text-sm mb-4 line-clamp-2">
-          {solution.description}
-        </p>
-
-        <div className="space-y-4">
-          <div>
-            <h4 className="text-white text-sm mb-2 font-medium">
-              Core Features
-            </h4>
-            <ul className="grid gap-2">
-              {coreFeatures.map((feature, index) => (
-                <li
-                  key={`${solution.id}-core-${index}`}
-                  className="text-slate-300 flex items-center text-sm"
-                >
-                  <div
-                    className={`w-1 h-1 rounded-full mr-2 ${solution.textColor}`}
-                  />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {isOpen && (
-            <div
-              id={`${solution.id}-advanced-features`}
-              className="animate-fadeIn"
-            >
-              <h4 className="text-white text-sm mb-2 font-medium">
-                Advanced Features
-              </h4>
-              <ul className="grid gap-2">
-                {advancedFeatures.map((feature, index) => (
-                  <li
-                    key={`${solution.id}-advanced-${index}`}
-                    className="text-slate-300 flex items-center text-sm"
-                  >
-                    <div
-                      className={`w-1 h-1 rounded-full mr-2 ${solution.textColor}`}
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <button
-        onClick={onToggle}
-        className="w-full p-2 text-white flex items-center justify-center bg-white/5 hover:bg-white/10 transition-all duration-300"
-        aria-expanded={isOpen}
-        aria-controls={`${solution.id}-advanced-features`}
-      >
-        <div className="flex items-center space-x-2">
-          <span className="text-sm">{isOpen ? 'Show Less' : 'Show More'}</span>
-          {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </div>
-      </button>
-    </div>
-  );
-};
-
-const AcceleratePage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [categoryFilter, setCategoryFilter] = useState<string>('');
+export default function AcceleratePage() {
+  // Track which card is open, plus search/category filters
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
   const [openCardId, setOpenCardId] = useState<string | null>(null);
 
-  // Toggles a specific card by ID.
-  // If the same ID is clicked, close it; otherwise open the newly clicked card.
   const toggleCard = (id: string) => {
     setOpenCardId((prev) => (prev === id ? null : id));
   };
 
-  const categories = useMemo(
-    () => [...new Set(solutions.map((solution) => solution.category))],
-    []
-  );
+  // Collect unique categories
+  const categories = useMemo(() => {
+    return [...new Set(solutions.map((sol) => sol.category))];
+  }, []);
 
-  const filteredSolutions = useMemo(
-    () =>
-      solutions.filter((solution) => {
-        const matchesSearch =
-          searchTerm === '' ||
-          solution.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          solution.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory =
-          categoryFilter === '' || solution.category === categoryFilter;
-        return matchesSearch && matchesCategory;
-      }),
-    [searchTerm, categoryFilter]
-  );
+  // Filter solutions by search term and category
+  const filteredSolutions = useMemo(() => {
+    return solutions.filter((solution) => {
+      const matchesSearch =
+        !searchTerm ||
+        solution.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        solution.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesCategory =
+        !categoryFilter || solution.category === categoryFilter;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchTerm, categoryFilter]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <div className="max-w-7xl mx-auto px-4 py-12">
+        {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-medium mb-4 tracking-tight">
             <span className="text-white">AI </span>
@@ -235,41 +135,46 @@ const AcceleratePage: React.FC = () => {
           </p>
         </div>
 
+        {/* Search & Category Filter */}
         <div className="mb-8 flex gap-4 max-w-2xl mx-auto">
           <div className="relative flex-1">
             <Search
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
               size={16}
             />
             <input
               type="text"
               placeholder="Search solutions..."
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchTerm(e.target.value)
-              }
-              className="w-full pl-10 pr-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-600 transition-all duration-300 text-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-slate-800/50 
+                backdrop-blur-sm rounded-lg text-white 
+                placeholder-slate-400 focus:outline-none focus:ring-1 
+                focus:ring-slate-600 transition-all duration-300 text-sm"
             />
           </div>
-
           <select
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              setCategoryFilter(e.target.value)
-            }
-            className="px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg text-white appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-slate-600 transition-all duration-300 text-sm min-w-[140px]"
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="px-4 py-2 bg-slate-800/50 backdrop-blur-sm 
+              rounded-lg text-white appearance-none cursor-pointer 
+              focus:outline-none focus:ring-1 focus:ring-slate-600 
+              transition-all duration-300 text-sm min-w-[140px]"
           >
             <option value="">All Categories</option>
-            {categories.map((category: string) => (
-              <option key={category} value={category}>
-                {category}
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
               </option>
             ))}
           </select>
         </div>
 
+        {/* Grid of Solution Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSolutions.length > 0 ? (
             filteredSolutions.map((solution) => (
-              <Card
+              <SolutionCard
                 key={solution.id}
                 solution={solution}
                 isOpen={openCardId === solution.id}
@@ -285,9 +190,8 @@ const AcceleratePage: React.FC = () => {
           )}
         </div>
       </div>
+      {/* Footer / Navigation */}
       <NavigationBar />
     </div>
   );
-};
-
-export default AcceleratePage;
+}

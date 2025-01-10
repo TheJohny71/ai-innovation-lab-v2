@@ -48,9 +48,10 @@ export interface Solution {
   category: string;
   gradient: string;
   textColor: string;
-  borderHover: string;
   cardGradient: string;
   features: string[];
+  borderHover?: string; // <-- now optional
+
   backgroundColor?: string; // Optional background color for card
   accentColor?: string; // Optional accent color for icons/borders
   secondaryColor?: string; // Optional secondary color for gradients
@@ -60,7 +61,6 @@ export interface Solution {
   lastUpdated?: string; // Optional timestamp for sorting by update
   detailedDescription?: string; // Optional longer description for expanded view
   links?: {
-    // Optional related links
     documentation?: string;
     demo?: string;
     support?: string;
