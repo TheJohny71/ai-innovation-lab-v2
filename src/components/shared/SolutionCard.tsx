@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import type { Solution } from '@/types/metrics';
 
@@ -8,41 +8,30 @@ interface SolutionCardProps {
   solution: Solution;
 }
 
-const SolutionCard: React.FC<SolutionCardProps> = ({ solution }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const SolutionCard = ({ solution }: SolutionCardProps) => {
+  const [isExpanded, setIsExpanded] = React.useState(false);
 
-  const handleToggle = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+  // Explicit handler with stopPropagation
+  const handleToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
-    setIsExpanded((prevState) => !prevState);
-  }, []);
+    setIsExpanded((prev) => !prev);
+  };
 
-  // Feature List Component
-  const FeatureList = ({
-    items,
-    color,
-  }: {
-    items: string[];
-    color: string;
-  }) => (
-    <div className="space-y-3">
-      {items.map((feature, index) => (
-        <div
-          key={`${solution.id}-${index}-${feature}`}
-          className="text-gray-300 text-sm flex items-center gap-2"
-        >
-          <div className={`w-1.5 h-1.5 rounded-full ${color}`} />
-          <span>{feature}</span>
-        </div>
-      ))}
-    </div>
+  // Custom bullet with the solution's color
+  const CustomBullet = () => (
+    <div
+      className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${solution.textColor}`}
+      style={{ backgroundColor: 'currentColor' }}
+    />
   );
 
   return (
     <div
-      className={`relative bg-slate-800/50 rounded-xl border border-white/5 p-8
+      className={`bg-slate-800/50 rounded-xl border border-white/5 p-8
                  transition-all duration-300 ease-in-out ${solution.borderHover}`}
     >
-      {/* Header Section */}
+      {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <h3 className={`text-2xl font-bold ${solution.textColor}`}>
           {solution.title}
@@ -55,48 +44,68 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution }) => {
         </span>
       </div>
 
-      {/* Description Section */}
+      {/* Subtitle & Description */}
       <p className="text-gray-300 mb-4">{solution.subtitle}</p>
       <p className="text-white/80 mb-6">{solution.description}</p>
 
-      {/* Features Section */}
+      {/* Features */}
       <div className="mb-6">
         {!isExpanded ? (
-          // Show only core features when collapsed
-          <FeatureList
-            items={solution.features.slice(0, 3)}
-            color={solution.textColor}
-          />
+          // Initial features (first 3)
+          <div className="space-y-3">
+            {solution.features.slice(0, 3).map((feature, index) => (
+              <div
+                key={`${solution.id}-${index}`}
+                className="text-gray-300 text-sm flex items-center gap-2"
+              >
+                <CustomBullet />
+                <span>{feature}</span>
+              </div>
+            ))}
+          </div>
         ) : (
-          // Show all features when expanded
+          // All features when expanded
           <div className="space-y-6">
             <div>
               <h4 className="text-white font-medium mb-4">Core Features</h4>
-              <FeatureList
-                items={solution.features.slice(0, 3)}
-                color={solution.textColor}
-              />
+              <div className="space-y-3">
+                {solution.features.slice(0, 3).map((feature, index) => (
+                  <div
+                    key={`${solution.id}-core-${index}`}
+                    className="text-gray-300 text-sm flex items-center gap-2"
+                  >
+                    <CustomBullet />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div>
               <h4 className="text-white font-medium mb-4">
                 Advanced Capabilities
               </h4>
-              <FeatureList
-                items={solution.features.slice(3)}
-                color={solution.textColor}
-              />
+              <div className="space-y-3">
+                {solution.features.slice(3).map((feature, index) => (
+                  <div
+                    key={`${solution.id}-advanced-${index}`}
+                    className="text-gray-300 text-sm flex items-center gap-2"
+                  >
+                    <CustomBullet />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Control Button */}
+      {/* Toggle Button */}
       <button
         onClick={handleToggle}
         className="w-full mt-6 py-3 rounded-lg bg-white/5 text-white font-medium 
                  hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
-        aria-expanded={isExpanded}
         type="button"
       >
         {isExpanded ? (
@@ -113,5 +122,4 @@ const SolutionCard: React.FC<SolutionCardProps> = ({ solution }) => {
   );
 };
 
-// Prevent unnecessary re-renders
-export default React.memo(SolutionCard);
+export default SolutionCard;
