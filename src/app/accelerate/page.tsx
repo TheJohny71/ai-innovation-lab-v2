@@ -136,7 +136,7 @@ const Card: React.FC<CardProps> = ({ solution }) => {
             <ul className="grid gap-2">
               {coreFeatures.map((feature: string, index: number) => (
                 <li
-                  key={index}
+                  key={`${solution.id}-core-${index}`}
                   className="text-slate-300 flex items-center text-sm"
                 >
                   <div
@@ -148,34 +148,39 @@ const Card: React.FC<CardProps> = ({ solution }) => {
             </ul>
           </div>
 
-          {isOpen && (
-            <div className="transform transition-all duration-300">
-              <h4 className="text-white text-sm mb-2 font-medium">
-                Advanced Features
-              </h4>
-              <ul className="grid gap-2">
-                {advancedFeatures.map((feature: string, index: number) => (
-                  <li
-                    key={index}
-                    className="text-slate-300 flex items-center text-sm"
-                  >
-                    <div
-                      className={`w-1 h-1 rounded-full mr-2 ${solution.textColor}`}
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          <div
+            className={`transition-all duration-300 ${isOpen ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0'} overflow-hidden`}
+          >
+            <h4 className="text-white text-sm mb-2 font-medium">
+              Advanced Features
+            </h4>
+            <ul className="grid gap-2">
+              {advancedFeatures.map((feature: string, index: number) => (
+                <li
+                  key={`${solution.id}-advanced-${index}`}
+                  className="text-slate-300 flex items-center text-sm"
+                >
+                  <div
+                    className={`w-1 h-1 rounded-full mr-2 ${solution.textColor}`}
+                  />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full p-2 text-white flex items-center justify-center bg-white/5 hover:bg-white/10 transition-all duration-300"
+        aria-expanded={isOpen}
+        aria-controls={`${solution.id}-advanced-features`}
       >
-        {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        <div className="flex items-center space-x-2">
+          <span className="text-sm">{isOpen ? 'Show Less' : 'Show More'}</span>
+          {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        </div>
       </button>
     </div>
   );
