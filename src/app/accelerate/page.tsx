@@ -66,6 +66,26 @@ const solutions: Solution[] = [
       'AI-Powered Suggestions',
     ],
   },
+  {
+    id: 'lexpilot',
+    title: 'LexPilot',
+    subtitle: 'Test. Validate. Pilot Legal AI Solutions with Confidence.',
+    description:
+      'Advanced testing and validation platform for legal AI solutions using Azure Digital Twins technology.',
+    category: 'Practice Management',
+    gradient: 'bg-indigo-500/10',
+    textColor: 'text-indigo-400',
+    borderHover: 'hover:border-indigo-500/30',
+    cardGradient: 'from-indigo-500/10 via-transparent to-transparent',
+    features: [
+      'Realistic Workflow Simulation using Azure Digital Twins',
+      'AI Performance Benchmarking & Analytics',
+      'Controlled, Risk-Free Testing Environment',
+      'Enterprise Security & Compliance with Azure Standards',
+      'Integration with Azure AI & Machine Learning Tools',
+      'Customizable Scenarios for Legal Process Simulation',
+    ],
+  },
 ];
 
 const Card = ({ solution }: { solution: Solution }) => {
@@ -79,15 +99,18 @@ const Card = ({ solution }: { solution: Solution }) => {
       <div className="p-8 sm:p-10">
         <div className="flex flex-col space-y-6">
           <div>
-            <span
-              className={`text-sm font-medium tracking-wide mb-2 block ${solution.textColor}`}
-            >
-              {solution.category.toUpperCase()}
-            </span>
-            <h3 className={`text-3xl font-medium mb-3 ${solution.textColor}`}>
-              {solution.title}
-            </h3>
-            <p className="text-slate-300 text-lg leading-relaxed">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className={`text-4xl font-medium ${solution.textColor}`}>
+                {solution.title}
+              </h3>
+              <span
+                className={`text-sm font-medium tracking-wide px-3 py-1.5 rounded-full ${solution.gradient} ${solution.textColor}`}
+              >
+                {solution.category}
+              </span>
+            </div>
+            <p className="text-slate-300 text-lg mb-2">{solution.subtitle}</p>
+            <p className="text-slate-400 text-lg leading-relaxed">
               {solution.description}
             </p>
           </div>
@@ -101,7 +124,7 @@ const Card = ({ solution }: { solution: Solution }) => {
                 {coreFeatures.map((feature, index) => (
                   <li
                     key={index}
-                    className="text-slate-300 flex items-center p-4 rounded-xl bg-white/5 backdrop-blur-sm transition-all duration-300 hover:bg-white/10"
+                    className="text-slate-300 flex items-center p-4 rounded-xl transition-all duration-300 hover:bg-white/5"
                   >
                     <div
                       className={`w-1 h-1 rounded-full mr-3 ${solution.textColor}`}
@@ -122,7 +145,7 @@ const Card = ({ solution }: { solution: Solution }) => {
                 {advancedFeatures.map((feature, index) => (
                   <li
                     key={index}
-                    className="text-slate-300 flex items-center p-4 rounded-xl bg-white/5 backdrop-blur-sm transition-all duration-300 hover:bg-white/10"
+                    className="text-slate-300 flex items-center p-4 rounded-xl transition-all duration-300 hover:bg-white/5"
                   >
                     <div
                       className={`w-1 h-1 rounded-full mr-3 ${solution.textColor}`}
