@@ -27,23 +27,28 @@ export function StarField({ className = '' }: StarFieldProps) {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
 
-    const handleMotionPreference = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    const handleMotionPreference = (e: MediaQueryListEvent) =>
+      setPrefersReducedMotion(e.matches);
     mediaQuery.addEventListener('change', handleMotionPreference);
 
-    return () => mediaQuery.removeEventListener('change', handleMotionPreference);
+    return () =>
+      mediaQuery.removeEventListener('change', handleMotionPreference);
   }, []);
 
   useEffect(() => {
     const generateStars = () => {
-      const newStars = Array.from({ length: 150 }, (): Star => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        size: Math.random() * 2 + 1,
-        speed: Math.random() * 0.5 + 0.1,
-        opacity: Math.random() * 0.5 + 0.3,
-        layer: Math.random() > 0.3 ? 'foreground' : 'background',
-        color: Math.random() > 0.5 ? '#FFFFFF' : '#E6E6FA'
-      }));
+      const newStars = Array.from(
+        { length: 150 },
+        (): Star => ({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          size: Math.random() * 2 + 1,
+          speed: Math.random() * 0.5 + 0.1,
+          opacity: Math.random() * 0.5 + 0.3,
+          layer: Math.random() > 0.3 ? 'foreground' : 'background',
+          color: Math.random() > 0.5 ? '#FFFFFF' : '#E6E6FA',
+        })
+      );
       setStars(newStars);
     };
 
@@ -56,25 +61,30 @@ export function StarField({ className = '' }: StarFieldProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (prefersReducedMotion) return;
-    
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height
-    });
-  }, [prefersReducedMotion]);
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (prefersReducedMotion) return;
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      setMousePosition({
+        x: (e.clientX - rect.left) / rect.width,
+        y: (e.clientY - rect.top) / rect.height,
+      });
+    },
+    [prefersReducedMotion]
+  );
 
   return (
-    <div 
+    <div
       className={`pointer-events-none fixed inset-0 ${className}`}
       onMouseMove={handleMouseMove}
     >
       {stars.map((star, index) => {
         const parallaxEffect = star.layer === 'foreground' ? 0.03 : 0.01;
-        const dx = (mousePosition.x * window.innerWidth - star.x) * parallaxEffect;
-        const dy = (mousePosition.y * window.innerHeight - star.y) * parallaxEffect;
+        const dx =
+          (mousePosition.x * window.innerWidth - star.x) * parallaxEffect;
+        const dy =
+          (mousePosition.y * window.innerHeight - star.y) * parallaxEffect;
 
         return (
           <div
@@ -88,10 +98,11 @@ export function StarField({ className = '' }: StarFieldProps) {
               opacity: star.opacity,
               backgroundColor: star.color,
               transform: `scale(${star.layer === 'foreground' ? 1.2 : 1})`,
-              boxShadow: star.layer === 'foreground' 
-                ? `0 0 ${star.size * 2}px ${star.color}`
-                : 'none',
-              zIndex: star.layer === 'foreground' ? 1 : 0
+              boxShadow:
+                star.layer === 'foreground'
+                  ? `0 0 ${star.size * 2}px ${star.color}`
+                  : 'none',
+              zIndex: star.layer === 'foreground' ? 1 : 0,
             }}
           />
         );
