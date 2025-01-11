@@ -1,4 +1,6 @@
-export const solutions = [
+import { type Solution } from './types';
+
+export const solutions: Solution[] = [
   {
     id: 'alfie',
     title: 'Alfie',

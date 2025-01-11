@@ -1,4 +1,6 @@
-interface Solution {
+// src/app/accelerate/types.ts
+
+export interface Solution {
   id: string;
   title: string;
   subtitle: string;
@@ -15,4 +17,24 @@ interface Solution {
     integration: string;
     deployment: string;
   };
+}
+
+// Add type guards if needed
+export function isSolution(obj: any): obj is Solution {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    typeof obj.id === 'string' &&
+    typeof obj.title === 'string' &&
+    typeof obj.subtitle === 'string' &&
+    typeof obj.description === 'string' &&
+    typeof obj.category === 'string' &&
+    typeof obj.gradient === 'string' &&
+    typeof obj.textColor === 'string' &&
+    typeof obj.cardGradient === 'string' &&
+    typeof obj.borderHover === 'string' &&
+    Array.isArray(obj.features) &&
+    typeof obj.details === 'object' &&
+    obj.details !== null
+  );
 }
