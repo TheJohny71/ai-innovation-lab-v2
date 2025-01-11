@@ -1,27 +1,40 @@
-// src/app/page.tsx
 'use client';
 
 import React from 'react';
-import { BaseLayout } from '@/components/shared/BaseLayout';
+import { StarField } from '@/components/shared/StarField';
+import { NavigationBar } from '@/components/shared/NavigationBar';
+import { GradientBackground } from '@/components/shared/GradientBackground';
 
-export default function Home() {
+export default function NexusPage() {
   return (
-    <BaseLayout>
-      <div className="container mx-auto px-8 h-full flex flex-col justify-between py-12">
-        <div className="space-y-6 max-w-4xl mx-auto text-center mt-8 mb-16">
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-blue-300 to-teal-400 bg-clip-text text-transparent px-8">
-            AI Innovation Hub
+    <div className="min-h-screen bg-slate-900 text-white relative overflow-hidden">
+      {/* Background Effects */}
+      <GradientBackground />
+      <StarField />
+
+      <div className="container mx-auto flex flex-col justify-between h-screen p-8">
+        {/* Hero Section */}
+        <div className="flex-none space-y-6 text-center pt-16">
+          <h1 className="text-6xl font-bold">
+            <span className="bg-gradient-to-r from-blue-400/90 via-blue-300 to-teal-400/90 bg-clip-text text-transparent">
+              AI Innovation Hub
+            </span>
           </h1>
-          <h2 className="text-3xl text-gray-200 font-light tracking-wide">
-            Transforming Legal Practice Through AI
+
+          <h2 className="text-2xl text-gray-200 font-light tracking-wide">
+            Talent-Driven Mindset Acceleration
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto mt-4">
-            Accelerating Innovation Through Cultural Mindset Change
+
+          <p className="text-sm text-emerald-300 uppercase tracking-[0.3em]">
+            Innovate.&nbsp;&nbsp;Disrupt.&nbsp;&nbsp;Lead.
           </p>
         </div>
 
-        {/* Feature sections will go here */}
+        {/* Navigation */}
+        <div className="flex-none flex justify-center pb-8">
+          <NavigationBar />
+        </div>
       </div>
-    </BaseLayout>
+    </div>
   );
 }
