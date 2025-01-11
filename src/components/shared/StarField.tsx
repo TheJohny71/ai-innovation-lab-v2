@@ -1,3 +1,4 @@
+/* Updated StarField.tsx */
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -24,28 +25,17 @@ export function StarField({ className = '' }: StarFieldProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleMotionPreference = (e: MediaQueryListEvent) =>
-      setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', handleMotionPreference);
-
-    return () =>
-      mediaQuery.removeEventListener('change', handleMotionPreference);
-  }, []);
-
-  useEffect(() => {
+    setPrefersReducedMotion(false); // Disabled reduced motion for testing
     const generateStars = () => {
       const newStars = Array.from(
-        { length: 150 },
+        { length: 300 },
         (): Star => ({
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
-          size: Math.random() * 2 + 1,
-          speed: Math.random() * 0.5 + 0.1,
-          opacity: Math.random() * 0.5 + 0.3,
-          layer: Math.random() > 0.3 ? 'foreground' : 'background',
+          size: Math.random() * 2.5 + 1,
+          speed: Math.random() * 0.7 + 0.2,
+          opacity: Math.random() * 0.7 + 0.3,
+          layer: Math.random() > 0.2 ? 'foreground' : 'background',
           color: Math.random() > 0.5 ? '#FFFFFF' : '#E6E6FA',
         })
       );
@@ -53,12 +43,8 @@ export function StarField({ className = '' }: StarFieldProps) {
     };
 
     generateStars();
-    const handleResize = () => {
-      generateStars();
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', generateStars);
+    return () => window.removeEventListener('resize', generateStars);
   }, []);
 
   const handleMouseMove = useCallback(
@@ -80,7 +66,7 @@ export function StarField({ className = '' }: StarFieldProps) {
       onMouseMove={handleMouseMove}
     >
       {stars.map((star, index) => {
-        const parallaxEffect = star.layer === 'foreground' ? 0.03 : 0.01;
+        const parallaxEffect = star.layer === 'foreground' ? 0.05 : 0.02;
         const dx =
           (mousePosition.x * window.innerWidth - star.x) * parallaxEffect;
         const dy =
