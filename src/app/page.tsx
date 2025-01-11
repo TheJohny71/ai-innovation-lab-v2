@@ -13,8 +13,8 @@ export default function NexusPage() {
       <StarField />
 
       <div className="container mx-auto flex flex-col justify-between h-screen p-8">
-        {/* Hero Section */}
-        <div className="flex-none space-y-6 text-center pt-16">
+        {/* Hero Section - Centered vertically */}
+        <div className="flex-1 flex flex-col items-center justify-center space-y-6 text-center">
           <h1 className="text-6xl font-bold">
             <span className="bg-gradient-to-r from-blue-400/90 via-blue-300 to-teal-400/90 bg-clip-text text-transparent">
               AI Innovation Hub
@@ -31,9 +31,7 @@ export default function NexusPage() {
         </div>
 
         {/* Navigation */}
-        <div className="flex-none flex justify-center pb-8">
-          <NavigationBar />
-        </div>
+        <NavigationBar />
       </div>
     </div>
   );
