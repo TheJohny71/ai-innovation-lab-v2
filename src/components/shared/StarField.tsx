@@ -1,4 +1,4 @@
-/* Updated StarField.tsx */
+/* StarField.tsx */
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -25,7 +25,7 @@ export function StarField({ className = '' }: StarFieldProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    setPrefersReducedMotion(false); // Disabled reduced motion for testing
+    setPrefersReducedMotion(false);
     const generateStars = () => {
       const newStars = Array.from(
         { length: 300 },

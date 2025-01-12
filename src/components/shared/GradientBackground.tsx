@@ -1,4 +1,4 @@
-/* Updated GradientBackground.tsx */
+/* GradientBackground.tsx */
 'use client';
 
 import React from 'react';
@@ -16,7 +16,6 @@ export function GradientBackground() {
           animation: 'pulse 8s ease-in-out infinite',
         }}
       />
-      {/* Particle effect */}
       {[...Array(30)].map((_, i) => (
         <div
           key={i}
