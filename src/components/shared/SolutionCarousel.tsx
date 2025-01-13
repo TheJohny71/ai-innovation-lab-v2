@@ -7,13 +7,15 @@ interface SolutionCarouselProps {
   onSolutionSelect: (solution: Solution) => void;
 }
 
-const SolutionCarousel: FC<SolutionCarouselProps> = ({ 
-  solutions, 
-  onSolutionSelect 
+const SolutionCarousel: FC<SolutionCarouselProps> = ({
+  solutions,
+  onSolutionSelect,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const getPosition = (index: number): 'center' | 'left' | 'right' | 'far-left' | 'far-right' => {
+  const getPosition = (
+    index: number
+  ): 'center' | 'left' | 'right' | 'far-left' | 'far-right' => {
     const diff = index - activeIndex;
     if (diff === 0) return 'center';
     if (diff === 1) return 'right';
@@ -57,13 +59,17 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
               className={`absolute left-1/2 -translate-x-1/2 w-full max-w-3xl transition-all duration-500 ease-in-out ${getCardStyles(getPosition(index))}`}
               onClick={() => handleCardClick(index, solution)}
             >
-              <div className={`solution-card-content rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-sm
-                           ${solution.borderHover} transition-all duration-300`}>
+              <div
+                className={`solution-card-content rounded-2xl bg-slate-900/60 border border-white/10 backdrop-blur-sm
+                           ${solution.borderHover} transition-all duration-300`}
+              >
                 <div className="p-8 h-full">
                   <div className="flex flex-col h-full justify-between">
                     <div>
-                      <span className={`text-sm font-medium px-3 py-1 rounded-full 
-                                   ${solution.gradient} ${solution.textColor} mb-4 inline-block`}>
+                      <span
+                        className={`text-sm font-medium px-3 py-1 rounded-full 
+                                   ${solution.gradient} ${solution.textColor} mb-4 inline-block`}
+                      >
                         {solution.category}
                       </span>
                       <h3 className="text-4xl font-bold text-white mb-4">
@@ -85,7 +91,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
             </div>
           ))}
         </div>
-        
+
         <div className="absolute -bottom-12 left-0 right-0 flex justify-center items-center space-x-3">
           <button
             onClick={() => setActiveIndex(Math.max(0, activeIndex - 1))}
@@ -104,9 +110,10 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                 key={index}
                 onClick={() => setActiveIndex(index)}
                 className={`w-2 h-2 rounded-full transition-all duration-300 
-                        ${index === activeIndex 
-                          ? 'bg-blue-500/70 scale-110' 
-                          : 'bg-slate-600/50 hover:bg-slate-500/60'
+                        ${
+                          index === activeIndex
+                            ? 'bg-blue-500/70 scale-110'
+                            : 'bg-slate-600/50 hover:bg-slate-500/60'
                         } hover:scale-110`}
                 aria-label={`Go to solution ${index + 1}`}
               />
@@ -114,7 +121,9 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           </div>
 
           <button
-            onClick={() => setActiveIndex(Math.min(solutions.length - 1, activeIndex + 1))}
+            onClick={() =>
+              setActiveIndex(Math.min(solutions.length - 1, activeIndex + 1))
+            }
             disabled={activeIndex === solutions.length - 1}
             className="p-2 rounded-full bg-slate-800/30 border border-white/10 text-white 
                      hover:bg-slate-700/40 transition-colors disabled:opacity-30 
