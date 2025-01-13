@@ -16,16 +16,15 @@ interface Particle {
 }
 
 const EnhancedNexusPage = () => {
-  // ✅ State properly typed for TypeScript
   const [particles, setParticles] = useState<Particle[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1920,
-    height: typeof window !== 'undefined' ? window.innerHeight : 1080,
+    height: typeof window !== 'undefined' ? window.innerHeight : 1080
   });
 
-  // ✅ Window resize handler with correct typing
+  // ✅ Window resize handler
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -38,7 +37,7 @@ const EnhancedNexusPage = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // ✅ Motion preference handling with corrected typing
+  // ✅ Motion preference handling
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
@@ -48,11 +47,10 @@ const EnhancedNexusPage = () => {
 
     mediaQuery.addEventListener('change', handleMotionPreference);
 
-    return () =>
-      mediaQuery.removeEventListener('change', handleMotionPreference);
+    return () => mediaQuery.removeEventListener('change', handleMotionPreference);
   }, []);
 
-  // ✅ Particle generation with corrected type enforcement for 'color'
+  // ✅ Particle generation (fixed)
   useEffect(() => {
     if (prefersReducedMotion) {
       setParticles([]);
@@ -65,82 +63,43 @@ const EnhancedNexusPage = () => {
       return Math.floor(baseCount * Math.sqrt(screenArea / baseArea));
     };
 
-    const generateParticles = (
-      baseCount: number,
-      isForeground: boolean
-    ): Particle[] =>
+    const generateParticles = (baseCount: number, isForeground: boolean): Particle[] =>
       Array.from({ length: getParticleCount(baseCount) }, () => ({
         id: Math.random(),
         initialX: (Math.random() - 0.5) * (isForeground ? 200 : 300),
         initialY: (Math.random() - 0.5) * (isForeground ? 200 : 300),
-        size: isForeground
-          ? Math.random() * 0.5 + 0.2
-          : Math.random() * 1.5 + 1,
-        duration: isForeground
-          ? Math.random() * 20 + 35
-          : Math.random() * 30 + 45,
+        size: isForeground ? Math.random() * 0.5 + 0.2 : Math.random() * 1.5 + 1,
+        duration: isForeground ? Math.random() * 20 + 35 : Math.random() * 30 + 45,
         delay: Math.random() * -30,
         z: isForeground ? Math.random() * 100 : Math.random() * 200,
-        // ✅ FIXED: Ensuring `color` is always a string using fallback operator (??)
-        color: isForeground
-          ? (['white', '#E6E6FA', '#B0C4DE'][Math.floor(Math.random() * 3)] ??
-            'white')
+        color: isForeground 
+          ? ['white', '#E6E6FA', '#B0C4DE'][Math.floor(Math.random() * 3)] ?? 'white'
           : 'rgba(255, 255, 255, 0.15)',
         layer: isForeground ? 'foreground' : 'background',
       }));
 
-    // ✅ FIXED: Proper type assignment
     setParticles([
       ...generateParticles(100, true),
       ...generateParticles(40, false),
     ]);
   }, [prefersReducedMotion, windowSize]);
 
-  // ✅ Mouse movement with corrected typing
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (prefersReducedMotion) return;
+  // ✅ Mouse movement handler
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (prefersReducedMotion) return;
 
-      const rect = e.currentTarget.getBoundingClientRect();
-      setMousePosition({
-        x: (e.clientX - rect.left) / rect.width,
-        y: (e.clientY - rect.top) / rect.height,
-      });
-    },
-    [prefersReducedMotion]
-  );
-
-  // ✅ Prevent double navbar rendering
-  const renderNavBar = () => (
-    <nav
-      className="px-8 py-4 rounded-full bg-[#0B1425] bg-opacity-70 backdrop-blur-sm shadow-lg"
-      role="navigation"
-      aria-label="Main navigation"
-    >
-      <ul className="flex space-x-8 justify-center" role="menubar">
-        {['Nexus', 'Accelerate', 'Disruption', 'Mindset', 'Future-Ready'].map(
-          (label, index) => (
-            <li key={label} role="none">
-              <a
-                href={`#${label.toLowerCase()}`}
-                className={`nav-link text-gray-400 hover:text-gray-300 ${index === 0 ? 'active text-cyan-400' : ''}`}
-                role="menuitem"
-                tabIndex={0}
-              >
-                {label}
-              </a>
-            </li>
-          )
-        )}
-      </ul>
-    </nav>
-  );
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+    });
+  }, [prefersReducedMotion]);
 
   return (
-    <div
-      className="relative w-full h-screen overflow-hidden"
+    <div 
+      className="relative w-full h-screen overflow-hidden" 
       style={{
-        background: `radial-gradient(circle at 50% 50%, #090D1F 20%, #1D2D50 60%, #000000 100%)`,
+        background: `radial-gradient(circle at 50% 50%, #090D1F 20%, #1D2D50 60%, #000000 100%)`
       }}
       onMouseMove={handleMouseMove}
     >
@@ -174,13 +133,8 @@ const EnhancedNexusPage = () => {
         <h1 className="text-6xl font-bold mb-4 text-blue-300 drop-shadow-lg">
           AI Innovation Hub
         </h1>
-        <p className="text-xl text-gray-400">
-          Empowering Digital Transformation
-        </p>
+        <p className="text-xl text-gray-400">Empowering Digital Transformation</p>
       </div>
-
-      {/* ✅ Single Fixed Navigation Section */}
-      <div className="absolute bottom-0 w-full">{renderNavBar()}</div>
     </div>
   );
 };
