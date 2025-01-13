@@ -20,6 +20,30 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* Add carousel-specific utilities */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card-perspective {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+
+  .card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: perspective(1000px) rotateY(-5deg);
+  }
+
+  .card-hover:hover {
+    transform: perspective(1000px) rotateY(-5deg) translateY(-5px);
+  }
 }
 
 /* Enhanced Animations */
@@ -68,6 +92,18 @@
   100% {
     transform: translate3d(0, 0, 1000px) scale(1.5);
     opacity: 0;
+  }
+}
+
+/* Add carousel card animation */
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(-15deg) translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(-5deg) translateX(0);
   }
 }
 
@@ -140,6 +176,16 @@
   transition-duration: 150ms;
 }
 
+/* Solution Card Specific Styles */
+.solution-card {
+  animation: cardEntrance 0.5s ease-out forwards;
+}
+
+.solution-card-content {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 /* Responsive Text Scaling */
 @media (max-width: 640px) {
   h1 {
@@ -160,6 +206,10 @@
   }
 
   .star {
+    animation: none !important;
+  }
+
+  .solution-card {
     animation: none !important;
   }
 }
