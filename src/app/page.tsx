@@ -1,101 +1,188 @@
 'use client';
 
-import React from 'react';
-import { StarField } from '@/components/shared/StarField';
-import { smoothTransition } from '@/lib/animation';
+import React, { useEffect, useState, useCallback } from 'react';
 
-export default function Page() {
+// ✅ Explicitly define the type for a particle
+interface Particle {
+  id: number;
+  initialX: number;
+  initialY: number;
+  size: number;
+  duration: number;
+  delay: number;
+  z: number;
+  color: string;
+  layer: 'foreground' | 'background';
+}
+
+const EnhancedNexusPage = () => {
+  // ✅ State properly typed for TypeScript
+  const [particles, setParticles] = useState<Particle[]>([]);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1920,
+    height: typeof window !== 'undefined' ? window.innerHeight : 1080,
+  });
+
+  // ✅ Window resize handler with correct typing
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // ✅ Motion preference handling with corrected typing
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleMotionPreference = (e: MediaQueryListEvent) =>
+      setPrefersReducedMotion(e.matches);
+
+    mediaQuery.addEventListener('change', handleMotionPreference);
+
+    return () =>
+      mediaQuery.removeEventListener('change', handleMotionPreference);
+  }, []);
+
+  // ✅ Particle generation with corrected type enforcement for 'color'
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setParticles([]);
+      return;
+    }
+
+    const getParticleCount = (baseCount: number) => {
+      const screenArea = windowSize.width * windowSize.height;
+      const baseArea = 1920 * 1080;
+      return Math.floor(baseCount * Math.sqrt(screenArea / baseArea));
+    };
+
+    const generateParticles = (
+      baseCount: number,
+      isForeground: boolean
+    ): Particle[] =>
+      Array.from({ length: getParticleCount(baseCount) }, () => ({
+        id: Math.random(),
+        initialX: (Math.random() - 0.5) * (isForeground ? 200 : 300),
+        initialY: (Math.random() - 0.5) * (isForeground ? 200 : 300),
+        size: isForeground
+          ? Math.random() * 0.5 + 0.2
+          : Math.random() * 1.5 + 1,
+        duration: isForeground
+          ? Math.random() * 20 + 35
+          : Math.random() * 30 + 45,
+        delay: Math.random() * -30,
+        z: isForeground ? Math.random() * 100 : Math.random() * 200,
+        // ✅ FIXED: Ensuring `color` is always a string using fallback operator (??)
+        color: isForeground
+          ? (['white', '#E6E6FA', '#B0C4DE'][Math.floor(Math.random() * 3)] ??
+            'white')
+          : 'rgba(255, 255, 255, 0.15)',
+        layer: isForeground ? 'foreground' : 'background',
+      }));
+
+    // ✅ FIXED: Proper type assignment
+    setParticles([
+      ...generateParticles(100, true),
+      ...generateParticles(40, false),
+    ]);
+  }, [prefersReducedMotion, windowSize]);
+
+  // ✅ Mouse movement with corrected typing
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (prefersReducedMotion) return;
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      setMousePosition({
+        x: (e.clientX - rect.left) / rect.width,
+        y: (e.clientY - rect.top) / rect.height,
+      });
+    },
+    [prefersReducedMotion]
+  );
+
+  // ✅ Prevent double navbar rendering
+  const renderNavBar = () => (
+    <nav
+      className="px-8 py-4 rounded-full bg-[#0B1425] bg-opacity-70 backdrop-blur-sm shadow-lg"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <ul className="flex space-x-8 justify-center" role="menubar">
+        {['Nexus', 'Accelerate', 'Disruption', 'Mindset', 'Future-Ready'].map(
+          (label, index) => (
+            <li key={label} role="none">
+              <a
+                href={`#${label.toLowerCase()}`}
+                className={`nav-link text-gray-400 hover:text-gray-300 ${index === 0 ? 'active text-cyan-400' : ''}`}
+                role="menuitem"
+                tabIndex={0}
+              >
+                {label}
+              </a>
+            </li>
+          )
+        )}
+      </ul>
+    </nav>
+  );
+
   return (
-    <div className="min-h-screen bg-[#090D1F] text-white relative overflow-hidden">
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(circle at 50% 50%, #090D1F 30%, #000000 100%)',
-        }}
-      />
-      <StarField />
-
-      <div className="container mx-auto flex flex-col justify-between h-screen p-8 relative">
-        <div /> {/* Top spacing */}
-        <div className="flex-1 flex flex-col items-center justify-center space-y-6 text-center">
-          <h1
-            className="text-6xl font-bold"
-            style={{
-              color: '#A6C5F7',
-              textShadow: '0 2px 4px rgba(166, 197, 247, 0.2)',
-            }}
-          >
-            AI Innovation Hub
-          </h1>
-          <h2 className="text-2xl text-gray-200 font-light tracking-wide">
-            Talent-Driven Mindset Acceleration
-          </h2>
-          <p className="text-sm text-emerald-300 uppercase tracking-[0.3em]">
-            Innovate.&nbsp;&nbsp;Disrupt.&nbsp;&nbsp;Lead.
-          </p>
-        </div>
-        <nav className="flex justify-center py-8">
-          <div
-            className="px-8 py-4 rounded-full bg-[#0B1425] bg-opacity-70 backdrop-blur-sm"
-            style={{
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-            }}
-          >
-            <ul className="flex space-x-8">
-              {[
-                'Nexus',
-                'Accelerate',
-                'Disruption',
-                'Mindset',
-                'Future-Ready',
-              ].map((item, index) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className={`nav-link ${smoothTransition} ${
-                      index === 0
-                        ? 'text-cyan-400 active'
-                        : 'text-gray-400 hover:text-gray-300'
-                    }`}
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </nav>
+    <div
+      className="relative w-full h-screen overflow-hidden"
+      style={{
+        background: `radial-gradient(circle at 50% 50%, #090D1F 20%, #1D2D50 60%, #000000 100%)`,
+      }}
+      onMouseMove={handleMouseMove}
+    >
+      {/* ✅ Starfield Particle Effect */}
+      <div className="absolute inset-0" style={{ perspective: '500px' }}>
+        {particles.map((particle) => {
+          const zOffset = particle.z * (mousePosition.x - 0.5) * 0.1;
+          return (
+            <div
+              key={particle.id}
+              className="star"
+              style={{
+                position: 'absolute',
+                left: `calc(50% + ${particle.initialX}px)`,
+                top: `calc(50% + ${particle.initialY}px)`,
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+                backgroundColor: particle.color,
+                borderRadius: '50%',
+                animation: `starfieldForward ${particle.duration}s linear infinite`,
+                animationDelay: `${particle.delay}s`,
+                transform: `translateZ(${zOffset}px)`,
+              }}
+            />
+          );
+        })}
       </div>
 
-      <style jsx>{`
-        .nav-link {
-          position: relative;
-          padding: 0.5rem 1rem;
-        }
+      {/* ✅ Content Section */}
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+        <h1 className="text-6xl font-bold mb-4 text-blue-300 drop-shadow-lg">
+          AI Innovation Hub
+        </h1>
+        <p className="text-xl text-gray-400">
+          Empowering Digital Transformation
+        </p>
+      </div>
 
-        .nav-link::after {
-          content: '';
-          position: absolute;
-          bottom: -4px;
-          left: 0;
-          width: 100%;
-          height: 2px;
-          background-color: #06b6d4;
-          transform: scaleX(0);
-          transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .nav-link.active::after {
-          transform: scaleX(1);
-        }
-
-        .nav-link:focus-visible {
-          outline: 2px solid #06b6d4;
-          outline-offset: 4px;
-          border-radius: 4px;
-        }
-      `}</style>
+      {/* ✅ Single Fixed Navigation Section */}
+      <div className="absolute bottom-0 w-full">{renderNavBar()}</div>
     </div>
   );
-}
+};
+
+export default EnhancedNexusPage;
