@@ -12,40 +12,75 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   onSolutionSelect,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   const getCardStyles = (index: number): string => {
     const diff = index - activeIndex;
 
-    // Base styles for all cards
+    // Base styles for all cards with perspective transform
     let styles =
       'absolute transition-all duration-500 ease-in-out w-full max-w-2xl';
 
     if (diff === 0) {
       // Center card
-      return `${styles} left-1/2 -translate-x-1/2 z-30 opacity-100`;
-    } else if (diff === -1) {
-      // Card waiting on the left
-      return `${styles} left-0 -translate-x-3/4 z-20 opacity-70`;
-    } else if (diff === 1) {
-      // Card waiting on the right
-      return `${styles} right-0 translate-x-3/4 z-20 opacity-70`;
-    } else if (diff === -2) {
-      // Far left card
-      return `${styles} left-0 -translate-x-[90%] z-10 opacity-50`;
-    } else if (diff === 2) {
-      // Far right card
-      return `${styles} right-0 translate-x-[90%] z-10 opacity-50`;
-    }
+      return `${styles} left-1/2 -translate-x-1/2 z-30 opacity-100 transform-none`;
+    } else {
+      // Calculate arc position for background cards
+      const radius = 800; // Radius of the arc
+      const angleSpread = 60; // Total angle spread in degrees
+      const angle = (diff * angleSpread) / (solutions.length * 0.75); // Distribute cards along the arc
+      const xPos = Math.sin((angle * Math.PI) / 180) * radius;
+      const zPos = Math.cos((angle * Math.PI) / 180) * radius - radius;
 
-    // Hide other cards
-    return `${styles} opacity-0 pointer-events-none`;
+      return `${styles} left-1/2 transform-gpu
+              translate-x-[calc(-50%+${xPos}px)]
+              translate-z-[${zPos}px]
+              rotateY(${angle}deg)
+              opacity-${Math.max(0, 70 - Math.abs(diff) * 20)}
+              z-${Math.max(0, 20 - Math.abs(diff))}
+              scale-${Math.max(0.7, 1 - Math.abs(diff) * 0.1)}`;
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollLeft);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - startX;
+    const walk = x - scrollLeft;
+    if (Math.abs(walk) > 100) {
+      if (walk > 0 && activeIndex > 0) {
+        setActiveIndex(activeIndex - 1);
+        setIsDragging(false);
+      } else if (walk < 0 && activeIndex < solutions.length - 1) {
+        setActiveIndex(activeIndex + 1);
+        setIsDragging(false);
+      }
+      setScrollLeft(x);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
   };
 
   return (
-    <div className="w-full">
-      <div className="relative h-[480px] flex items-center justify-center overflow-hidden">
-        {/* Cards Container */}
-        <div className="relative w-full h-full flex items-center justify-center">
+    <div className="w-full perspective-1000">
+      <div
+        className="relative h-[480px] flex items-center justify-center"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      >
+        {/* 3D Scene Container */}
+        <div className="relative w-full h-full flex items-center justify-center preserve-3d">
           {solutions.map((solution, index) => (
             <div
               key={solution.id}
@@ -107,6 +142,16 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Scroll Progress Bar */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-slate-800/30 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-blue-500/70 transition-all duration-300"
+            style={{
+              width: `${(activeIndex / (solutions.length - 1)) * 100}%`,
+            }}
+          />
         </div>
 
         {/* Navigation Controls */}
