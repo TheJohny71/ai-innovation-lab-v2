@@ -1,9 +1,16 @@
 import { type FC, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+import { type Solution } from '@/app/accelerate/types';
+
 interface SolutionCarouselProps {
-  solutions: any[];
-  onSolutionSelect: (solution: any) => void;
+  solutions: Solution[];
+  onSolutionSelect: (solution: Solution) => void;
+}
+
+interface SolutionCarouselProps {
+  solutions: Solution[];
+  onSolutionSelect: (solution: Solution) => void;
 }
 
 const SolutionCarousel: FC<SolutionCarouselProps> = ({
@@ -74,16 +81,18 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                         {solution.description}
                       </p>
                       <div className="flex flex-wrap gap-2">
-                        {solution.features.slice(0, 3).map((feature, idx) => (
-                          <span
-                            key={idx}
-                            className="px-3 py-1 rounded-full text-sm
+                        {solution.features
+                          .slice(0, 3)
+                          .map((feature: string, idx: number) => (
+                            <span
+                              key={idx}
+                              className="px-3 py-1 rounded-full text-sm
                                     bg-slate-800/50 text-slate-300 
                                     border border-slate-700/50"
-                          >
-                            {feature}
-                          </span>
-                        ))}
+                            >
+                              {feature}
+                            </span>
+                          ))}
                         {solution.features.length > 3 && (
                           <span
                             className={`px-3 py-1 rounded-full text-sm 
