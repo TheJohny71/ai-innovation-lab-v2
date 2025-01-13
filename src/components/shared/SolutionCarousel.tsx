@@ -1,12 +1,6 @@
 import { type FC, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
 import { type Solution } from '@/app/accelerate/types';
-
-interface SolutionCarouselProps {
-  solutions: Solution[];
-  onSolutionSelect: (solution: Solution) => void;
-}
 
 interface SolutionCarouselProps {
   solutions: Solution[];
@@ -24,17 +18,17 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
     // Base styles for all cards
     let styles =
-      'absolute left-1/2 transform transition-all duration-500 ease-in-out w-full max-w-2xl';
-
-    // Calculate vertical offset based on distance from active
-    const translateY = diff * 64; // 64px offset per position
-    const scale = 1 - Math.abs(diff) * 0.05; // Reduce scale by 5% per position
-    const opacity = 1 - Math.abs(diff) * 0.2; // Reduce opacity by 20% per position
-    const zIndex = 30 - Math.abs(diff); // Higher z-index for center
+      'absolute transform transition-all duration-500 ease-in-out w-full max-w-2xl';
 
     if (Math.abs(diff) <= 2) {
-      return `${styles} -translate-x-1/2 translate-y-[${translateY}px] 
-              z-${zIndex} opacity-${opacity * 100} scale-${scale} 
+      // Calculate horizontal position - cards move left/right from center
+      const translateX = `${diff * 100}%`; // Move cards 100% of width left/right
+      const scale = 1 - Math.abs(diff) * 0.05; // Slight scale reduction for distance
+      const opacity = 1 - Math.abs(diff) * 0.2; // Fade out cards further away
+      const zIndex = 30 - Math.abs(diff);
+
+      return `${styles} left-1/2 -translate-x-1/2 translate-x-[${translateX}] 
+              scale-${scale} opacity-${opacity} z-${zIndex} 
               ${diff === 0 ? 'cursor-pointer' : ''}`;
     }
 
@@ -56,9 +50,8 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
               }
             >
               <div
-                className={`h-full rounded-2xl bg-slate-900/60 border border-white/10 
-                            backdrop-blur-sm ${solution.borderHover} transition-all duration-300 
-                            ${index === activeIndex ? 'hover:bg-white/5' : ''}`}
+                className="h-full rounded-2xl bg-slate-900/60 border border-white/10 
+                            backdrop-blur-sm hover:bg-white/5 transition-all duration-300"
               >
                 <div className="p-8 h-full">
                   <div className="flex flex-col justify-between h-full">
