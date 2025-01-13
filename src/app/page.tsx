@@ -21,7 +21,7 @@ const EnhancedNexusPage = () => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1920,
-    height: typeof window !== 'undefined' ? window.innerHeight : 1080
+    height: typeof window !== 'undefined' ? window.innerHeight : 1080,
   });
 
   // ✅ Window resize handler
@@ -47,7 +47,8 @@ const EnhancedNexusPage = () => {
 
     mediaQuery.addEventListener('change', handleMotionPreference);
 
-    return () => mediaQuery.removeEventListener('change', handleMotionPreference);
+    return () =>
+      mediaQuery.removeEventListener('change', handleMotionPreference);
   }, []);
 
   // ✅ Particle generation (fixed)
@@ -63,17 +64,25 @@ const EnhancedNexusPage = () => {
       return Math.floor(baseCount * Math.sqrt(screenArea / baseArea));
     };
 
-    const generateParticles = (baseCount: number, isForeground: boolean): Particle[] =>
+    const generateParticles = (
+      baseCount: number,
+      isForeground: boolean
+    ): Particle[] =>
       Array.from({ length: getParticleCount(baseCount) }, () => ({
         id: Math.random(),
         initialX: (Math.random() - 0.5) * (isForeground ? 200 : 300),
         initialY: (Math.random() - 0.5) * (isForeground ? 200 : 300),
-        size: isForeground ? Math.random() * 0.5 + 0.2 : Math.random() * 1.5 + 1,
-        duration: isForeground ? Math.random() * 20 + 35 : Math.random() * 30 + 45,
+        size: isForeground
+          ? Math.random() * 0.5 + 0.2
+          : Math.random() * 1.5 + 1,
+        duration: isForeground
+          ? Math.random() * 20 + 35
+          : Math.random() * 30 + 45,
         delay: Math.random() * -30,
         z: isForeground ? Math.random() * 100 : Math.random() * 200,
-        color: isForeground 
-          ? ['white', '#E6E6FA', '#B0C4DE'][Math.floor(Math.random() * 3)] ?? 'white'
+        color: isForeground
+          ? (['white', '#E6E6FA', '#B0C4DE'][Math.floor(Math.random() * 3)] ??
+            'white')
           : 'rgba(255, 255, 255, 0.15)',
         layer: isForeground ? 'foreground' : 'background',
       }));
@@ -85,21 +94,24 @@ const EnhancedNexusPage = () => {
   }, [prefersReducedMotion, windowSize]);
 
   // ✅ Mouse movement handler
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion) return;
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (prefersReducedMotion) return;
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
-    });
-  }, [prefersReducedMotion]);
+      const rect = e.currentTarget.getBoundingClientRect();
+      setMousePosition({
+        x: (e.clientX - rect.left) / rect.width,
+        y: (e.clientY - rect.top) / rect.height,
+      });
+    },
+    [prefersReducedMotion]
+  );
 
   return (
-    <div 
-      className="relative w-full h-screen overflow-hidden" 
+    <div
+      className="relative w-full h-screen overflow-hidden"
       style={{
-        background: `radial-gradient(circle at 50% 50%, #090D1F 20%, #1D2D50 60%, #000000 100%)`
+        background: `radial-gradient(circle at 50% 50%, #090D1F 20%, #1D2D50 60%, #000000 100%)`,
       }}
       onMouseMove={handleMouseMove}
     >
@@ -133,7 +145,9 @@ const EnhancedNexusPage = () => {
         <h1 className="text-6xl font-bold mb-4 text-blue-300 drop-shadow-lg">
           AI Innovation Hub
         </h1>
-        <p className="text-xl text-gray-400">Empowering Digital Transformation</p>
+        <p className="text-xl text-gray-400">
+          Empowering Digital Transformation
+        </p>
       </div>
     </div>
   );
