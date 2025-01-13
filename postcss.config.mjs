@@ -2,7 +2,12 @@
 export default {
   plugins: {
     'postcss-import': {},
-    tailwindcss: {},
-    autoprefixer: {},
+    tailwindcss: {
+      config: './tailwind.config.ts', // Explicitly pointing to the correct Tailwind config
+    },
+    autoprefixer: {
+      flexbox: 'no-2009',
+      grid: 'autoplace',
+    },
   },
 };

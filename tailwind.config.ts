@@ -8,7 +8,6 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   safelist: [
-    // Color classes for solutions
     'bg-purple-500/10',
     'text-purple-400',
     'hover:border-purple-500/30',
@@ -24,14 +23,12 @@ const config: Config = {
     'hover:border-cyan-500/30',
     'from-cyan-500/10',
 
-    // Background and border utilities
     'text-white/80',
     'bg-white/5',
     'hover:bg-white/10',
     'border-white/5',
     'border-white/10',
 
-    // Text colors and styles
     'text-white',
     'text-blue-400',
     'text-gray-300',
@@ -42,18 +39,23 @@ const config: Config = {
     'font-bold',
     'font-medium',
 
-    // Layout classes
     'grid-cols-2',
     'lg:grid-cols-3',
     'gap-8',
     'space-y-2',
     'space-y-3',
+    'space-y-6',
     'px-6',
+    'px-8',
     'py-24',
+    'py-4',
+    'py-8',
+    'py-16',
     'max-w-7xl',
     'mb-16',
     'mb-6',
     'mb-4',
+    'mb-8',
     'mt-6',
     'mt-1',
     'p-8',
@@ -68,7 +70,6 @@ const config: Config = {
     'w-4',
     'h-4',
 
-    // Flex and Grid utilities
     'flex',
     'grid',
     'items-start',
@@ -77,21 +78,25 @@ const config: Config = {
     'justify-center',
     'flex-shrink-0',
     'gap-2',
+    'flex-1',
+    'flex-grow',
+    'flex-col',
 
-    // Animation and transition classes
     'max-h-[500px]',
     'max-h-0',
     'opacity-0',
     'opacity-100',
     'duration-300',
+    'duration-500',
     'ease-in-out',
     'group-hover:opacity-100',
     'transition-all',
     'transition-opacity',
     'transition-colors',
     'transition-transform',
+    'transform-gpu',
+    'will-change-transform',
 
-    // Utility classes
     'rounded-xl',
     'rounded-lg',
     'rounded-full',
@@ -109,6 +114,8 @@ const config: Config = {
     'min-h-screen',
     'bg-slate-900',
     'inline-flex',
+    'backdrop-blur-sm',
+    'bg-opacity-70',
   ],
   theme: {
     extend: {
@@ -118,9 +125,13 @@ const config: Config = {
       },
       animation: {
         starfieldForward: 'starfieldForward var(--duration) linear infinite',
+        'fade-in': 'fadeIn 0.5s ease-out',
+        'slide-in': 'slideIn 0.5s ease-out',
         pulse: 'pulse 8s ease-in-out infinite',
         float: 'float 6s ease-in-out infinite',
         shine: 'shine 8s linear infinite',
+        'enhanced-pulse':
+          'enhancedPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         starfieldForward: {
@@ -128,63 +139,17 @@ const config: Config = {
             transform: 'translate3d(0, 0, -100px) scale(0.05)',
             opacity: '0',
           },
-          '20%': {
-            opacity: 'var(--initial-opacity, 0.2)',
-          },
-          '70%': {
-            opacity: 'var(--max-opacity, 0.8)',
-          },
+          '20%': { opacity: 'var(--initial-opacity, 0.2)' },
+          '70%': { opacity: 'var(--max-opacity, 0.8)' },
           '100%': {
             transform: 'translate3d(0, 0, 1000px) scale(1.5)',
             opacity: '0',
           },
         },
-        pulse: {
-          '0%, 100%': {
-            transform: 'scale(2) rotate(0deg)',
-            opacity: '0.3',
-          },
-          '50%': {
-            transform: 'scale(2.2) rotate(180deg)',
-            opacity: '0.5',
-          },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
-        float: {
-          '0%, 100%': {
-            transform: 'translate(0, 0)',
-          },
-          '50%': {
-            transform: 'translate(0, -20px)',
-          },
-        },
-        shine: {
-          from: {
-            backgroundPosition: '0% center',
-          },
-          to: {
-            backgroundPosition: '200% center',
-          },
-        },
-      },
-      transitionProperty: {
-        'max-height': 'max-height',
-      },
-      backgroundImage: {
-        'gradient-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
-      },
-      transformStyle: {
-        '3d': 'preserve-3d',
-      },
-      perspective: {
-        none: 'none',
-        '500': '500px',
-        '1000': '1000px',
-      },
-      backdropBlur: {
-        xs: '2px',
-      },
-      willChange: {
-        'transform-opacity': 'transform, opacity',
       },
     },
   },
