@@ -18,27 +18,32 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
     // Base styles for all cards
     let styles =
-      'absolute transform transition-all duration-500 ease-in-out w-full max-w-2xl';
+      'absolute transition-all duration-500 ease-in-out w-full max-w-2xl';
 
-    if (Math.abs(diff) <= 2) {
-      // Calculate horizontal position - cards move left/right from center
-      const translateX = `${diff * 100}%`; // Move cards 100% of width left/right
-      const scale = 1 - Math.abs(diff) * 0.05; // Slight scale reduction for distance
-      const opacity = 1 - Math.abs(diff) * 0.2; // Fade out cards further away
-      const zIndex = 30 - Math.abs(diff);
-
-      return `${styles} left-1/2 -translate-x-1/2 translate-x-[${translateX}] 
-              scale-${scale} opacity-${opacity} z-${zIndex} 
-              ${diff === 0 ? 'cursor-pointer' : ''}`;
+    if (diff === 0) {
+      // Center card
+      return `${styles} left-1/2 -translate-x-1/2 z-30 opacity-100`;
+    } else if (diff === -1) {
+      // Card waiting on the left
+      return `${styles} left-0 -translate-x-3/4 z-20 opacity-70`;
+    } else if (diff === 1) {
+      // Card waiting on the right
+      return `${styles} right-0 translate-x-3/4 z-20 opacity-70`;
+    } else if (diff === -2) {
+      // Far left card
+      return `${styles} left-0 -translate-x-[90%] z-10 opacity-50`;
+    } else if (diff === 2) {
+      // Far right card
+      return `${styles} right-0 translate-x-[90%] z-10 opacity-50`;
     }
 
-    // Hide cards too far from active
+    // Hide other cards
     return `${styles} opacity-0 pointer-events-none`;
   };
 
   return (
     <div className="w-full">
-      <div className="relative h-[480px] flex items-center justify-center">
+      <div className="relative h-[480px] flex items-center justify-center overflow-hidden">
         {/* Cards Container */}
         <div className="relative w-full h-full flex items-center justify-center">
           {solutions.map((solution, index) => (
@@ -50,8 +55,9 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
               }
             >
               <div
-                className="h-full rounded-2xl bg-slate-900/60 border border-white/10 
-                            backdrop-blur-sm hover:bg-white/5 transition-all duration-300"
+                className={`h-full rounded-2xl bg-slate-900/60 border border-white/10 
+                            backdrop-blur-sm transition-all duration-300
+                            ${index === activeIndex ? 'hover:bg-white/5' : ''}`}
               >
                 <div className="p-8 h-full">
                   <div className="flex flex-col justify-between h-full">
