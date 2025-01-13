@@ -111,7 +111,7 @@ const EnhancedNexusPage = () => {
     <div
       className="relative w-full h-screen overflow-hidden"
       style={{
-        background: `radial-gradient(circle at 50% 50%, #090D1F 20%, #1D2D50 60%, #000000 100%)`,
+        background: `radial-gradient(circle at 50% 50%, #0B1A36 10%, #000000 60%)`,
       }}
       onMouseMove={handleMouseMove}
     >
@@ -140,13 +140,16 @@ const EnhancedNexusPage = () => {
         })}
       </div>
 
-      {/* ✅ Content Section */}
+      {/* ✅ Restored Title, Subtitle, and Tagline */}
       <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
         <h1 className="text-6xl font-bold mb-4 text-blue-300 drop-shadow-lg">
           AI Innovation Hub
         </h1>
-        <p className="text-xl text-gray-400">
+        <p className="text-xl text-gray-400 mb-6">
           Empowering Digital Transformation
+        </p>
+        <p className="text-sm text-emerald-300 uppercase tracking-widest">
+          Innovate · Disrupt · Lead
         </p>
       </div>
     </div>
