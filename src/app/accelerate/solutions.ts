@@ -1,3 +1,5 @@
+// src/app/accelerate/solutions.ts
+
 import { type Solution } from './types';
 
 export const solutions: Solution[] = [
@@ -29,9 +31,6 @@ export const solutions: Solution[] = [
         'Ensure compliance with automated policy enforcement',
         'Enhance employee experience with instant approvals',
       ],
-      integration:
-        'Seamlessly connects with major HR systems and calendar applications',
-      deployment: 'Cloud-based solution with enterprise-grade security',
     },
   },
   {
@@ -62,9 +61,6 @@ export const solutions: Solution[] = [
         'Enhanced research efficiency',
         'Improved resource utilization',
       ],
-      integration:
-        'Integrates with major legal research platforms and library systems',
-      deployment: 'Secure cloud deployment with on-premise options available',
     },
   },
   {
@@ -95,9 +91,6 @@ export const solutions: Solution[] = [
         'Improved research quality',
         'Reduced training overhead',
       ],
-      integration:
-        'Connects with research databases and knowledge management systems',
-      deployment: 'Cloud-based with secure SSO integration',
     },
   },
   {
@@ -128,9 +121,39 @@ export const solutions: Solution[] = [
         'Accelerated deployment cycles',
         'Enhanced compliance assurance',
       ],
-      integration:
-        'Seamless integration with Azure services and legal tech stack',
-      deployment: 'Flexible deployment options with Azure infrastructure',
+    },
+  },
+  {
+    id: 'sentinel',
+    title: 'Sentinel',
+    subtitle: 'AI Governance',
+    description: 'Ensure Responsible AI Use with Confidence',
+    category: 'Governance',
+    gradient: 'bg-emerald-500/10',
+    textColor: 'text-emerald-400',
+    cardGradient: 'from-emerald-500/10 via-transparent to-transparent',
+    borderHover: 'hover:border-emerald-500/30',
+    features: [
+      'Automated Policy Checks and Enforcement',
+      'Bias and Fairness Auditing Tools',
+      'Real-Time Compliance Monitoring',
+      'AI Performance Benchmarking & Analytics',
+      'Enterprise Security and Access Control',
+      'Data Privacy Safeguards',
+      'Customizable Reporting for Legal and Regulatory Compliance',
+      'Version Control and Documentation Management',
+      'Seamless Integration with Existing AI and Data Systems',
+      'Customizable Risk Scenarios for Policy Simulation',
+    ],
+    details: {
+      overview:
+        'The Sentinel AI Governance Framework provides a secure, structured framework for managing, monitoring, and ensuring responsible AI use within the organization. It enables policy enforcement, risk mitigation, and compliance with both internal standards and external regulations throughout the AI lifecycle.',
+      benefits: [
+        'Proactive Policy Enforcement: Automates the application of company-wide AI policies and standards',
+        'Comprehensive Compliance Monitoring: Continuously tracks AI operations against legal and ethical guidelines',
+        'Risk Management Assurance: Identifies and mitigates risks such as data privacy issues and bias',
+        'Enhanced Transparency: Provides detailed reporting and audit trails for complete oversight',
+      ],
     },
   },
 ];

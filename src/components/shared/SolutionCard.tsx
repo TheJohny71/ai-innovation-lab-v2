@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import type { Solution } from '@/app/accelerate/types'; // Updated import path
+import type { Solution } from '@/app/accelerate/types';
 
 interface SolutionCardProps {
   solution: Solution;

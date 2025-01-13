@@ -14,12 +14,9 @@ export interface Solution {
   details: {
     overview: string;
     benefits: string[];
-    integration: string;
-    deployment: string;
   };
 }
 
-// Add type guards if needed
 export function isSolution(obj: any): obj is Solution {
   return (
     typeof obj === 'object' &&
@@ -35,6 +32,8 @@ export function isSolution(obj: any): obj is Solution {
     typeof obj.borderHover === 'string' &&
     Array.isArray(obj.features) &&
     typeof obj.details === 'object' &&
-    obj.details !== null
+    obj.details !== null &&
+    typeof obj.details.overview === 'string' &&
+    Array.isArray(obj.details.benefits)
   );
 }

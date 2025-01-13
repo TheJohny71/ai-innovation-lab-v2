@@ -36,11 +36,13 @@ export default function AcceleratePage() {
   const handleSolutionClick = (solution: Solution): void => {
     setActiveSolution(solution);
     window.history.pushState({}, '', `/accelerate/${solution.id}`);
+    document.body.style.overflow = 'hidden';
   };
 
   const handleClose = (): void => {
     setActiveSolution(null);
     window.history.pushState({}, '', '/accelerate');
+    document.body.style.overflow = 'auto';
   };
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -53,8 +55,11 @@ export default function AcceleratePage() {
 
   return (
     <BaseLayout>
-      <div className="min-h-screen p-6 flex flex-col">
-        <div className="max-w-7xl mx-auto w-full space-y-6 flex-grow">
+      <div className="min-h-screen p-6 flex flex-col relative">
+        <div
+          className={`max-w-7xl mx-auto w-full space-y-6 flex-grow transition-opacity duration-300
+                     ${activeSolution ? 'opacity-20 pointer-events-none' : ''}`}
+        >
           {/* Title section */}
           <div className="flex justify-between items-start">
             <div>
@@ -76,7 +81,7 @@ export default function AcceleratePage() {
           </div>
 
           {/* Search & Filter Controls */}
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-col sm:flex-row">
             <div className="relative flex-1">
               <Search
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-white"
@@ -122,103 +127,99 @@ export default function AcceleratePage() {
               />
             ))}
           </div>
+        </div>
 
-          {/* Detailed Info Panel */}
-          {activeSolution && (
-            <div className="fixed inset-y-0 right-0 w-full md:w-1/2 lg:w-2/5 bg-slate-900 border-l border-white/10 p-8 overflow-y-auto transform transition-transform duration-500 translate-x-0">
+        {/* Detail Panel with Overlay */}
+        {activeSolution && (
+          <>
+            {/* Dark overlay */}
+            <div
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300"
+              onClick={handleClose}
+            />
+
+            {/* Panel */}
+            <div
+              className="fixed inset-y-0 right-0 w-full md:w-1/2 lg:w-2/5 bg-slate-900/95 backdrop-blur-xl 
+                          border-l border-white/10 p-8 overflow-y-auto transform transition-all duration-500 
+                          translate-x-0 z-50 shadow-2xl"
+            >
               <Button
                 variant="outline"
                 onClick={handleClose}
-                className="absolute top-6 right-6"
+                className="absolute top-6 right-6 hover:bg-white/10"
               >
                 <X size={24} />
               </Button>
 
-              <div className="mt-8">
-                <h2 className="text-3xl font-bold text-white mb-2">
-                  {activeSolution.title}
-                </h2>
-                <p className={`mb-6 ${activeSolution.textColor}`}>
-                  {activeSolution.subtitle}
-                </p>
+              <div className="mt-8 space-y-8">
+                <header>
+                  <h2 className="text-3xl font-bold text-white mb-2">
+                    {activeSolution.title}
+                  </h2>
+                  <p className={`mb-6 ${activeSolution.textColor}`}>
+                    {activeSolution.subtitle}
+                  </p>
+                </header>
 
-                <div className="space-y-8">
-                  <section>
-                    <h3 className="text-xl font-semibold text-white mb-4">
-                      Overview
-                    </h3>
-                    <p className="text-slate-300">
-                      {activeSolution.details.overview}
-                    </p>
-                  </section>
+                <section>
+                  <h3 className="text-xl font-semibold text-white mb-4">
+                    Overview
+                  </h3>
+                  <p className="text-slate-300 leading-relaxed">
+                    {activeSolution.details.overview}
+                  </p>
+                </section>
 
-                  <section>
-                    <h3 className="text-xl font-semibold text-white mb-4">
-                      Key Benefits
-                    </h3>
-                    <ul className="space-y-3">
-                      {activeSolution.details.benefits.map(
-                        (benefit: string, idx: number) => (
-                          <li
-                            key={idx}
-                            className="flex items-start gap-3 text-slate-300"
-                          >
-                            <ArrowRight
-                              className="mt-1 text-purple-400"
-                              size={16}
-                            />
-                            {benefit}
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </section>
+                <section>
+                  <h3 className="text-xl font-semibold text-white mb-4">
+                    Key Benefits
+                  </h3>
+                  <ul className="space-y-3">
+                    {activeSolution.details.benefits.map(
+                      (benefit: string, idx: number) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-3 text-slate-300"
+                        >
+                          <ArrowRight
+                            className={`mt-1 ${activeSolution.textColor}`}
+                            size={16}
+                          />
+                          {benefit}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </section>
 
-                  <section>
-                    <h3 className="text-xl font-semibold text-white mb-4">
-                      All Features
-                    </h3>
-                    <div className="grid grid-cols-1 gap-3">
-                      {activeSolution.features.map(
-                        (feature: string, idx: number) => (
-                          <div
-                            key={idx}
-                            className="p-3 rounded-lg bg-white/5 text-slate-300 border border-white/10"
-                          >
-                            {feature}
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </section>
+                <section>
+                  <h3 className="text-xl font-semibold text-white mb-4">
+                    All Features
+                  </h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    {activeSolution.features.map(
+                      (feature: string, idx: number) => (
+                        <div
+                          key={idx}
+                          className="p-3 rounded-lg bg-white/5 text-slate-300 
+                                   border border-white/10 hover:bg-white/10 
+                                   transition-colors duration-200"
+                        >
+                          {feature}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </section>
 
-                  <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h3 className="text-xl font-semibold text-white mb-4">
-                        Integration
-                      </h3>
-                      <p className="text-slate-300">
-                        {activeSolution.details.integration}
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-white mb-4">
-                        Deployment
-                      </h3>
-                      <p className="text-slate-300">
-                        {activeSolution.details.deployment}
-                      </p>
-                    </div>
-                  </section>
-
-                  <Button className="w-full">
-                    Get Started with {activeSolution.title}
-                  </Button>
-                </div>
+                <Button className="w-full mt-8 hover:bg-white/10">
+                  Get Started with {activeSolution.title}
+                </Button>
               </div>
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
     </BaseLayout>
   );
