@@ -53,7 +53,10 @@ export function StarField({ className = '' }: StarFieldProps) {
       }
     };
 
-    const generateStars = (baseCount: number, isForeground: boolean): Star[] => {
+    const generateStars = (
+      baseCount: number,
+      isForeground: boolean
+    ): Star[] => {
       const stars: Star[] = [];
       const count = getParticleCount(baseCount);
 
@@ -62,11 +65,17 @@ export function StarField({ className = '' }: StarFieldProps) {
           id: i,
           initialX: (Math.random() - 0.5) * (isForeground ? 200 : 300),
           initialY: (Math.random() - 0.5) * (isForeground ? 200 : 300),
-          size: isForeground ? Math.random() * 0.5 + 0.2 : Math.random() * 1.5 + 1,
-          duration: isForeground ? Math.random() * 20 + 35 : Math.random() * 30 + 45,
+          size: isForeground
+            ? Math.random() * 0.5 + 0.2
+            : Math.random() * 1.5 + 1,
+          duration: isForeground
+            ? Math.random() * 20 + 35
+            : Math.random() * 30 + 45,
           delay: Math.random() * -30,
           z: isForeground ? Math.random() * 100 : Math.random() * 200,
-          color: isForeground ? getForegroundColor() : 'rgba(255, 255, 255, 0.15)',
+          color: isForeground
+            ? getForegroundColor()
+            : 'rgba(255, 255, 255, 0.15)',
           layer: isForeground ? 'foreground' : 'background',
         };
         stars.push(star);
@@ -75,13 +84,19 @@ export function StarField({ className = '' }: StarFieldProps) {
     };
 
     if (!prefersReducedMotion) {
-      const newStars = [...generateStars(100, true), ...generateStars(40, false)];
+      const newStars = [
+        ...generateStars(100, true),
+        ...generateStars(40, false),
+      ];
       setStars(newStars);
     }
 
     const handleResize = () => {
       if (!prefersReducedMotion) {
-        const newStars = [...generateStars(100, true), ...generateStars(40, false)];
+        const newStars = [
+          ...generateStars(100, true),
+          ...generateStars(40, false),
+        ];
         setStars(newStars);
       }
     };
@@ -104,7 +119,11 @@ export function StarField({ className = '' }: StarFieldProps) {
   );
 
   return (
-    <div className={`fixed inset-0 ${className}`} style={{ perspective: '500px' }} onMouseMove={handleMouseMove}>
+    <div
+      className={`fixed inset-0 ${className}`}
+      style={{ perspective: '500px' }}
+      onMouseMove={handleMouseMove}
+    >
       {stars.map((star) => {
         const distanceFromMouse = Math.hypot(
           mousePosition.x - (0.5 + star.initialX / window.innerWidth),
@@ -113,7 +132,9 @@ export function StarField({ className = '' }: StarFieldProps) {
 
         const mouseEffect =
           star.layer === 'foreground'
-            ? Math.max(0, 0.15 - distanceFromMouse) * 80 * (1 - Math.pow(distanceFromMouse, 2))
+            ? Math.max(0, 0.15 - distanceFromMouse) *
+              80 *
+              (1 - Math.pow(distanceFromMouse, 2))
             : 0;
 
         const zOffset = star.z * (mousePosition.x - 0.5) * 0.1;
@@ -142,7 +163,11 @@ export function StarField({ className = '' }: StarFieldProps) {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, currentColor 0%, transparent 100%);
+            background: radial-gradient(
+              circle,
+              currentColor 0%,
+              transparent 100%
+            );
             border-radius: 50%;
           }
         `}
