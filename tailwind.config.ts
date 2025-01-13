@@ -116,11 +116,75 @@ const config: Config = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
       },
+      animation: {
+        starfieldForward: 'starfieldForward var(--duration) linear infinite',
+        pulse: 'pulse 8s ease-in-out infinite',
+        float: 'float 6s ease-in-out infinite',
+        shine: 'shine 8s linear infinite',
+      },
+      keyframes: {
+        starfieldForward: {
+          '0%': {
+            transform: 'translate3d(0, 0, -100px) scale(0.05)',
+            opacity: '0',
+          },
+          '20%': {
+            opacity: 'var(--initial-opacity, 0.2)',
+          },
+          '70%': {
+            opacity: 'var(--max-opacity, 0.8)',
+          },
+          '100%': {
+            transform: 'translate3d(0, 0, 1000px) scale(1.5)',
+            opacity: '0',
+          },
+        },
+        pulse: {
+          '0%, 100%': {
+            transform: 'scale(2) rotate(0deg)',
+            opacity: '0.3',
+          },
+          '50%': {
+            transform: 'scale(2.2) rotate(180deg)',
+            opacity: '0.5',
+          },
+        },
+        float: {
+          '0%, 100%': {
+            transform: 'translate(0, 0)',
+          },
+          '50%': {
+            transform: 'translate(0, -20px)',
+          },
+        },
+        shine: {
+          from: {
+            backgroundPosition: '0% center',
+          },
+          to: {
+            backgroundPosition: '200% center',
+          },
+        },
+      },
       transitionProperty: {
         'max-height': 'max-height',
       },
       backgroundImage: {
         'gradient-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
+      },
+      transformStyle: {
+        '3d': 'preserve-3d',
+      },
+      perspective: {
+        none: 'none',
+        '500': '500px',
+        '1000': '1000px',
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
+      willChange: {
+        'transform-opacity': 'transform, opacity',
       },
     },
   },
