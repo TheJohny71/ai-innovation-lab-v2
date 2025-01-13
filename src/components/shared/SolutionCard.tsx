@@ -117,5 +117,3 @@ export const SolutionCard = ({
     </div>
   );
 };
-
-export default SolutionCard;
