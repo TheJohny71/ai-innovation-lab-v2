@@ -57,7 +57,10 @@ const generateStar = (
     initialX: (Math.random() - 0.5) * spreadFactor,
     initialY: (Math.random() - 0.5) * spreadFactor,
     size: isForeground ? Math.random() * 0.5 + 0.2 : Math.random() * 1.5 + 1,
-    duration: isForeground ? Math.random() * 20 + 35 : Math.random() * 30 + 45,
+    // Modified duration values for slower movement
+    duration: isForeground
+      ? Math.random() * 30 + 60 // Changed from 20+35 to 30+60
+      : Math.random() * 40 + 70, // Changed from 30+45 to 40+70
     delay: Math.random() * -30,
     z: isForeground ? Math.random() * 100 : Math.random() * 200,
     color: isForeground
@@ -68,7 +71,7 @@ const generateStar = (
 };
 
 export function StarField({ className = '' }: StarFieldProps): JSX.Element {
-  // State
+  // Rest of the component code remains the same...
   const [stars, setStars] = useState<Star[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -174,7 +177,6 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
 
         const zOffset = star.z * (mousePosition.x - 0.5) * 0.1;
 
-        // Fix: Casting to `React.CSSProperties` and using `[key: string]`
         const starStyle: React.CSSProperties & {
           [key: string]: string | number;
         } = {
