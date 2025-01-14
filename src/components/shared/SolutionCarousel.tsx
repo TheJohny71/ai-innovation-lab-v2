@@ -8,16 +8,16 @@ import React, {
   useEffect,
 } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { type Solution } from '@/app/accelerate/types';
+import type { Solution } from '@/app/accelerate/types';
 import OverviewCard from '@/components/shared/OverviewCard';
 
 interface SolutionCarouselProps {
-  solutions: readonly Solution[];
+  solutions: Solution[];
   onSolutionSelect: (solution: Solution) => void;
 }
 
 const SolutionCarousel: FC<SolutionCarouselProps> = ({
-  solutions = [] as Solution[],
+  solutions = [],
   onSolutionSelect,
 }) => {
   const overviewIndex = solutions.findIndex((s) => s.id === 'welcome');
@@ -27,7 +27,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [scrollLeft, setScrollLeft] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Memoize normalizeIndex function
   const normalizeIndex = useCallback(
     (index: number): number => {
       const len = solutions.length;
@@ -70,7 +69,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       // Calculate rotation for curved effect
       const rotate = diff === 0 ? 0 : diff * baseRotation;
 
-      // Apply transforms
       return {
         transform: `
           translateX(calc(-50% + ${xOffset}px))
