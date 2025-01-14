@@ -1,4 +1,3 @@
-// src/components/shared/SolutionCarousel.tsx
 'use client';
 
 import React, {
@@ -53,47 +52,32 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         diff = altDiff;
       }
 
-      // Adjusted spacing values for tighter grouping
-      const baseSpacing = 300;
-      const stackingOffset = 100;
-      const fanSpread = 30;
+      // Adjusted base values for curved layout
+      const baseSpacing = 250; // Controls card spacing
+      const curveRadius = 800; // Controls the curve depth
+      const baseRotation = 8; // Degrees of rotation for each card
 
-      // Calculate x-position with enhanced fanning
-      let xOffset = diff * baseSpacing;
+      // Calculate position on the curve
+      const theta = (diff * Math.PI) / 8; // Angle in radians
+      const xOffset = Math.sin(theta) * curveRadius;
+      const zOffset = (1 - Math.cos(theta)) * 200; // Z-depth of curve
 
-      // Enhanced fan effect for background cards
-      if (diff < -1) {
-        xOffset =
-          -1 * baseSpacing +
-          (diff + 1) * stackingOffset -
-          Math.abs(diff) * fanSpread;
-      }
-      if (diff > 1) {
-        xOffset =
-          baseSpacing +
-          (diff - 1) * stackingOffset +
-          Math.abs(diff) * fanSpread;
-      }
-
-      // More dramatic scaling for background cards
-      const scale =
-        diff === 0 ? 1 : Math.max(0.5, 0.85 - Math.abs(diff) * 0.12);
-
-      // Progressive opacity with less fade for better visibility
+      // Scale and opacity based on position
+      const scale = diff === 0 ? 1 : Math.max(0.7, 0.9 - Math.abs(diff) * 0.1);
       const opacity =
-        diff === 0 ? 1 : Math.max(0.3, 0.7 - Math.abs(diff) * 0.1);
+        diff === 0 ? 1 : Math.max(0.4, 0.8 - Math.abs(diff) * 0.15);
 
-      // Reverse the Y-offset direction for upward arc
-      const yOffset = -Math.abs(diff) * 25;
+      // Calculate rotation for curved effect
+      const rotate = diff === 0 ? 0 : diff * baseRotation;
 
-      // Adjusted rotation for upward arc effect
-      const rotate = diff === 0 ? 0 : diff * 6;
-
+      // Apply transforms
       return {
-        transform: `translateX(calc(-50% + ${xOffset}px)) 
-                   translateY(${yOffset}px) 
-                   scale(${scale}) 
-                   rotate(${rotate}deg)`,
+        transform: `
+          translateX(calc(-50% + ${xOffset}px))
+          translateZ(${-zOffset}px)
+          scale(${scale})
+          rotateY(${rotate}deg)
+        `,
         opacity,
         zIndex: 20 - Math.abs(diff),
         position: 'absolute',
@@ -103,9 +87,10 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         transition: isDragging
           ? 'none'
           : 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        transformStyle: 'preserve-3d',
       };
     },
-    [activeIndex, isDragging, solutions.length] // Added all required dependencies
+    [activeIndex, isDragging, solutions.length]
   );
 
   const handleMouseDown = useCallback(
@@ -169,15 +154,13 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     [normalizeIndex]
   );
 
-  // Rest of your component code remains the same...
-
   return (
     <div className="w-full">
       <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-[90vw] mt-8">
         {/* Card Container */}
         <div
           ref={containerRef}
-          className="relative w-full h-full flex items-center justify-center"
+          className="relative w-full h-full flex items-center justify-center [perspective:1000px]"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
