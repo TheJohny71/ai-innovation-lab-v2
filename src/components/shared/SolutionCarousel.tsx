@@ -1,4 +1,10 @@
-import React, { type FC, useState, useCallback, useRef } from 'react';
+import React, {
+  type FC,
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+} from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { type Solution } from '@/app/accelerate/types';
 
@@ -28,13 +34,27 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     [activeIndex, solutions.length]
   );
 
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  // Update container width on mount and resize
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
       const diff = index - activeIndex;
 
       // Adjust spacing and center positioning
       const spacing = 100; // Reduced spacing between cards
-      const centerOffset = window.innerWidth / 2;
       const baseTransform = -activeIndex * spacing;
       const cardOffset = index * spacing;
 
