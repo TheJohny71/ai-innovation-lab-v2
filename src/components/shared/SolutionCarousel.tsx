@@ -52,19 +52,32 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       }
 
       // Adjusted base values for curved layout
-      const baseSpacing = 250; // Controls card spacing
-      const curveRadius = 800; // Controls the curve depth
-      const baseRotation = 8; // Degrees of rotation for each card
+      const baseSpacing = 250;
+      const curveRadius = 800;
+      const baseRotation = 8;
 
       // Calculate position on the curve
-      const theta = (diff * Math.PI) / 8; // Angle in radians
+      const theta = (diff * Math.PI) / 8;
       const xOffset = Math.sin(theta) * curveRadius;
-      const zOffset = (1 - Math.cos(theta)) * 200; // Z-depth of curve
+      const zOffset = (1 - Math.cos(theta)) * 200;
 
-      // Scale and opacity based on position
-      const scale = diff === 0 ? 1 : Math.max(0.7, 0.9 - Math.abs(diff) * 0.1);
+      // Enhanced scaling effect for center and near-center cards
+      const centerScaleFactor = 1.15; // Increased scale for center card
+      const scaleDropoff = 0.15; // How quickly the scale decreases
+      const distanceFromCenter = Math.abs(diff);
+
+      // Smooth scale transition based on distance from center
+      const scale =
+        diff === 0
+          ? centerScaleFactor
+          : Math.max(
+              0.85,
+              centerScaleFactor - distanceFromCenter * scaleDropoff
+            );
+
+      // Enhanced opacity transition
       const opacity =
-        diff === 0 ? 1 : Math.max(0.4, 0.8 - Math.abs(diff) * 0.15);
+        diff === 0 ? 1 : Math.max(0.4, 0.9 - distanceFromCenter * 0.2);
 
       // Calculate rotation for curved effect
       const rotate = diff === 0 ? 0 : diff * baseRotation;
@@ -91,6 +104,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     [activeIndex, isDragging, solutions.length]
   );
 
+  // Rest of the component remains the same
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       const container = containerRef.current;
@@ -155,7 +169,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   return (
     <div className="w-full">
       <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-[90vw] mt-8">
-        {/* Card Container */}
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center [perspective:1000px]"
@@ -222,7 +235,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           ))}
         </div>
 
-        {/* Navigation Controls */}
         <div className="absolute -bottom-16 left-0 right-0">
           <div className="flex justify-center items-center space-x-4">
             <button
