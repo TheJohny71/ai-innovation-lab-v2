@@ -26,42 +26,54 @@ const AcceleratePage: FC = () => {
     <BaseLayout>
       <div className="min-h-screen flex flex-col relative">
         <div
-          className={`max-w-7xl mx-auto w-full flex-1 flex flex-col transition-opacity duration-300
-                     ${activeSolution ? 'opacity-20 pointer-events-none' : ''}`}
+          className={`max-w-7xl mx-auto w-full flex-1 flex flex-col transition-all duration-500
+                     ${activeSolution ? 'opacity-20 pointer-events-none blur-sm' : ''}`}
         >
-          {/* Title section */}
-          <div className="text-center mt-12 mb-16">
-            <h1 className="text-4xl font-bold text-white mb-2">
-              AI <span className="text-blue-400">Acceleration</span>
+          {/* Enhanced Title section */}
+          <div className="text-center mt-16 mb-20">
+            <h1 className="text-5xl font-bold text-white mb-3 tracking-tight">
+              AI{' '}
+              <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">
+                Acceleration
+              </span>
             </h1>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              Transform your business with our cutting-edge AI solutions
+            </p>
           </div>
 
-          {/* Centered Carousel */}
-          <div className="flex-1 flex items-center justify-center">
-            <SolutionCarousel
-              solutions={solutions}
-              onSolutionSelect={handleSolutionClick}
-            />
+          {/* Carousel Container with enhanced styling */}
+          <div className="flex-1 flex items-center justify-center -mt-8">
+            <div className="w-full">
+              <SolutionCarousel
+                solutions={solutions}
+                onSolutionSelect={handleSolutionClick}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Detail Panel */}
+        {/* Enhanced Detail Panel */}
         {activeSolution && (
           <>
             <div
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300"
+              className="fixed inset-0 bg-black/50 backdrop-blur-md z-40 
+                       transition-opacity duration-500"
               onClick={handleClose}
             />
 
             <div
-              className="fixed inset-y-0 right-0 w-full md:w-1/2 lg:w-2/5 bg-slate-900/95 backdrop-blur-xl 
-                          border-l border-white/10 p-8 overflow-y-auto transform transition-all duration-500 
-                          translate-x-0 z-50 shadow-2xl"
+              className="fixed inset-y-0 right-0 w-full md:w-1/2 lg:w-2/5 
+                       bg-gradient-to-b from-slate-900/95 to-slate-800/95 
+                       backdrop-blur-2xl border-l border-white/10 
+                       p-8 overflow-y-auto transform transition-all duration-500 
+                       translate-x-0 z-50 shadow-2xl"
             >
               <button
                 onClick={handleClose}
                 className="absolute top-6 right-6 p-2 rounded-full text-slate-400 
-                         hover:text-white hover:bg-white/10 transition-colors"
+                         hover:text-white hover:bg-white/10 hover:scale-105
+                         transition-all duration-300"
               >
                 <X size={24} />
               </button>
@@ -69,18 +81,19 @@ const AcceleratePage: FC = () => {
               <div className="mt-8 space-y-8">
                 <header>
                   <span
-                    className={`text-sm font-medium px-3 py-1 rounded-full 
-                                ${activeSolution.gradient} ${activeSolution.textColor}`}
+                    className={`text-sm font-medium px-4 py-1.5 rounded-full 
+                             ${activeSolution.gradient} ${activeSolution.textColor}
+                             shadow-lg backdrop-blur-md`}
                   >
                     {activeSolution.category}
                   </span>
-                  <h2 className="text-3xl font-bold text-white mt-4">
+                  <h2 className="text-3xl font-bold text-white mt-4 tracking-tight">
                     {activeSolution.title}
                   </h2>
-                  <p className={`mt-2 ${activeSolution.textColor}`}>
+                  <p className={`mt-2 ${activeSolution.textColor} text-lg`}>
                     {activeSolution.subtitle}
                   </p>
-                  <p className="text-slate-300 mt-4">
+                  <p className="text-slate-300 mt-4 leading-relaxed">
                     {activeSolution.description}
                   </p>
                 </header>
@@ -103,10 +116,12 @@ const AcceleratePage: FC = () => {
                       (benefit: string, idx: number) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-3 text-slate-300"
+                          className="flex items-start gap-3 text-slate-300 group"
                         >
                           <ArrowRight
-                            className={`mt-1 ${activeSolution.textColor}`}
+                            className={`mt-1 ${activeSolution.textColor} 
+                                    transition-transform duration-300
+                                    group-hover:translate-x-1`}
                             size={16}
                           />
                           {benefit}
@@ -125,9 +140,9 @@ const AcceleratePage: FC = () => {
                       (feature: string, idx: number) => (
                         <div
                           key={idx}
-                          className="p-3 rounded-lg bg-white/5 text-slate-300 
+                          className="p-4 rounded-xl bg-white/5 text-slate-300 
                                    border border-white/10 hover:bg-white/10 
-                                   transition-colors duration-200"
+                                   transition-all duration-300 hover:scale-[1.02]"
                         >
                           {feature}
                         </div>
@@ -137,8 +152,10 @@ const AcceleratePage: FC = () => {
                 </section>
 
                 <button
-                  className="w-full p-3 rounded-lg border border-white/10 mt-8
-                           text-white hover:bg-white/10 transition-colors"
+                  className="w-full p-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600
+                           text-white hover:from-blue-600 hover:to-blue-700
+                           transition-all duration-300 hover:scale-[1.02]
+                           shadow-lg font-medium"
                 >
                   Get Started with {activeSolution.title}
                 </button>
