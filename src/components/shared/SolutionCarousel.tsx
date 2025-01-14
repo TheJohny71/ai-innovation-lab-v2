@@ -28,17 +28,20 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [scrollLeft, setScrollLeft] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const normalizeIndex = useCallback(
+    (index: number): number => {
+      const len = solutions.length;
+      return ((index % len) + len) % len;
+    },
+    [solutions.length]
+  );
+
   useEffect(() => {
     const handleRouteChange = () => {
       setActiveIndex(overviewIndex);
     };
     return () => handleRouteChange();
   }, [overviewIndex]);
-
-  const normalizeIndex = (index: number): number => {
-    const len = solutions.length;
-    return ((index % len) + len) % len;
-  };
 
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
@@ -100,7 +103,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           : 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
       };
     },
-    [activeIndex, isDragging]
+    [activeIndex, isDragging, solutions.length]
   );
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -145,9 +148,12 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     setIsDragging(false);
   };
 
-  const handleScroll = useCallback((direction: number) => {
-    setActiveIndex((prev) => normalizeIndex(prev + direction));
-  }, []);
+  const handleScroll = useCallback(
+    (direction: number) => {
+      setActiveIndex((prev) => normalizeIndex(prev + direction));
+    },
+    [normalizeIndex]
+  );
 
   return (
     <div className="w-full">
