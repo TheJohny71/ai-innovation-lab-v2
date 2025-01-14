@@ -28,6 +28,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [scrollLeft, setScrollLeft] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Memoize normalizeIndex function
   const normalizeIndex = useCallback(
     (index: number): number => {
       const len = solutions.length;
@@ -52,10 +53,10 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         diff = altDiff;
       }
 
-      // Enhanced spacing values for wider fan effect
-      const baseSpacing = 400;
-      const stackingOffset = 150;
-      const fanSpread = 40;
+      // Adjusted spacing values for tighter grouping
+      const baseSpacing = 300;
+      const stackingOffset = 100;
+      const fanSpread = 30;
 
       // Calculate x-position with enhanced fanning
       let xOffset = diff * baseSpacing;
@@ -75,17 +76,18 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       }
 
       // More dramatic scaling for background cards
-      const scale = diff === 0 ? 1 : Math.max(0.5, 0.8 - Math.abs(diff) * 0.15);
+      const scale =
+        diff === 0 ? 1 : Math.max(0.5, 0.85 - Math.abs(diff) * 0.12);
 
       // Progressive opacity with less fade for better visibility
       const opacity =
-        diff === 0 ? 1 : Math.max(0.3, 0.6 - Math.abs(diff) * 0.1);
+        diff === 0 ? 1 : Math.max(0.3, 0.7 - Math.abs(diff) * 0.1);
 
-      // Enhanced rotation effect
-      const rotate = diff === 0 ? 0 : diff * 8;
+      // Reverse the Y-offset direction for upward arc
+      const yOffset = -Math.abs(diff) * 25;
 
-      // Add slight y-offset for more depth
-      const yOffset = Math.abs(diff) * 10;
+      // Adjusted rotation for upward arc effect
+      const rotate = diff === 0 ? 0 : diff * 6;
 
       return {
         transform: `translateX(calc(-50% + ${xOffset}px)) 
@@ -103,50 +105,62 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           : 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
       };
     },
-    [activeIndex, isDragging, solutions.length]
+    [activeIndex, isDragging, solutions.length] // Added all required dependencies
   );
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    const container = containerRef.current;
-    if (!container) return;
-    setIsDragging(true);
-    setStartX(e.pageX - container.offsetLeft);
-    setScrollLeft(activeIndex);
-  };
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const container = containerRef.current;
+      if (!container) return;
+      setIsDragging(true);
+      setStartX(e.pageX - container.offsetLeft);
+      setScrollLeft(activeIndex);
+    },
+    [activeIndex]
+  );
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const container = containerRef.current;
-    if (!isDragging || !container) return;
-    const x = e.pageX - container.offsetLeft;
-    const walk = (startX - x) / container.offsetWidth;
-    setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
-  };
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const container = containerRef.current;
+      if (!isDragging || !container) return;
+      const x = e.pageX - container.offsetLeft;
+      const walk = (startX - x) / container.offsetWidth;
+      setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
+    },
+    [isDragging, normalizeIndex, scrollLeft, startX]
+  );
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    const container = containerRef.current;
-    const touch = e.touches[0];
-    if (!container || !touch) return;
-    setIsDragging(true);
-    setStartX(touch.pageX - container.offsetLeft);
-    setScrollLeft(activeIndex);
-  };
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      const container = containerRef.current;
+      const touch = e.touches[0];
+      if (!container || !touch) return;
+      setIsDragging(true);
+      setStartX(touch.pageX - container.offsetLeft);
+      setScrollLeft(activeIndex);
+    },
+    [activeIndex]
+  );
 
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    const container = containerRef.current;
-    const touch = e.touches[0];
-    if (!isDragging || !container || !touch) return;
-    const x = touch.pageX - container.offsetLeft;
-    const walk = (startX - x) / container.offsetWidth;
-    setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
-  };
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      const container = containerRef.current;
+      const touch = e.touches[0];
+      if (!isDragging || !container || !touch) return;
+      const x = touch.pageX - container.offsetLeft;
+      const walk = (startX - x) / container.offsetWidth;
+      setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
+    },
+    [isDragging, normalizeIndex, scrollLeft, startX]
+  );
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   const handleScroll = useCallback(
     (direction: number) => {
@@ -154,6 +168,8 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     },
     [normalizeIndex]
   );
+
+  // Rest of your component code remains the same...
 
   return (
     <div className="w-full">
