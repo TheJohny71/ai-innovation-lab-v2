@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { type Solution } from '@/app/accelerate/types';
+import OverviewCard from '@/components/shared/OverviewCard';
 
 interface SolutionCarouselProps {
   solutions: readonly Solution[];
@@ -20,30 +21,44 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   solutions = [] as Solution[],
   onSolutionSelect,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  // Find the overview card index
+  const overviewIndex = solutions.findIndex((s) => s.id === 'welcome');
+
+  const [activeIndex, setActiveIndex] = useState(overviewIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Reset to welcome card when component unmounts or route changes
+  // Reset to overview card when component unmounts or route changes
   useEffect(() => {
     const handleRouteChange = () => {
-      setActiveIndex(0);
+      setActiveIndex(overviewIndex);
     };
 
     return () => {
       handleRouteChange();
     };
-  }, []);
+  }, [overviewIndex]);
+
+  const normalizeIndex = (index: number): number => {
+    const len = solutions.length;
+    return ((index % len) + len) % len; // Handles negative numbers correctly
+  };
 
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
-      const diff = index - activeIndex;
+      const len = solutions.length;
+      // Calculate shortest distance considering wrap-around
+      let diff = index - activeIndex;
+      const altDiff = diff - Math.sign(diff) * len;
+      if (Math.abs(altDiff) < Math.abs(diff)) {
+        diff = altDiff;
+      }
 
       // Increased base spacing for wider fan effect
-      const baseSpacing = 180; // Wider spacing
-      const stackingOffset = 60; // Offset for stacked cards
+      const baseSpacing = 180;
+      const stackingOffset = 60;
 
       // Calculate x-position with enhanced fanning
       let xOffset = diff * baseSpacing;
@@ -97,13 +112,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     const walk = (startX - x) / container.offsetWidth;
     const newIndex = Math.round(scrollLeft + walk * 2);
 
-    if (
-      newIndex !== activeIndex &&
-      newIndex >= 0 &&
-      newIndex < solutions.length
-    ) {
-      setActiveIndex(newIndex);
-    }
+    setActiveIndex(normalizeIndex(newIndex));
   };
 
   const handleMouseUp = () => {
@@ -129,29 +138,16 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     const walk = (startX - x) / container.offsetWidth;
     const newIndex = Math.round(scrollLeft + walk * 2);
 
-    if (
-      newIndex !== activeIndex &&
-      newIndex >= 0 &&
-      newIndex < solutions.length
-    ) {
-      setActiveIndex(newIndex);
-    }
+    setActiveIndex(normalizeIndex(newIndex));
   };
 
   const handleTouchEnd = () => {
     setIsDragging(false);
   };
 
-  const handleScroll = useCallback(
-    (direction: number) => {
-      const newIndex = Math.min(
-        Math.max(0, activeIndex + direction),
-        solutions.length - 1
-      );
-      setActiveIndex(newIndex);
-    },
-    [activeIndex, solutions.length]
-  );
+  const handleScroll = useCallback((direction: number) => {
+    setActiveIndex((prev) => normalizeIndex(prev + direction));
+  }, []);
 
   return (
     <div className="w-full">
@@ -173,48 +169,54 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
               key={solution.id}
               className="absolute left-1/2 w-full max-w-xl px-4 cursor-pointer"
               style={getCardStyles(index)}
-              onClick={() => !isDragging && onSolutionSelect(solution)}
             >
-              <div
-                className={`rounded-2xl border transition-all duration-300
-                         ${index === activeIndex ? 'border-white/20' : 'border-white/10'}
-                         ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800' : 'bg-slate-900'}`}
-              >
-                <div className="p-8">
-                  <span
-                    className={`text-sm font-medium px-3 py-1 rounded-full 
-                             ${solution.gradient} ${solution.textColor} mb-4 inline-block`}
-                  >
-                    {solution.category}
-                  </span>
-                  <h3 className="text-3xl font-bold text-white mt-4">
-                    {solution.title}
-                  </h3>
-                  <p className={`${solution.textColor} text-xl mt-2`}>
-                    {solution.subtitle}
-                  </p>
-                  <p className="text-slate-200 text-lg my-4 line-clamp-2">
-                    {solution.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {solution.features.slice(0, 3).map((feature, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 rounded-full text-sm bg-slate-800 text-slate-200 border border-slate-700"
-                      >
-                        {feature}
-                      </span>
-                    ))}
-                    {solution.features.length > 3 && (
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm ${solution.gradient} ${solution.textColor}`}
-                      >
-                        +{solution.features.length - 3} more
-                      </span>
-                    )}
+              {solution.id === 'welcome' ? (
+                <OverviewCard
+                  onClick={() => !isDragging && onSolutionSelect(solution)}
+                />
+              ) : (
+                <div
+                  onClick={() => !isDragging && onSolutionSelect(solution)}
+                  className={`rounded-2xl border transition-all duration-300
+                           ${index === activeIndex ? 'border-white/20' : 'border-white/10'}
+                           ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800' : 'bg-slate-900'}`}
+                >
+                  <div className="p-8">
+                    <span
+                      className={`text-sm font-medium px-3 py-1 rounded-full 
+                               ${solution.gradient} ${solution.textColor} mb-4 inline-block`}
+                    >
+                      {solution.category}
+                    </span>
+                    <h3 className="text-3xl font-bold text-white mt-4">
+                      {solution.title}
+                    </h3>
+                    <p className={`${solution.textColor} text-xl mt-2`}>
+                      {solution.subtitle}
+                    </p>
+                    <p className="text-slate-200 text-lg my-4 line-clamp-2">
+                      {solution.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {solution.features.slice(0, 3).map((feature, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 rounded-full text-sm bg-slate-800 text-slate-200 border border-slate-700"
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                      {solution.features.length > 3 && (
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm ${solution.gradient} ${solution.textColor}`}
+                        >
+                          +{solution.features.length - 3} more
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           ))}
         </div>
@@ -224,10 +226,8 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           <div className="flex justify-center items-center space-x-4">
             <button
               onClick={() => handleScroll(-1)}
-              disabled={activeIndex === 0}
               className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
-                       text-white hover:bg-slate-700/50 transition-all disabled:opacity-30 
-                       disabled:cursor-not-allowed"
+                       text-white hover:bg-slate-700/50 transition-all"
               aria-label="Previous solution"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -240,7 +240,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                   onClick={() => setActiveIndex(index)}
                   className={`transition-all duration-300 rounded-full 
                             ${
-                              index === activeIndex
+                              index === normalizeIndex(activeIndex)
                                 ? 'w-8 h-2 bg-blue-500'
                                 : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
                             }`}
@@ -251,10 +251,8 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
             <button
               onClick={() => handleScroll(1)}
-              disabled={activeIndex === solutions.length - 1}
               className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
-                       text-white hover:bg-slate-700/50 transition-all disabled:opacity-30 
-                       disabled:cursor-not-allowed"
+                       text-white hover:bg-slate-700/50 transition-all"
               aria-label="Next solution"
             >
               <ChevronRight className="w-5 h-5" />
