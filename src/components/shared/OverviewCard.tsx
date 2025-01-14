@@ -3,37 +3,36 @@
 
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
-
-// Define the Solution type if not imported from elsewhere
-interface Solution {
-  id: string;
-  category: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  features: string[];
-  gradient: string;
-  textColor: string;
-  cardGradient: boolean;
-}
+import { type Solution } from '@/app/accelerate/types';
 
 const defaultSolution: Solution = {
   id: 'welcome',
-  category: 'Overview',
   title: 'AI Solutions Overview',
   subtitle: 'Explore Available Tools',
   description:
     'A collection of specialized AI tools designed to enhance legal research, practice management, and governance.',
+  category: 'Overview',
+  gradient:
+    'bg-gradient-to-r from-blue-500/40 via-indigo-500/30 to-purple-500/40',
+  textColor: 'text-blue-200',
+  cardGradient: 'from-blue-500/10 via-transparent to-transparent',
+  borderHover: 'hover:border-blue-500/30',
   features: [
     'Practice Management Tools',
     'Research Assistance',
     'Knowledge Management',
     'AI Governance',
   ],
-  gradient:
-    'bg-gradient-to-r from-blue-500/40 via-indigo-500/30 to-purple-500/40',
-  textColor: 'text-blue-200',
-  cardGradient: true,
+  details: {
+    overview:
+      'Browse through our collection of AI tools, each designed for specific legal workflows and requirements. Select any card to learn more about individual solutions.',
+    benefits: [
+      'Integrated workflow tools',
+      'Research optimization',
+      'Knowledge organization',
+      'Compliance management',
+    ],
+  },
 };
 
 interface OverviewCardProps {
@@ -84,12 +83,7 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
       {/* Content wrapper with glass effect */}
       <div className="relative h-full">
         {/* Top Banner Section */}
-        <div
-          className={
-            solution.gradient ||
-            'bg-gradient-to-r from-blue-500/40 via-indigo-500/30 to-purple-500/40'
-          }
-        >
+        <div className={solution.gradient}>
           <div className="h-1 w-full" />
         </div>
 
@@ -97,7 +91,7 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
           {/* Header Section */}
           <div className="flex items-start justify-between">
             <span
-              className={`text-sm font-medium px-3 py-1 rounded-full bg-blue-500/30 ${solution.textColor || 'text-blue-200'}`}
+              className={`text-sm font-medium px-3 py-1 rounded-full bg-blue-500/30 ${solution.textColor}`}
             >
               {solution.category}
             </span>
@@ -109,7 +103,7 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
             <h3 className="text-3xl font-bold bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
               {solution.title}
             </h3>
-            <p className={`text-xl ${solution.textColor || 'text-blue-300'}`}>
+            <p className={`text-xl ${solution.textColor}`}>
               {solution.subtitle}
             </p>
             <p className="text-slate-300 text-lg line-clamp-2">

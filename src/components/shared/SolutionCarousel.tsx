@@ -21,68 +21,76 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   solutions = [] as Solution[],
   onSolutionSelect,
 }) => {
-  // Find the overview card index
   const overviewIndex = solutions.findIndex((s) => s.id === 'welcome');
-
   const [activeIndex, setActiveIndex] = useState(overviewIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Reset to overview card when component unmounts or route changes
   useEffect(() => {
     const handleRouteChange = () => {
       setActiveIndex(overviewIndex);
     };
-
-    return () => {
-      handleRouteChange();
-    };
+    return () => handleRouteChange();
   }, [overviewIndex]);
 
   const normalizeIndex = (index: number): number => {
     const len = solutions.length;
-    return ((index % len) + len) % len; // Handles negative numbers correctly
+    return ((index % len) + len) % len;
   };
 
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
       const len = solutions.length;
-      // Calculate shortest distance considering wrap-around
       let diff = index - activeIndex;
       const altDiff = diff - Math.sign(diff) * len;
       if (Math.abs(altDiff) < Math.abs(diff)) {
         diff = altDiff;
       }
 
-      // Increased base spacing for wider fan effect
-      const baseSpacing = 180;
-      const stackingOffset = 60;
+      // Enhanced spacing values for wider fan effect
+      const baseSpacing = 400;
+      const stackingOffset = 150;
+      const fanSpread = 40;
 
       // Calculate x-position with enhanced fanning
       let xOffset = diff * baseSpacing;
 
-      // Enhanced fanning effect for background cards
+      // Enhanced fan effect for background cards
       if (diff < -1) {
         xOffset =
-          -1 * baseSpacing + (diff + 1) * stackingOffset - Math.abs(diff) * 15;
+          -1 * baseSpacing +
+          (diff + 1) * stackingOffset -
+          Math.abs(diff) * fanSpread;
       }
       if (diff > 1) {
         xOffset =
-          baseSpacing + (diff - 1) * stackingOffset + Math.abs(diff) * 15;
+          baseSpacing +
+          (diff - 1) * stackingOffset +
+          Math.abs(diff) * fanSpread;
       }
 
-      // Progressive scaling and opacity based on distance
-      const scale = diff === 0 ? 1 : Math.max(0.7, 0.9 - Math.abs(diff) * 0.1);
+      // More dramatic scaling for background cards
+      const scale = diff === 0 ? 1 : Math.max(0.5, 0.8 - Math.abs(diff) * 0.15);
+
+      // Progressive opacity with less fade for better visibility
       const opacity =
-        diff === 0 ? 1 : Math.max(0.3, 0.6 - Math.abs(diff) * 0.15);
-      const zIndex = 20 - Math.abs(diff);
+        diff === 0 ? 1 : Math.max(0.3, 0.6 - Math.abs(diff) * 0.1);
+
+      // Enhanced rotation effect
+      const rotate = diff === 0 ? 0 : diff * 8;
+
+      // Add slight y-offset for more depth
+      const yOffset = Math.abs(diff) * 10;
 
       return {
-        transform: `translateX(calc(-50% + ${xOffset}px)) scale(${scale})`,
+        transform: `translateX(calc(-50% + ${xOffset}px)) 
+                   translateY(${yOffset}px) 
+                   scale(${scale}) 
+                   rotate(${rotate}deg)`,
         opacity,
-        zIndex,
+        zIndex: 20 - Math.abs(diff),
         position: 'absolute',
         left: '50%',
         width: '100%',
@@ -98,7 +106,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     const container = containerRef.current;
     if (!container) return;
-
     setIsDragging(true);
     setStartX(e.pageX - container.offsetLeft);
     setScrollLeft(activeIndex);
@@ -107,12 +114,9 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const container = containerRef.current;
     if (!isDragging || !container) return;
-
     const x = e.pageX - container.offsetLeft;
     const walk = (startX - x) / container.offsetWidth;
-    const newIndex = Math.round(scrollLeft + walk * 2);
-
-    setActiveIndex(normalizeIndex(newIndex));
+    setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
   };
 
   const handleMouseUp = () => {
@@ -123,7 +127,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     const container = containerRef.current;
     const touch = e.touches[0];
     if (!container || !touch) return;
-
     setIsDragging(true);
     setStartX(touch.pageX - container.offsetLeft);
     setScrollLeft(activeIndex);
@@ -133,12 +136,9 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     const container = containerRef.current;
     const touch = e.touches[0];
     if (!isDragging || !container || !touch) return;
-
     const x = touch.pageX - container.offsetLeft;
     const walk = (startX - x) / container.offsetWidth;
-    const newIndex = Math.round(scrollLeft + walk * 2);
-
-    setActiveIndex(normalizeIndex(newIndex));
+    setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
   };
 
   const handleTouchEnd = () => {
@@ -151,7 +151,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full">
-      <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-6xl mt-8">
+      <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-[90vw] mt-8">
         {/* Card Container */}
         <div
           ref={containerRef}
@@ -169,14 +169,12 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
               key={solution.id}
               className="absolute left-1/2 w-full max-w-xl px-4 cursor-pointer"
               style={getCardStyles(index)}
+              onClick={() => !isDragging && onSolutionSelect(solution)}
             >
               {solution.id === 'welcome' ? (
-                <OverviewCard
-                  onClick={() => !isDragging && onSolutionSelect(solution)}
-                />
+                <OverviewCard solution={solution} />
               ) : (
                 <div
-                  onClick={() => !isDragging && onSolutionSelect(solution)}
                   className={`rounded-2xl border transition-all duration-300
                            ${index === activeIndex ? 'border-white/20' : 'border-white/10'}
                            ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800' : 'bg-slate-900'}`}

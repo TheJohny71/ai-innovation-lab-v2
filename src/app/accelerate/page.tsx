@@ -1,3 +1,4 @@
+// src/app/accelerate/page.tsx
 'use client';
 
 import { type FC, useState } from 'react';
@@ -26,23 +27,23 @@ const AcceleratePage: FC = () => {
     <BaseLayout>
       <div className="min-h-screen flex flex-col relative">
         <div
-          className={`max-w-7xl mx-auto w-full flex-1 flex flex-col transition-all duration-500
+          className={`max-w-7xl mx-auto w-full flex-1 flex flex-col transition-all duration-500 px-8
                      ${activeSolution ? 'opacity-20 pointer-events-none blur-sm' : ''}`}
         >
-          {/* Enhanced Title section */}
-          <div className="text-center mt-16 mb-20">
+          {/* Left-aligned title section */}
+          <div className="mt-16 mb-20">
             <h1 className="text-5xl font-bold text-white mb-3 tracking-tight">
-              AI{' '}
+              <span className="font-extrabold">AI</span>{' '}
               <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">
                 Acceleration
               </span>
             </h1>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+            <p className="text-slate-400 text-lg max-w-2xl">
               Transform your business with our cutting-edge AI solutions
             </p>
           </div>
 
-          {/* Carousel Container with enhanced styling */}
+          {/* Carousel Container */}
           <div className="flex-1 flex items-center justify-center -mt-8">
             <div className="w-full">
               <SolutionCarousel
@@ -53,7 +54,7 @@ const AcceleratePage: FC = () => {
           </div>
         </div>
 
-        {/* Enhanced Detail Panel */}
+        {/* Detail Panel */}
         {activeSolution && (
           <>
             <div
