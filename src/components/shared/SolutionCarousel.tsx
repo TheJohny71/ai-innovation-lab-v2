@@ -46,13 +46,14 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     (index: number): React.CSSProperties => {
       const len = solutions.length;
       let diff = index - activeIndex;
+
+      // Normalize the diff to handle wraparound
       const altDiff = diff - Math.sign(diff) * len;
       if (Math.abs(altDiff) < Math.abs(diff)) {
         diff = altDiff;
       }
 
       // Base values for curved layout
-      const baseSpacing = 250;
       const curveRadius = 800;
       const baseRotation = 8;
 
@@ -61,16 +62,15 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const xOffset = Math.sin(theta) * curveRadius;
       const zOffset = (1 - Math.cos(theta)) * 200;
 
-      // Ensure only the center card is scaled
-      const centerScaleFactor = 1.15; // Scale factor for center card
-      const normalScale = 1.0; // Original size for all non-center cards
-      const scale = Math.abs(diff) < 0.01 ? centerScaleFactor : normalScale;
+      // Scale only the exact center card
+      const isCenter = index === normalizeIndex(activeIndex);
+      const scale = isCenter ? 1.15 : 1.0;
 
-      // Simpler opacity transition
-      const opacity = Math.abs(diff) < 0.01 ? 1 : 0.8;
+      // Enhanced opacity for better visibility
+      const opacity = isCenter ? 1 : 0.7;
 
-      // Calculate rotation for curved effect
-      const rotate = diff === 0 ? 0 : diff * baseRotation;
+      // Calculate rotation
+      const rotate = isCenter ? 0 : diff * baseRotation;
 
       return {
         transform: `
@@ -87,11 +87,11 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         maxWidth: '32rem',
         transition: isDragging
           ? 'none'
-          : 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+          : 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         transformStyle: 'preserve-3d',
       };
     },
-    [activeIndex, isDragging, solutions.length]
+    [activeIndex, isDragging, normalizeIndex]
   );
 
   const handleMouseDown = useCallback(
