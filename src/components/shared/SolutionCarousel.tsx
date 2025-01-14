@@ -52,10 +52,16 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
       const diff = index - activeIndex;
-      const spacing = 380; // Width of a card plus desired gap
 
-      // Calculate the transform to position cards
-      let xTransform = diff * spacing;
+      // Base spacing between cards when they're in the normal position
+      const baseSpacing = 120; // Smaller base spacing
+
+      // Calculate x-position with stacking for off-screen cards
+      let xOffset = diff * baseSpacing;
+
+      // Stack cards more tightly when they're further from center
+      if (diff < -1) xOffset = -1 * baseSpacing + (diff + 1) * 40;
+      if (diff > 1) xOffset = baseSpacing + (diff - 1) * 40;
 
       // Calculate scale and opacity based on distance from center
       const scale = diff === 0 ? 1 : 0.85;
@@ -63,11 +69,11 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const zIndex = 20 - Math.abs(diff);
 
       return {
-        transform: `translateX(calc(${xTransform}px - 50%))`,
+        transform: `translateX(calc(-50% + ${xOffset}px)) scale(${scale})`,
         opacity,
         zIndex,
         position: 'absolute',
-        left: '50%', // Center point
+        left: '50%',
         width: '100%',
         maxWidth: '32rem',
         transition: isDragging
@@ -142,11 +148,11 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full">
-      <div className="relative h-[480px] flex items-center justify-center mx-auto w-full max-w-[1400px] mt-8">
+      <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-6xl mt-8">
         {/* Card Container */}
         <div
           ref={containerRef}
-          className="relative w-full h-full flex items-center justify-center overflow-visible"
+          className="relative w-full h-full flex items-center justify-center"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
