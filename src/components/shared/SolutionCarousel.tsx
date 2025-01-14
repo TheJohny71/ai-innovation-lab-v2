@@ -1,3 +1,6 @@
+// src/components/shared/SolutionCarousel.tsx
+'use client';
+
 import React, {
   type FC,
   useState,
@@ -23,49 +26,42 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [scrollLeft, setScrollLeft] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = useCallback(
-    (direction: number) => {
-      const newIndex = Math.min(
-        Math.max(0, activeIndex + direction),
-        solutions.length - 1
-      );
-      setActiveIndex(newIndex);
-    },
-    [activeIndex, solutions.length]
-  );
-
-  const [containerWidth, setContainerWidth] = useState(0);
-
-  // Update container width on mount and resize
+  // Reset to welcome card when component unmounts or route changes
   useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
-      }
+    const handleRouteChange = () => {
+      setActiveIndex(0);
     };
 
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
+    return () => {
+      handleRouteChange();
+    };
   }, []);
 
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
       const diff = index - activeIndex;
 
-      // Base spacing between cards when they're in the normal position
-      const baseSpacing = 120; // Smaller base spacing
+      // Increased base spacing for wider fan effect
+      const baseSpacing = 180; // Wider spacing
+      const stackingOffset = 60; // Offset for stacked cards
 
-      // Calculate x-position with stacking for off-screen cards
+      // Calculate x-position with enhanced fanning
       let xOffset = diff * baseSpacing;
 
-      // Stack cards more tightly when they're further from center
-      if (diff < -1) xOffset = -1 * baseSpacing + (diff + 1) * 40;
-      if (diff > 1) xOffset = baseSpacing + (diff - 1) * 40;
+      // Enhanced fanning effect for background cards
+      if (diff < -1) {
+        xOffset =
+          -1 * baseSpacing + (diff + 1) * stackingOffset - Math.abs(diff) * 15;
+      }
+      if (diff > 1) {
+        xOffset =
+          baseSpacing + (diff - 1) * stackingOffset + Math.abs(diff) * 15;
+      }
 
-      // Calculate scale and opacity based on distance from center
-      const scale = diff === 0 ? 1 : 0.85;
-      const opacity = diff === 0 ? 1 : 0.5;
+      // Progressive scaling and opacity based on distance
+      const scale = diff === 0 ? 1 : Math.max(0.7, 0.9 - Math.abs(diff) * 0.1);
+      const opacity =
+        diff === 0 ? 1 : Math.max(0.3, 0.6 - Math.abs(diff) * 0.15);
       const zIndex = 20 - Math.abs(diff);
 
       return {
@@ -146,6 +142,17 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     setIsDragging(false);
   };
 
+  const handleScroll = useCallback(
+    (direction: number) => {
+      const newIndex = Math.min(
+        Math.max(0, activeIndex + direction),
+        solutions.length - 1
+      );
+      setActiveIndex(newIndex);
+    },
+    [activeIndex, solutions.length]
+  );
+
   return (
     <div className="w-full">
       <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-6xl mt-8">
@@ -164,7 +171,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           {solutions.map((solution, index) => (
             <div
               key={solution.id}
-              className="px-4"
+              className="absolute left-1/2 w-full max-w-xl px-4 cursor-pointer"
               style={getCardStyles(index)}
               onClick={() => !isDragging && onSolutionSelect(solution)}
             >

@@ -4,6 +4,34 @@ import { type Solution } from './types';
 
 export const solutions: Solution[] = [
   {
+    id: 'welcome',
+    title: 'AI Solutions Overview',
+    subtitle: 'Explore Available Tools',
+    description:
+      'A collection of specialized AI tools designed to enhance legal research, practice management, and governance.',
+    category: 'Overview',
+    gradient: 'bg-blue-500/10',
+    textColor: 'text-blue-400',
+    cardGradient: 'from-blue-500/10 via-transparent to-transparent',
+    borderHover: 'hover:border-blue-500/30',
+    features: [
+      'Practice Management Tools',
+      'Research Assistance',
+      'Knowledge Management',
+      'AI Governance',
+    ],
+    details: {
+      overview:
+        'Browse through our collection of AI tools, each designed for specific legal workflows and requirements. Select any card to learn more about individual solutions.',
+      benefits: [
+        'Integrated workflow tools',
+        'Research optimization',
+        'Knowledge organization',
+        'Compliance management',
+      ],
+    },
+  },
+  {
     id: 'alfie',
     title: 'Alfie',
     subtitle: 'Modern Leave Management',
