@@ -1,6 +1,6 @@
 // src/types/metrics.ts
-import { ComponentProps, ComponentType } from 'react';
-import { LucideIcon } from 'lucide-react';
+import type { ComponentProps, ComponentType } from 'react';
+import type { LucideIcon } from 'lucide-react';
 
 export interface MetricCardStats {
   value: string;
@@ -50,16 +50,15 @@ export interface Solution {
   textColor: string;
   cardGradient: string;
   features: string[];
-  borderHover?: string; // <-- now optional
-
-  backgroundColor?: string; // Optional background color for card
-  accentColor?: string; // Optional accent color for icons/borders
-  secondaryColor?: string; // Optional secondary color for gradients
-  priority?: number; // Optional priority for sorting
-  status?: 'active' | 'beta' | 'development'; // Optional status indicator
-  tags?: string[]; // Optional tags for additional filtering
-  lastUpdated?: string; // Optional timestamp for sorting by update
-  detailedDescription?: string; // Optional longer description for expanded view
+  borderHover?: string;
+  backgroundColor?: string;
+  accentColor?: string;
+  secondaryColor?: string;
+  priority?: number;
+  status?: 'active' | 'beta' | 'development';
+  tags?: string[];
+  lastUpdated?: string;
+  detailedDescription?: string;
   links?: {
     documentation?: string;
     demo?: string;

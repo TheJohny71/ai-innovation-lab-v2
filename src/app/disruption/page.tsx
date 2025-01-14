@@ -15,14 +15,14 @@ const dashboardData: Metrics = {
     {
       icon: Box,
       title: 'Total Initiatives',
-      value: '31',
+      value: '33',
       subtitle: 'Verified',
-      trend: 'From 25 firms',
+      trend: 'From 27 firms',
       stats: {
-        'Unique Firms': '25',
-        'AmLaw 100': '19',
-        'Active Projects': '24',
-        'Pilot Phase': '7',
+        'Unique Firms': '27',
+        'AmLaw 100': '23',
+        'Active Projects': '22',
+        'Pilot Phase': '1',
       },
       gradient: {
         background: 'bg-slate-800/40',
@@ -35,14 +35,14 @@ const dashboardData: Metrics = {
     {
       icon: Globe,
       title: 'Global Reach',
-      value: '18',
+      value: '16',
       subtitle: 'deployments',
-      trend: 'Global Scale 58%',
+      trend: 'Global Scale 48%',
       stats: {
-        'Global Firms': '18',
-        'US Focus': '13',
-        Coverage: '58%',
-        Regions: '4',
+        'Global Firms': '16',
+        'US Focus': '7',
+        Coverage: '48%',
+        Regions: '7',
       },
       gradient: {
         background: 'bg-slate-800/40',
@@ -55,14 +55,14 @@ const dashboardData: Metrics = {
     {
       icon: TrendingUp,
       title: 'Active Projects',
-      value: '24',
+      value: '22',
       subtitle: 'in production',
-      trend: '77% Active Rate',
+      trend: '66.67% Active Rate',
       stats: {
-        Development: '4',
-        Planning: '3',
-        'Success Rate': '89%',
-        'Use Cases': '12',
+        Development: '0',
+        Planning: '0',
+        'Success Rate': '66.67%',
+        'Use Cases': '14',
       },
       gradient: {
         background: 'bg-slate-800/40',
@@ -75,14 +75,14 @@ const dashboardData: Metrics = {
     {
       icon: Zap,
       title: '2024 Launches',
-      value: '8',
+      value: '6',
       subtitle: 'in 2024',
-      trend: 'vs. 6 in 2023',
+      trend: 'vs. 4 in 2023',
       stats: {
-        '2023 Total': '6',
-        '2022 Total': '4',
-        Growth: '33%',
-        Pipeline: '5',
+        '2023 Total': '4',
+        '2022 Total': '3',
+        Growth: '50%',
+        Pipeline: '0',
       },
       gradient: {
         background: 'bg-slate-800/40',
@@ -94,22 +94,22 @@ const dashboardData: Metrics = {
     },
   ],
   implementationTypes: [
-    { name: 'Document Analysis & Review', count: 14 },
-    { name: 'Legal Research', count: 12 },
-    { name: 'Contract Management', count: 10 },
-    { name: 'Knowledge Management', count: 8 },
-    { name: 'Client Service Automation', count: 6 },
+    { name: 'Document Analysis & Review', count: 4 },
+    { name: 'Legal Research', count: 6 },
+    { name: 'Contract Management', count: 2 },
+    { name: 'Knowledge Management', count: 0 },
+    { name: 'Client Service Automation', count: 2 },
   ],
   deploymentStatus: {
-    active: 24,
-    development: 4,
-    planning: 3,
+    active: 22,
+    development: 0,
+    planning: 0,
   },
   regionalImpact: [
-    { name: 'North America', value: 42, color: '#94A3B8' },
-    { name: 'Europe', value: 28, color: '#64748B' },
-    { name: 'Asia Pacific', value: 18, color: '#475569' },
-    { name: 'Other Regions', value: 12, color: '#334155' },
+    { name: 'North America', value: 21.21, color: '#94A3B8' },
+    { name: 'Europe', value: 3.03, color: '#64748B' },
+    { name: 'Asia Pacific', value: 0, color: '#475569' },
+    { name: 'Other Regions', value: 75.76, color: '#334155' },
   ],
 };
 
@@ -137,7 +137,7 @@ export default function DisruptionPage() {
           {/* Info Box */}
           <div className="bg-slate-800/30 backdrop-blur-sm rounded-lg p-4 text-sm text-gray-300">
             <p className="mb-1">
-              Analysis derived from 31 verified AI implementations across
+              Analysis derived from 33 verified AI implementations across
               leading global law firms.
             </p>
             <div className="flex justify-between">
@@ -145,7 +145,7 @@ export default function DisruptionPage() {
                 Data aggregated using AI-powered research across publicly
                 available sources.
               </p>
-              <p className="text-gray-400">Last updated: December 26, 2024</p>
+              <p className="text-gray-400">Last updated: January 14, 2025</p>
             </div>
           </div>
 
