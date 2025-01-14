@@ -1,172 +1,270 @@
-// src/app/accelerate/page.tsx
 'use client';
 
-import { type FC, useState } from 'react';
-import { ArrowRight, X } from 'lucide-react';
-import { BaseLayout } from '@/components/shared/BaseLayout';
-import { solutions } from './solutions';
-import { type Solution } from './types';
-import SolutionCarousel from '@/components/shared/SolutionCarousel';
+import React, {
+  type FC,
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+} from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { type Solution } from '@/app/accelerate/types';
+import OverviewCard from '@/components/shared/OverviewCard';
 
-const AcceleratePage: FC = () => {
-  const [activeSolution, setActiveSolution] = useState<Solution | null>(null);
+interface SolutionCarouselProps {
+  solutions: readonly Solution[];
+  onSolutionSelect: (solution: Solution) => void;
+}
 
-  const handleSolutionClick = (solution: Solution): void => {
-    setActiveSolution(solution);
-    window.history.pushState({}, '', `/accelerate/${solution.id}`);
-    document.body.style.overflow = 'hidden';
-  };
+const SolutionCarousel: FC<SolutionCarouselProps> = ({
+  solutions = [] as Solution[],
+  onSolutionSelect,
+}) => {
+  const overviewIndex = solutions.findIndex((s) => s.id === 'welcome');
+  const [activeIndex, setActiveIndex] = useState(overviewIndex);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleClose = (): void => {
-    setActiveSolution(null);
-    window.history.pushState({}, '', '/accelerate');
-    document.body.style.overflow = 'auto';
-  };
+  // Memoize normalizeIndex function
+  const normalizeIndex = useCallback(
+    (index: number): number => {
+      const len = solutions.length;
+      return ((index % len) + len) % len;
+    },
+    [solutions.length]
+  );
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setActiveIndex(overviewIndex);
+    };
+    return () => handleRouteChange();
+  }, [overviewIndex]);
+
+  const getCardStyles = useCallback(
+    (index: number): React.CSSProperties => {
+      const len = solutions.length;
+      let diff = index - activeIndex;
+      const altDiff = diff - Math.sign(diff) * len;
+      if (Math.abs(altDiff) < Math.abs(diff)) {
+        diff = altDiff;
+      }
+
+      // Adjusted base values for curved layout
+      const baseSpacing = 250; // Controls card spacing
+      const curveRadius = 800; // Controls the curve depth
+      const baseRotation = 8; // Degrees of rotation for each card
+
+      // Calculate position on the curve
+      const theta = (diff * Math.PI) / 8; // Angle in radians
+      const xOffset = Math.sin(theta) * curveRadius;
+      const zOffset = (1 - Math.cos(theta)) * 200; // Z-depth of curve
+
+      // Scale and opacity based on position
+      const scale = diff === 0 ? 1 : Math.max(0.7, 0.9 - Math.abs(diff) * 0.1);
+      const opacity =
+        diff === 0 ? 1 : Math.max(0.4, 0.8 - Math.abs(diff) * 0.15);
+
+      // Calculate rotation for curved effect
+      const rotate = diff === 0 ? 0 : diff * baseRotation;
+
+      // Apply transforms
+      return {
+        transform: `
+          translateX(calc(-50% + ${xOffset}px))
+          translateZ(${-zOffset}px)
+          scale(${scale})
+          rotateY(${rotate}deg)
+        `,
+        opacity,
+        zIndex: 20 - Math.abs(diff),
+        position: 'absolute',
+        left: '50%',
+        width: '100%',
+        maxWidth: '32rem',
+        transition: isDragging
+          ? 'none'
+          : 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        transformStyle: 'preserve-3d',
+      };
+    },
+    [activeIndex, isDragging, solutions.length]
+  );
+
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const container = containerRef.current;
+      if (!container) return;
+      setIsDragging(true);
+      setStartX(e.pageX - container.offsetLeft);
+      setScrollLeft(activeIndex);
+    },
+    [activeIndex]
+  );
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const container = containerRef.current;
+      if (!isDragging || !container) return;
+      const x = e.pageX - container.offsetLeft;
+      const walk = (startX - x) / container.offsetWidth;
+      setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
+    },
+    [isDragging, normalizeIndex, scrollLeft, startX]
+  );
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      const container = containerRef.current;
+      const touch = e.touches[0];
+      if (!container || !touch) return;
+      setIsDragging(true);
+      setStartX(touch.pageX - container.offsetLeft);
+      setScrollLeft(activeIndex);
+    },
+    [activeIndex]
+  );
+
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      const container = containerRef.current;
+      const touch = e.touches[0];
+      if (!isDragging || !container || !touch) return;
+      const x = touch.pageX - container.offsetLeft;
+      const walk = (startX - x) / container.offsetWidth;
+      setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
+    },
+    [isDragging, normalizeIndex, scrollLeft, startX]
+  );
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleScroll = useCallback(
+    (direction: number) => {
+      setActiveIndex((prev) => normalizeIndex(prev + direction));
+    },
+    [normalizeIndex]
+  );
 
   return (
-    <BaseLayout>
-      <div className="min-h-screen flex flex-col relative">
+    <div className="w-full">
+      <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-[90vw] mt-8">
+        {/* Card Container */}
         <div
-          className={`max-w-7xl mx-auto w-full flex-1 flex flex-col transition-all duration-500 px-8
-                     ${activeSolution ? 'opacity-20 pointer-events-none blur-sm' : ''}`}
+          ref={containerRef}
+          className="relative w-full h-full flex items-center justify-center [perspective:1000px]"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
-          {/* Left-aligned title section */}
-          <div className="mt-16 mb-20">
-            <h1 className="text-5xl font-bold text-white mb-3 tracking-tight">
-              <span className="font-extrabold">AI</span>{' '}
-              <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">
-                Acceleration
-              </span>
-            </h1>
-            <p className="text-slate-400 text-lg max-w-2xl">
-              Transform your business with our cutting-edge AI solutions
-            </p>
-          </div>
-
-          {/* Carousel Container */}
-          <div className="flex-1 flex items-center justify-center -mt-8">
-            <div className="w-full">
-              <SolutionCarousel
-                solutions={solutions}
-                onSolutionSelect={handleSolutionClick}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Detail Panel */}
-        {activeSolution && (
-          <>
+          {solutions.map((solution, index) => (
             <div
-              className="fixed inset-0 bg-black/50 backdrop-blur-md z-40 
-                       transition-opacity duration-500"
-              onClick={handleClose}
-            />
-
-            <div
-              className="fixed inset-y-0 right-0 w-full md:w-1/2 lg:w-2/5 
-                       bg-gradient-to-b from-slate-900/95 to-slate-800/95 
-                       backdrop-blur-2xl border-l border-white/10 
-                       p-8 overflow-y-auto transform transition-all duration-500 
-                       translate-x-0 z-50 shadow-2xl"
+              key={solution.id}
+              className="absolute left-1/2 w-full max-w-xl px-4 cursor-pointer"
+              style={getCardStyles(index)}
+              onClick={() => !isDragging && onSolutionSelect(solution)}
             >
-              <button
-                onClick={handleClose}
-                className="absolute top-6 right-6 p-2 rounded-full text-slate-400 
-                         hover:text-white hover:bg-white/10 hover:scale-105
-                         transition-all duration-300"
-              >
-                <X size={24} />
-              </button>
-
-              <div className="mt-8 space-y-8">
-                <header>
-                  <span
-                    className={`text-sm font-medium px-4 py-1.5 rounded-full 
-                             ${activeSolution.gradient} ${activeSolution.textColor}
-                             shadow-lg backdrop-blur-md`}
-                  >
-                    {activeSolution.category}
-                  </span>
-                  <h2 className="text-3xl font-bold text-white mt-4 tracking-tight">
-                    {activeSolution.title}
-                  </h2>
-                  <p className={`mt-2 ${activeSolution.textColor} text-lg`}>
-                    {activeSolution.subtitle}
-                  </p>
-                  <p className="text-slate-300 mt-4 leading-relaxed">
-                    {activeSolution.description}
-                  </p>
-                </header>
-
-                <section>
-                  <h3 className="text-xl font-semibold text-white mb-4">
-                    Overview
-                  </h3>
-                  <p className="text-slate-300 leading-relaxed">
-                    {activeSolution.details.overview}
-                  </p>
-                </section>
-
-                <section>
-                  <h3 className="text-xl font-semibold text-white mb-4">
-                    Key Benefits
-                  </h3>
-                  <ul className="space-y-3">
-                    {activeSolution.details.benefits.map(
-                      (benefit: string, idx: number) => (
-                        <li
+              {solution.id === 'welcome' ? (
+                <OverviewCard solution={solution} />
+              ) : (
+                <div
+                  className={`rounded-2xl border transition-all duration-300
+                           ${index === activeIndex ? 'border-white/20' : 'border-white/10'}
+                           ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800' : 'bg-slate-900'}`}
+                >
+                  <div className="p-8">
+                    <span
+                      className={`text-sm font-medium px-3 py-1 rounded-full 
+                               ${solution.gradient} ${solution.textColor} mb-4 inline-block`}
+                    >
+                      {solution.category}
+                    </span>
+                    <h3 className="text-3xl font-bold text-white mt-4">
+                      {solution.title}
+                    </h3>
+                    <p className={`${solution.textColor} text-xl mt-2`}>
+                      {solution.subtitle}
+                    </p>
+                    <p className="text-slate-200 text-lg my-4 line-clamp-2">
+                      {solution.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {solution.features.slice(0, 3).map((feature, idx) => (
+                        <span
                           key={idx}
-                          className="flex items-start gap-3 text-slate-300 group"
-                        >
-                          <ArrowRight
-                            className={`mt-1 ${activeSolution.textColor} 
-                                    transition-transform duration-300
-                                    group-hover:translate-x-1`}
-                            size={16}
-                          />
-                          {benefit}
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </section>
-
-                <section>
-                  <h3 className="text-xl font-semibold text-white mb-4">
-                    Features
-                  </h3>
-                  <div className="grid grid-cols-1 gap-3">
-                    {activeSolution.features.map(
-                      (feature: string, idx: number) => (
-                        <div
-                          key={idx}
-                          className="p-4 rounded-xl bg-white/5 text-slate-300 
-                                   border border-white/10 hover:bg-white/10 
-                                   transition-all duration-300 hover:scale-[1.02]"
+                          className="px-3 py-1 rounded-full text-sm bg-slate-800 text-slate-200 border border-slate-700"
                         >
                           {feature}
-                        </div>
-                      )
-                    )}
+                        </span>
+                      ))}
+                      {solution.features.length > 3 && (
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm ${solution.gradient} ${solution.textColor}`}
+                        >
+                          +{solution.features.length - 3} more
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </section>
-
-                <button
-                  className="w-full p-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600
-                           text-white hover:from-blue-600 hover:to-blue-700
-                           transition-all duration-300 hover:scale-[1.02]
-                           shadow-lg font-medium"
-                >
-                  Get Started with {activeSolution.title}
-                </button>
-              </div>
+                </div>
+              )}
             </div>
-          </>
-        )}
+          ))}
+        </div>
+
+        {/* Navigation Controls */}
+        <div className="absolute -bottom-16 left-0 right-0">
+          <div className="flex justify-center items-center space-x-4">
+            <button
+              onClick={() => handleScroll(-1)}
+              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
+                       text-white hover:bg-slate-700/50 transition-all"
+              aria-label="Previous solution"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            <div className="flex space-x-2">
+              {solutions.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveIndex(index)}
+                  className={`transition-all duration-300 rounded-full 
+                            ${
+                              index === normalizeIndex(activeIndex)
+                                ? 'w-8 h-2 bg-blue-500'
+                                : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
+                            }`}
+                  aria-label={`Go to solution ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => handleScroll(1)}
+              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
+                       text-white hover:bg-slate-700/50 transition-all"
+              aria-label="Next solution"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
       </div>
-    </BaseLayout>
+    </div>
   );
 };
 
-export default AcceleratePage;
+export default SolutionCarousel;
