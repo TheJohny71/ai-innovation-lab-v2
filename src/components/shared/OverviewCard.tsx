@@ -4,7 +4,21 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 
-const defaultSolution = {
+// Define the Solution type if not imported from elsewhere
+interface Solution {
+  id: string;
+  category: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  features: string[];
+  gradient: string;
+  textColor: string;
+  cardGradient: boolean;
+}
+
+const defaultSolution: Solution = {
+  id: 'welcome',
   category: 'Overview',
   title: 'AI Solutions Overview',
   subtitle: 'Explore Available Tools',
@@ -16,23 +30,29 @@ const defaultSolution = {
     'Knowledge Management',
     'AI Governance',
   ],
+  gradient:
+    'bg-gradient-to-r from-blue-500/40 via-indigo-500/30 to-purple-500/40',
+  textColor: 'text-blue-200',
+  cardGradient: true,
 };
 
 interface OverviewCardProps {
-  className?: string;
+  solution?: Solution;
   onClick?: () => void;
+  className?: string;
 }
 
 const OverviewCard: React.FC<OverviewCardProps> = ({
-  className = '',
+  solution = defaultSolution,
   onClick,
+  className = '',
 }) => {
   return (
     <div
       className={`w-full max-w-xl rounded-2xl border border-white/20 overflow-hidden ${className}`}
       onClick={onClick}
     >
-      {/* Dramatic background with multiple layers */}
+      {/* Background decorative elements */}
       <div className="absolute inset-0">
         {/* Base dark gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800" />
@@ -64,13 +84,22 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
       {/* Content wrapper with glass effect */}
       <div className="relative h-full">
         {/* Top Banner Section */}
-        <div className="bg-gradient-to-r from-blue-500/40 via-indigo-500/30 to-purple-500/40 p-1" />
+        <div
+          className={
+            solution.gradient ||
+            'bg-gradient-to-r from-blue-500/40 via-indigo-500/30 to-purple-500/40'
+          }
+        >
+          <div className="h-1 w-full" />
+        </div>
 
         <div className="p-8 backdrop-blur-sm">
           {/* Header Section */}
           <div className="flex items-start justify-between">
-            <span className="text-sm font-medium px-3 py-1 rounded-full bg-blue-500/30 text-blue-200 backdrop-blur-sm">
-              {defaultSolution.category}
+            <span
+              className={`text-sm font-medium px-3 py-1 rounded-full bg-blue-500/30 ${solution.textColor || 'text-blue-200'}`}
+            >
+              {solution.category}
             </span>
             <ArrowUpRight className="w-6 h-6 text-blue-300" />
           </div>
@@ -78,17 +107,19 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
           {/* Title Section */}
           <div className="mt-4 space-y-2">
             <h3 className="text-3xl font-bold bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
-              {defaultSolution.title}
+              {solution.title}
             </h3>
-            <p className="text-xl text-blue-300">{defaultSolution.subtitle}</p>
+            <p className={`text-xl ${solution.textColor || 'text-blue-300'}`}>
+              {solution.subtitle}
+            </p>
             <p className="text-slate-300 text-lg line-clamp-2">
-              {defaultSolution.description}
+              {solution.description}
             </p>
           </div>
 
-          {/* Features Grid with glass effect */}
+          {/* Features Grid */}
           <div className="mt-4 flex flex-wrap gap-2">
-            {defaultSolution.features.slice(0, 3).map((feature, idx) => (
+            {solution.features.slice(0, 3).map((feature, idx) => (
               <div
                 key={idx}
                 className="px-3 py-1 rounded-full text-sm bg-slate-800 text-slate-200 border border-slate-700"
@@ -96,9 +127,11 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
                 {feature}
               </div>
             ))}
-            {defaultSolution.features.length > 3 && (
-              <span className="px-3 py-1 rounded-full text-sm bg-gradient-to-r from-blue-500/40 via-indigo-500/30 to-purple-500/40 text-blue-200">
-                +{defaultSolution.features.length - 3} more
+            {solution.features.length > 3 && (
+              <span
+                className={`px-3 py-1 rounded-full text-sm ${solution.gradient} ${solution.textColor}`}
+              >
+                +{solution.features.length - 3} more
               </span>
             )}
           </div>
