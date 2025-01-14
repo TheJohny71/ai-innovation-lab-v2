@@ -61,13 +61,13 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const xOffset = Math.sin(theta) * curveRadius;
       const zOffset = (1 - Math.cos(theta)) * 200;
 
-      // Simple scale effect for center card only
+      // Ensure only the center card is scaled
       const centerScaleFactor = 1.15; // Scale factor for center card
-      const scale = diff === 0 ? centerScaleFactor : 1; // Original size for all other cards
+      const normalScale = 1.0; // Original size for all non-center cards
+      const scale = Math.abs(diff) < 0.01 ? centerScaleFactor : normalScale;
 
-      // Enhanced opacity transition
-      const opacity =
-        diff === 0 ? 1 : Math.max(0.6, 0.9 - Math.abs(diff) * 0.2);
+      // Simpler opacity transition
+      const opacity = Math.abs(diff) < 0.01 ? 1 : 0.8;
 
       // Calculate rotation for curved effect
       const rotate = diff === 0 ? 0 : diff * baseRotation;
