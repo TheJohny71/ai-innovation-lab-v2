@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 
-// ✅ Explicitly define the type for a particle
 interface Particle {
   id: number;
   initialX: number;
@@ -24,7 +23,6 @@ const EnhancedNexusPage = () => {
     height: typeof window !== 'undefined' ? window.innerHeight : 1080,
   });
 
-  // ✅ Window resize handler
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -37,7 +35,6 @@ const EnhancedNexusPage = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // ✅ Motion preference handling
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
@@ -51,7 +48,6 @@ const EnhancedNexusPage = () => {
       mediaQuery.removeEventListener('change', handleMotionPreference);
   }, []);
 
-  // ✅ Particle generation (fixed)
   useEffect(() => {
     if (prefersReducedMotion) {
       setParticles([]);
@@ -93,7 +89,6 @@ const EnhancedNexusPage = () => {
     ]);
   }, [prefersReducedMotion, windowSize]);
 
-  // ✅ Mouse movement handler
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (prefersReducedMotion) return;
@@ -115,7 +110,6 @@ const EnhancedNexusPage = () => {
       }}
       onMouseMove={handleMouseMove}
     >
-      {/* ✅ Starfield Particle Effect */}
       <div className="absolute inset-0" style={{ perspective: '500px' }}>
         {particles.map((particle) => {
           const zOffset = particle.z * (mousePosition.x - 0.5) * 0.1;
@@ -140,13 +134,12 @@ const EnhancedNexusPage = () => {
         })}
       </div>
 
-      {/* ✅ Restored Title, Subtitle, and Tagline */}
       <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
         <h1 className="text-6xl font-bold mb-4 text-blue-300 drop-shadow-lg">
-          AI Innovation Hub
+          Innovation Hub
         </h1>
         <p className="text-xl text-gray-400 mb-6">
-          Empowering Digital Transformation
+          Talent-Driven AI Acceleration
         </p>
         <p className="text-sm text-emerald-300 uppercase tracking-widest">
           Innovate · Disrupt · Lead
