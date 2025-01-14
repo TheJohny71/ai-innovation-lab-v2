@@ -1,6 +1,3 @@
-// src/components/shared/SolutionCarousel.tsx
-'use client';
-
 import React, { type FC, useState, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { type Solution } from '@/app/accelerate/types';
@@ -34,19 +31,29 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
       const diff = index - activeIndex;
-      const baseTransform = -activeIndex * 100;
-      const xOffset = `${baseTransform + index * 100}%`;
-      const scale = diff === 0 ? 1 : 0.9;
-      const opacity = diff === 0 ? 1 : 0.5;
-      const zIndex = diff === 0 ? 20 : 10;
+
+      // Adjust spacing and center positioning
+      const spacing = 100; // Reduced spacing between cards
+      const centerOffset = window.innerWidth / 2;
+      const baseTransform = -activeIndex * spacing;
+      const cardOffset = index * spacing;
+
+      // Calculate scale and opacity based on distance from center
+      const scale = diff === 0 ? 1 : Math.max(0.85, 1 - Math.abs(diff) * 0.1);
+      const opacity = diff === 0 ? 1 : Math.max(0.5, 1 - Math.abs(diff) * 0.3);
+      const zIndex = 20 - Math.abs(diff);
 
       return {
-        transform: `translateX(${xOffset}) scale(${scale})`,
+        transform: `translate(${baseTransform + cardOffset}px) scale(${scale})`,
         opacity,
         zIndex,
+        position: 'absolute',
+        left: 0,
         transition: isDragging
           ? 'none'
           : 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        width: '100%',
+        maxWidth: '32rem', // ~512px
       };
     },
     [activeIndex, isDragging]
@@ -67,7 +74,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
     const x = e.pageX - container.offsetLeft;
     const walk = (startX - x) / container.offsetWidth;
-    const newIndex = Math.round(scrollLeft + walk);
+    const newIndex = Math.round(scrollLeft + walk * 2);
 
     if (
       newIndex !== activeIndex &&
@@ -99,7 +106,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
     const x = touch.pageX - container.offsetLeft;
     const walk = (startX - x) / container.offsetWidth;
-    const newIndex = Math.round(scrollLeft + walk);
+    const newIndex = Math.round(scrollLeft + walk * 2);
 
     if (
       newIndex !== activeIndex &&
@@ -115,12 +122,12 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   };
 
   return (
-    <div className="w-full overflow-hidden">
-      <div className="relative min-h-[480px] flex items-center justify-center mx-auto max-w-[1200px]">
+    <div className="w-full">
+      <div className="relative h-96 flex items-center justify-center mx-auto max-w-7xl mt-12">
         {/* Card Container */}
         <div
           ref={containerRef}
-          className="relative w-full select-none touch-none"
+          className="relative w-full h-full flex items-center justify-center overflow-hidden"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -132,7 +139,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           {solutions.map((solution, index) => (
             <div
               key={solution.id}
-              className="absolute left-0 w-full max-w-xl mx-auto px-4"
+              className="px-4"
               style={getCardStyles(index)}
               onClick={() => !isDragging && onSolutionSelect(solution)}
             >
@@ -181,59 +188,45 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         </div>
 
         {/* Navigation Controls */}
-        <div className="absolute -bottom-20 left-0 right-0">
-          <div className="flex flex-col items-center space-y-6">
-            {/* Apple-style Scroll Bar */}
-            <div className="relative w-48 h-1 bg-slate-800/50 rounded-full overflow-hidden backdrop-blur-sm">
-              <div
-                className="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all duration-300"
-                style={{
-                  width: `${100 / solutions.length}%`,
-                  transform: `translateX(${activeIndex * (100 / (solutions.length - 1))}%)`,
-                }}
-              />
+        <div className="absolute -bottom-16 left-0 right-0">
+          <div className="flex justify-center items-center space-x-4">
+            <button
+              onClick={() => handleScroll(-1)}
+              disabled={activeIndex === 0}
+              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
+                       text-white hover:bg-slate-700/50 transition-all disabled:opacity-30 
+                       disabled:cursor-not-allowed"
+              aria-label="Previous solution"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            <div className="flex space-x-2">
+              {solutions.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveIndex(index)}
+                  className={`transition-all duration-300 rounded-full 
+                            ${
+                              index === activeIndex
+                                ? 'w-8 h-2 bg-blue-500'
+                                : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
+                            }`}
+                  aria-label={`Go to solution ${index + 1}`}
+                />
+              ))}
             </div>
 
-            {/* Navigation Buttons */}
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => handleScroll(-1)}
-                disabled={activeIndex === 0}
-                className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
-                         text-white hover:bg-slate-700/50 transition-all disabled:opacity-30 
-                         disabled:cursor-not-allowed"
-                aria-label="Previous solution"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-
-              <div className="flex space-x-2">
-                {solutions.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveIndex(index)}
-                    className={`transition-all duration-300 rounded-full 
-                              ${
-                                index === activeIndex
-                                  ? 'w-8 h-2 bg-blue-500'
-                                  : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
-                              }`}
-                    aria-label={`Go to solution ${index + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={() => handleScroll(1)}
-                disabled={activeIndex === solutions.length - 1}
-                className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
-                         text-white hover:bg-slate-700/50 transition-all disabled:opacity-30 
-                         disabled:cursor-not-allowed"
-                aria-label="Next solution"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
+            <button
+              onClick={() => handleScroll(1)}
+              disabled={activeIndex === solutions.length - 1}
+              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
+                       text-white hover:bg-slate-700/50 transition-all disabled:opacity-30 
+                       disabled:cursor-not-allowed"
+              aria-label="Next solution"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
