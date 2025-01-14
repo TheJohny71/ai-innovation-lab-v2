@@ -51,7 +51,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         diff = altDiff;
       }
 
-      // Adjusted base values for curved layout
+      // Base values for curved layout
       const baseSpacing = 250;
       const curveRadius = 800;
       const baseRotation = 8;
@@ -61,23 +61,13 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const xOffset = Math.sin(theta) * curveRadius;
       const zOffset = (1 - Math.cos(theta)) * 200;
 
-      // Enhanced scaling effect for center and near-center cards
-      const centerScaleFactor = 1.15; // Increased scale for center card
-      const scaleDropoff = 0.15; // How quickly the scale decreases
-      const distanceFromCenter = Math.abs(diff);
-
-      // Smooth scale transition based on distance from center
-      const scale =
-        diff === 0
-          ? centerScaleFactor
-          : Math.max(
-              0.85,
-              centerScaleFactor - distanceFromCenter * scaleDropoff
-            );
+      // Simple scale effect for center card only
+      const centerScaleFactor = 1.15; // Scale factor for center card
+      const scale = diff === 0 ? centerScaleFactor : 1; // Original size for all other cards
 
       // Enhanced opacity transition
       const opacity =
-        diff === 0 ? 1 : Math.max(0.4, 0.9 - distanceFromCenter * 0.2);
+        diff === 0 ? 1 : Math.max(0.6, 0.9 - Math.abs(diff) * 0.2);
 
       // Calculate rotation for curved effect
       const rotate = diff === 0 ? 0 : diff * baseRotation;
@@ -104,7 +94,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     [activeIndex, isDragging, solutions.length]
   );
 
-  // Rest of the component remains the same
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       const container = containerRef.current;
