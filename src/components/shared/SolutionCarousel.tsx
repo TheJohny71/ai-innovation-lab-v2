@@ -52,28 +52,27 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
       const diff = index - activeIndex;
+      const spacing = 380; // Width of a card plus desired gap
 
-      // Adjust spacing and center positioning
-      const spacing = 100; // Reduced spacing between cards
-      const baseTransform = -activeIndex * spacing;
-      const cardOffset = index * spacing;
+      // Calculate the transform to position cards
+      let xTransform = diff * spacing;
 
       // Calculate scale and opacity based on distance from center
-      const scale = diff === 0 ? 1 : Math.max(0.85, 1 - Math.abs(diff) * 0.1);
-      const opacity = diff === 0 ? 1 : Math.max(0.5, 1 - Math.abs(diff) * 0.3);
+      const scale = diff === 0 ? 1 : 0.85;
+      const opacity = diff === 0 ? 1 : 0.5;
       const zIndex = 20 - Math.abs(diff);
 
       return {
-        transform: `translate(${baseTransform + cardOffset}px) scale(${scale})`,
+        transform: `translateX(calc(${xTransform}px - 50%))`,
         opacity,
         zIndex,
         position: 'absolute',
-        left: 0,
+        left: '50%', // Center point
+        width: '100%',
+        maxWidth: '32rem',
         transition: isDragging
           ? 'none'
           : 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-        width: '100%',
-        maxWidth: '32rem', // ~512px
       };
     },
     [activeIndex, isDragging]
@@ -143,11 +142,11 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full">
-      <div className="relative h-96 flex items-center justify-center mx-auto max-w-7xl mt-12">
+      <div className="relative h-[480px] flex items-center justify-center mx-auto w-full max-w-[1400px] mt-8">
         {/* Card Container */}
         <div
           ref={containerRef}
-          className="relative w-full h-full flex items-center justify-center overflow-hidden"
+          className="relative w-full h-full flex items-center justify-center overflow-visible"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
