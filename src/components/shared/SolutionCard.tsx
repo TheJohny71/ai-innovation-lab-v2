@@ -29,9 +29,9 @@ export const SolutionCard = ({
           onClick={onClick}
           className={`group relative p-6 h-48 rounded-2xl solution-card-content
                     transition-all duration-500 cursor-pointer
-                    bg-slate-900/60 border border-white/10
-                    hover:border-${solution.textColor.replace('text-', '')}/30 hover:bg-white/5
-                    ${isActive ? `bg-white/5 border-${solution.textColor.replace('text-', '')}/30` : ''}
+                    bg-slate-900/90 border border-white/10
+                    hover:border-${solution.textColor.replace('text-', '')}/30 
+                    ${isActive ? `bg-slate-900 border-${solution.textColor.replace('text-', '')}/30` : ''}
                     card-hover`}
           role="button"
           tabIndex={0}
@@ -49,9 +49,9 @@ export const SolutionCard = ({
               <p className={`${solution.textColor}`}>{solution.subtitle}</p>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-slate-400">{solution.category}</span>
+              <span className="text-slate-200">{solution.category}</span>
               <ChevronRight
-                className={`text-slate-400 transition-transform duration-300 
+                className={`text-slate-200 transition-transform duration-300 
                         group-hover:translate-x-1 group-hover:text-white
                         ${isActive ? 'rotate-90' : ''}`}
               />
@@ -64,7 +64,7 @@ export const SolutionCard = ({
 
   return (
     <div
-      className="rounded-xl bg-slate-900/50 backdrop-blur-sm overflow-hidden"
+      className="rounded-xl bg-slate-900 border border-white/10 overflow-hidden"
       role="button"
       tabIndex={0}
       onClick={onClick}
@@ -74,7 +74,7 @@ export const SolutionCard = ({
         }
       }}
     >
-      <div className="p-8">
+      <div className="p-8 bg-gradient-to-b from-slate-900 to-slate-900/95">
         <div className="flex flex-col space-y-6">
           <div>
             <span
@@ -83,11 +83,11 @@ export const SolutionCard = ({
             >
               {solution.category}
             </span>
-            <h3 className={`text-2xl font-bold mt-4 ${solution.textColor}`}>
+            <h3 className={`text-2xl font-bold mt-4 text-white`}>
               {solution.title}
             </h3>
-            <p className="text-slate-300 mt-2">{solution.subtitle}</p>
-            <p className="text-slate-400 mt-4">{solution.description}</p>
+            <p className="text-slate-200 mt-2">{solution.subtitle}</p>
+            <p className="text-slate-300 mt-4">{solution.description}</p>
           </div>
 
           <div className="space-y-6">
@@ -96,8 +96,8 @@ export const SolutionCard = ({
                 <span
                   key={idx}
                   className="px-3 py-1 rounded-full text-sm
-                          bg-slate-800/50 text-slate-300 
-                          border border-slate-700/50"
+                          bg-slate-800 text-slate-200 
+                          border border-slate-700"
                 >
                   {feature}
                 </span>
