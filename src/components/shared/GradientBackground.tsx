@@ -2,9 +2,15 @@
 
 import React from 'react';
 
-export function GradientBackground() {
+interface GradientBackgroundProps {
+  className?: string;
+}
+
+export function GradientBackground({
+  className = '',
+}: GradientBackgroundProps) {
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden">
+    <div className={`fixed inset-0 -z-10 overflow-hidden ${className}`}>
       {/* Base gradient layer with reduced transparency */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#090D1F] via-[#0F1631] to-[#090D1F]" />
 

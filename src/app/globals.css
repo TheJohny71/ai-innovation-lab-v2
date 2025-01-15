@@ -7,6 +7,7 @@
   --foreground: 0 0% 98%;
 }
 
+/* Base Animations */
 @keyframes starfieldForward {
   from {
     transform: translateZ(0px);
@@ -21,6 +22,38 @@
   }
 }
 
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Base Layer */
 @layer base {
   body {
     @apply bg-black text-foreground overflow-x-hidden;
@@ -28,6 +61,7 @@
   }
 }
 
+/* Gradient Effects */
 .bg-gradient-glow {
   background: linear-gradient(
     180deg,
@@ -47,6 +81,7 @@
   color: transparent;
 }
 
+/* Star Field Effects */
 .star {
   transform-style: preserve-3d;
   will-change: transform, opacity;
@@ -61,47 +96,20 @@
   border-radius: 50%;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .star {
-    animation: none !important;
-  }
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(96, 165, 250, 0.3);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(96, 165, 250, 0.5);
-}
-
-/* Animation utilities */
+/* Animation Classes */
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.animate-pulse {
+  animation: pulse 10s ease-in-out infinite;
 }
 
-/* Card hover effects */
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Card Effects */
 .hover-card-glow {
   transition: all 0.3s ease-in-out;
 }
@@ -111,7 +119,6 @@
   transform: translateY(-2px);
 }
 
-/* 3D Card effects */
 .card-3d {
   transform-style: preserve-3d;
   transition: transform 0.3s ease;
@@ -121,7 +128,7 @@
   transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
 }
 
-/* Navigation effects */
+/* Navigation Effects */
 .nav-link {
   position: relative;
   transition: color 0.3s ease;
@@ -142,7 +149,32 @@
   width: 100%;
 }
 
-/* Background noise texture */
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(96, 165, 250, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.5);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .star {
+    animation: none !important;
+  }
+}
+
+/* Background Effects */
 .noise-bg {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   opacity: 0.05;
