@@ -10,7 +10,7 @@ export default function Home() {
     <BaseLayout>
       <StarField />
       <GradientBackground />
-      
+
       <main className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden">
         <div className="text-center space-y-6 animate-fade-in">
           {/* Main Title */}
@@ -19,12 +19,12 @@ export default function Home() {
               Innovation Hub
             </GradientText>
           </h1>
-          
+
           {/* Subtitle */}
           <p className="text-xl text-gray-400 mb-6">
             Talent-Driven AI Acceleration
           </p>
-          
+
           {/* Tagline */}
           <p className="text-sm text-emerald-300 uppercase tracking-widest">
             Innovate · Disrupt · Lead
