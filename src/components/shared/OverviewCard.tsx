@@ -46,11 +46,20 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
   onClick,
   className = '',
 }) => {
+  const cardClasses = `w-full max-w-xl rounded-2xl border border-white/20 overflow-hidden ${className}`;
+  const gradientStyles = {
+    backgroundImage: `
+      linear-gradient(45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%)
+    `,
+    backgroundSize: '40px 40px',
+    backgroundPosition: '0 0, 0 20px, 20px -20px, -20px 0px',
+  };
+
   return (
-    <div
-      className={`w-full max-w-xl rounded-2xl border border-white/20 overflow-hidden ${className}`}
-      onClick={onClick}
-    >
+    <div className={cardClasses} onClick={onClick}>
       {/* Background decorative elements */}
       <div className="absolute inset-0">
         {/* Base dark gradient */}
@@ -61,19 +70,7 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-600/20 via-transparent to-transparent" />
 
         {/* Geometric patterns */}
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: `
-              linear-gradient(45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
-              linear-gradient(-45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
-              linear-gradient(45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%),
-              linear-gradient(-45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%)
-            `,
-            backgroundSize: '40px 40px',
-            backgroundPosition: '0 0, 0 20px, 20px -20px, -20px 0px',
-          }}
-        />
+        <div className="absolute inset-0 opacity-30" style={gradientStyles} />
 
         {/* Glowing orb effects */}
         <div className="absolute top-20 right-20 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl" />
@@ -111,8 +108,29 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
             </p>
           </div>
 
-          {/* Features Grid */}
-          <div className="mt-4 flex flex-wrap gap-2">
+          {/* Overview & Benefits Section */}
+          <div className="mt-6 space-y-4">
+            <div>
+              <h4 className="text-lg font-semibold text-white">Overview</h4>
+              <p className="text-slate-300 mt-2">{solution.details.overview}</p>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold text-white">Key Benefits</h4>
+              <div className="mt-2 space-y-2">
+                {solution.details.benefits.map((benefit, idx) => (
+                  <div key={idx} className="flex items-center space-x-2">
+                    <div
+                      className={`w-1.5 h-1.5 rounded-full ${solution.textColor.replace('text', 'bg')}`}
+                    />
+                    <span className="text-slate-300">{benefit}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Features Section */}
+          <div className="mt-6 flex flex-wrap gap-2">
             {solution.features.slice(0, 3).map((feature, idx) => (
               <div
                 key={idx}
@@ -123,7 +141,7 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
             ))}
             {solution.features.length > 3 && (
               <span
-                className={`px-3 py-1 rounded-full text-sm ${solution.gradient} ${solution.textColor}`}
+                className={`px-3 py-1 rounded-full text-sm bg-gradient-to-r ${solution.cardGradient} ${solution.textColor}`}
               >
                 +{solution.features.length - 3} more
               </span>

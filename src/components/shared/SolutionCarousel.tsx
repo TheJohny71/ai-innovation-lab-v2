@@ -26,6 +26,8 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const dragThreshold = 5; // Minimum pixels to move before considering it a drag
+  const [dragDistance, setDragDistance] = useState(0);
 
   const normalizeIndex = useCallback(
     (index: number): number => {
@@ -47,34 +49,48 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const len = solutions.length;
       let diff = index - activeIndex;
 
-      // Normalize the diff to handle wraparound
+      // Enhanced wraparound logic for smoother transitions
       const altDiff = diff - Math.sign(diff) * len;
       if (Math.abs(altDiff) < Math.abs(diff)) {
         diff = altDiff;
       }
 
-      // Base values for curved layout
+      // Carousel layout parameters
       const curveRadius = 800;
       const baseRotation = 8;
+      const centerScale = 1.15;
+      const minScale = 0.85;
+      const centerOpacity = 1;
+      const sideOpacity = 0.7;
 
-      // Calculate position on the curve
+      // Calculate curve position with smooth easing
       const theta = (diff * Math.PI) / 8;
       const xOffset = Math.sin(theta) * curveRadius;
       const zOffset = (1 - Math.cos(theta)) * 200;
 
-      // Scale only the exact center card
+      // Enhanced scaling and rotation based on distance
       const isCenter = index === normalizeIndex(activeIndex);
-      const scale = isCenter ? 1.15 : 1.0;
+      const distanceFromCenter = Math.abs(diff);
+      const scale = isCenter
+        ? centerScale
+        : Math.max(minScale, 1 - distanceFromCenter * 0.1);
 
-      // Enhanced opacity for better visibility
-      const opacity = isCenter ? 1 : 0.7;
+      // Progressive opacity falloff
+      const opacity = isCenter
+        ? centerOpacity
+        : Math.max(sideOpacity, 1 - distanceFromCenter * 0.15);
 
-      // Calculate rotation
-      const rotate = isCenter ? 0 : diff * baseRotation;
+      // Dynamic rotation with smooth falloff
+      const rotate = isCenter
+        ? 0
+        : diff * baseRotation * (1 - distanceFromCenter * 0.1);
+
+      // Add slight drag effect when dragging
+      const dragOffset = isDragging ? dragDistance * 0.1 : 0;
 
       return {
         transform: `
-          translateX(calc(-50% + ${xOffset}px))
+          translateX(calc(-50% + ${xOffset + dragOffset}px))
           translateZ(${-zOffset}px)
           scale(${scale})
           rotateY(${rotate}deg)
@@ -87,11 +103,13 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         maxWidth: '32rem',
         transition: isDragging
           ? 'none'
-          : 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          : 'all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1)',
         transformStyle: 'preserve-3d',
+        willChange: 'transform, opacity',
+        transformOrigin: 'center center -400px', // Enhanced 3D effect
       };
     },
-    [activeIndex, isDragging, normalizeIndex]
+    [activeIndex, isDragging, normalizeIndex, dragDistance]
   );
 
   const handleMouseDown = useCallback(
@@ -101,23 +119,34 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       setIsDragging(true);
       setStartX(e.pageX - container.offsetLeft);
       setScrollLeft(activeIndex);
+      setDragDistance(0);
     },
     [activeIndex]
   );
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!isDragging || !containerRef.current) return;
+
       const container = containerRef.current;
-      if (!isDragging || !container) return;
       const x = e.pageX - container.offsetLeft;
-      const walk = (startX - x) / container.offsetWidth;
-      setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
+      const distance = startX - x;
+      setDragDistance(distance);
+
+      if (Math.abs(distance) > dragThreshold) {
+        const walk = distance / container.offsetWidth;
+        const newIndex = normalizeIndex(Math.round(scrollLeft + walk * 2));
+        if (newIndex !== activeIndex) {
+          setActiveIndex(newIndex);
+        }
+      }
     },
-    [isDragging, normalizeIndex, scrollLeft, startX]
+    [isDragging, normalizeIndex, scrollLeft, startX, activeIndex, dragThreshold]
   );
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
+    setDragDistance(0);
   }, []);
 
   const handleTouchStart = useCallback(
@@ -128,24 +157,37 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       setIsDragging(true);
       setStartX(touch.pageX - container.offsetLeft);
       setScrollLeft(activeIndex);
+      setDragDistance(0);
     },
     [activeIndex]
   );
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent<HTMLDivElement>) => {
+      if (!isDragging || !containerRef.current) return;
+
       const container = containerRef.current;
       const touch = e.touches[0];
-      if (!isDragging || !container || !touch) return;
+      if (!touch) return;
+
       const x = touch.pageX - container.offsetLeft;
-      const walk = (startX - x) / container.offsetWidth;
-      setActiveIndex(normalizeIndex(Math.round(scrollLeft + walk * 2)));
+      const distance = startX - x;
+      setDragDistance(distance);
+
+      if (Math.abs(distance) > dragThreshold) {
+        const walk = distance / container.offsetWidth;
+        const newIndex = normalizeIndex(Math.round(scrollLeft + walk * 2));
+        if (newIndex !== activeIndex) {
+          setActiveIndex(newIndex);
+        }
+      }
     },
-    [isDragging, normalizeIndex, scrollLeft, startX]
+    [isDragging, normalizeIndex, scrollLeft, startX, activeIndex, dragThreshold]
   );
 
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
+    setDragDistance(0);
   }, []);
 
   const handleScroll = useCallback(
@@ -154,6 +196,17 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     },
     [normalizeIndex]
   );
+
+  // Auto-advance timer with pause on hover/interaction
+  useEffect(() => {
+    if (isDragging) return;
+
+    const timer = setInterval(() => {
+      handleScroll(1);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [handleScroll, isDragging]);
 
   return (
     <div className="w-full">

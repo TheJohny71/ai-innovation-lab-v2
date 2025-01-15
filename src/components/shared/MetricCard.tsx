@@ -29,32 +29,37 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   trend,
   stats,
   gradient,
-}) => (
-  <div
-    className={`rounded-xl ${gradient.background} border ${gradient.border} p-6 relative backdrop-blur-sm`}
-  >
-    <div className="flex justify-between items-start mb-6">
-      <h3 className="text-gray-200 text-sm font-medium">{title}</h3>
+}) => {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-xl border ${gradient.border} p-6`}
+    >
       <div
-        className={`${gradient.icon} w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm`}
-      >
-        <Icon className={gradient.iconColor} size={20} />
+        className={`absolute inset-0 pointer-events-none ${gradient.background}`}
+      />
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="flex items-center gap-2">
+          <div className={`p-2 rounded-lg ${gradient.icon}`}>
+            <Icon className={`h-5 w-5 ${gradient.iconColor}`} />
+          </div>
+          <h3 className="text-sm font-medium">{title}</h3>
+        </div>
+        <div className="mt-4 flex flex-col">
+          <div className="flex items-baseline gap-2">
+            <p className={`text-2xl font-semibold ${gradient.text}`}>{value}</p>
+            <span className="text-sm text-gray-500">{trend}</span>
+          </div>
+          <p className="text-sm text-gray-500">{subtitle}</p>
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
+          {Object.entries(stats).map(([key, stat]) => (
+            <div key={key} className="flex flex-col">
+              <p className="text-sm font-medium">{stat}</p>
+              <p className="text-xs text-gray-500">{key}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-
-    <div className="space-y-2 mb-6">
-      <div className="text-4xl font-bold text-white">{value}</div>
-      <div className="text-gray-300 text-sm">{subtitle}</div>
-      <div className={`${gradient.text} text-sm`}>{trend}</div>
-    </div>
-
-    <div className="grid grid-cols-2 gap-4">
-      {Object.entries(stats).map(([label, value]) => (
-        <div key={label} className="min-w-0">
-          <div className="text-gray-400 text-xs truncate mb-1">{label}</div>
-          <div className="text-white text-base font-medium">{value}</div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+  );
+};

@@ -1,24 +1,4 @@
-// @/app/accelerate/types.ts
-export interface Solution {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  category: string;
-  gradient: string;
-  textColor: string;
-  cardGradient: string;
-  borderHover: string;
-  features: string[];
-  details: {
-    overview: string;
-    benefits: string[];
-  };
-  status: 'active' | 'development'; // Added this required field
-}
-
-// @/app/accelerate/solutions.ts
-import { type Solution } from './types';
+import type { Solution } from './types';
 
 export const solutions: Solution[] = [
   {
@@ -28,8 +8,9 @@ export const solutions: Solution[] = [
     description:
       'A collection of specialized AI tools designed to enhance legal research, practice management, and governance.',
     category: 'Overview',
-    gradient: 'bg-blue-500/10',
-    textColor: 'text-blue-400',
+    gradient:
+      'bg-gradient-to-r from-blue-500/40 via-indigo-500/30 to-purple-500/40',
+    textColor: 'text-blue-200',
     cardGradient: 'from-blue-500/10 via-transparent to-transparent',
     borderHover: 'hover:border-blue-500/30',
     features: [
@@ -48,7 +29,7 @@ export const solutions: Solution[] = [
         'Compliance management',
       ],
     },
-    status: 'active', // Added status
+    status: 'active',
   },
   {
     id: 'alfie',
@@ -56,8 +37,9 @@ export const solutions: Solution[] = [
     subtitle: 'Modern Leave Management',
     description: 'Enterprise-grade leave management with AI-powered features.',
     category: 'Practice Management',
-    gradient: 'bg-purple-500/10',
-    textColor: 'text-purple-400',
+    gradient:
+      'bg-gradient-to-r from-purple-500/40 via-pink-500/30 to-rose-500/40',
+    textColor: 'text-purple-200',
     cardGradient: 'from-purple-500/10 via-transparent to-transparent',
     borderHover: 'hover:border-purple-500/30',
     features: [
@@ -78,7 +60,7 @@ export const solutions: Solution[] = [
         'Enhance employee experience with instant approvals',
       ],
     },
-    status: 'active', // Added status
+    status: 'active',
   },
   {
     id: 'lexliber',
@@ -86,8 +68,9 @@ export const solutions: Solution[] = [
     subtitle: 'Digital Law Library Assistant',
     description: 'Smart catalog system for legal research collections.',
     category: 'Knowledge Management',
-    gradient: 'bg-teal-500/10',
-    textColor: 'text-teal-400',
+    gradient:
+      'bg-gradient-to-r from-teal-500/40 via-emerald-500/30 to-green-500/40',
+    textColor: 'text-teal-200',
     cardGradient: 'from-teal-500/10 via-transparent to-transparent',
     borderHover: 'hover:border-teal-500/30',
     features: [
@@ -108,7 +91,7 @@ export const solutions: Solution[] = [
         'Improved resource utilization',
       ],
     },
-    status: 'development', // Added status
+    status: 'development',
   },
   {
     id: 'seneca',
@@ -116,8 +99,8 @@ export const solutions: Solution[] = [
     subtitle: 'Interactive Research Guide',
     description: 'AI-powered research assistance and knowledge discovery.',
     category: 'Research',
-    gradient: 'bg-cyan-500/10',
-    textColor: 'text-cyan-400',
+    gradient: 'bg-gradient-to-r from-cyan-500/40 via-sky-500/30 to-blue-500/40',
+    textColor: 'text-cyan-200',
     cardGradient: 'from-cyan-500/10 via-transparent to-transparent',
     borderHover: 'hover:border-cyan-500/30',
     features: [
@@ -138,7 +121,7 @@ export const solutions: Solution[] = [
         'Reduced training overhead',
       ],
     },
-    status: 'active', // Added status
+    status: 'active',
   },
   {
     id: 'lexpilot',
@@ -146,8 +129,9 @@ export const solutions: Solution[] = [
     subtitle: 'AI Solution Testing',
     description: 'Advanced platform for testing legal AI solutions.',
     category: 'Practice Management',
-    gradient: 'bg-indigo-500/10',
-    textColor: 'text-indigo-400',
+    gradient:
+      'bg-gradient-to-r from-indigo-500/40 via-violet-500/30 to-purple-500/40',
+    textColor: 'text-indigo-200',
     cardGradient: 'from-indigo-500/10 via-transparent to-transparent',
     borderHover: 'hover:border-indigo-500/30',
     features: [
@@ -168,7 +152,7 @@ export const solutions: Solution[] = [
         'Enhanced compliance assurance',
       ],
     },
-    status: 'development', // Added status
+    status: 'development',
   },
   {
     id: 'sentinel',
@@ -176,8 +160,9 @@ export const solutions: Solution[] = [
     subtitle: 'AI Governance',
     description: 'Enterprise AI Governance and Compliance Platform',
     category: 'Governance',
-    gradient: 'bg-emerald-500/10',
-    textColor: 'text-emerald-400',
+    gradient:
+      'bg-gradient-to-r from-emerald-500/40 via-green-500/30 to-teal-500/40',
+    textColor: 'text-emerald-200',
     cardGradient: 'from-emerald-500/10 via-transparent to-transparent',
     borderHover: 'hover:border-emerald-500/30',
     features: [
@@ -198,6 +183,6 @@ export const solutions: Solution[] = [
         'Enhanced security and access controls',
       ],
     },
-    status: 'active', // Added status
+    status: 'active',
   },
 ];

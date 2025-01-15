@@ -1,4 +1,3 @@
-// src/app/accelerate/types.ts
 export interface Solution {
   id: string;
   title: string;
@@ -17,24 +16,28 @@ export interface Solution {
   status: 'active' | 'development';
 }
 
-export function isSolution(obj: any): obj is Solution {
+export function isSolution(value: unknown): value is Solution {
   return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    typeof obj.id === 'string' &&
-    typeof obj.title === 'string' &&
-    typeof obj.subtitle === 'string' &&
-    typeof obj.description === 'string' &&
-    typeof obj.category === 'string' &&
-    typeof obj.gradient === 'string' &&
-    typeof obj.textColor === 'string' &&
-    typeof obj.cardGradient === 'string' &&
-    typeof obj.borderHover === 'string' &&
-    Array.isArray(obj.features) &&
-    typeof obj.details === 'object' &&
-    obj.details !== null &&
-    typeof obj.details.overview === 'string' &&
-    Array.isArray(obj.details.benefits) &&
-    (obj.status === 'active' || obj.status === 'development')
+    typeof value === 'object' &&
+    value !== null &&
+    'id' in value &&
+    'title' in value &&
+    'subtitle' in value &&
+    'description' in value &&
+    'category' in value &&
+    'gradient' in value &&
+    'textColor' in value &&
+    'cardGradient' in value &&
+    'borderHover' in value &&
+    'features' in value &&
+    Array.isArray((value as Solution).features) &&
+    'details' in value &&
+    typeof (value as Solution).details === 'object' &&
+    'overview' in (value as Solution).details &&
+    'benefits' in (value as Solution).details &&
+    Array.isArray((value as Solution).details.benefits) &&
+    'status' in value &&
+    ((value as Solution).status === 'active' ||
+      (value as Solution).status === 'development')
   );
 }
