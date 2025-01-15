@@ -21,13 +21,11 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   solutions = [],
   onSolutionSelect,
 }) => {
-  // Memoize initial values
   const overviewIndex = useMemo(
     () => solutions.findIndex((s) => s.id === 'welcome'),
     [solutions]
   );
 
-  // State management
   const [activeIndex, setActiveIndex] = useState(overviewIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -35,19 +33,16 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Constants
+  // Enhanced carousel parameters
   const DRAG_THRESHOLD = 5;
-  const TRANSITION_DURATION = 400;
-
-  // Carousel parameters
-  const CURVE_RADIUS = 800;
-  const BASE_ROTATION = 8;
-  const CENTER_SCALE = 1.15;
-  const MIN_SCALE = 0.85;
+  const TRANSITION_DURATION = 500;
+  const CURVE_RADIUS = 900;
+  const BASE_ROTATION = 6;
+  const CENTER_SCALE = 1.1;
+  const MIN_SCALE = 0.9;
   const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.7;
+  const SIDE_OPACITY = 0.8;
 
-  // Memoize solutions length
   const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
   const normalizeIndex = useCallback(
@@ -70,19 +65,19 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         diff = altDiff;
       }
 
-      const theta = (diff * Math.PI) / 8;
+      const theta = (diff * Math.PI) / 10;
       const xOffset = Math.sin(theta) * CURVE_RADIUS;
-      const zOffset = (1 - Math.cos(theta)) * 200;
+      const zOffset = (1 - Math.cos(theta)) * 250;
 
       const isCenter = index === normalizeIndex(activeIndex);
       const distanceFromCenter = Math.abs(diff);
       const scale = isCenter
         ? CENTER_SCALE
-        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.1);
+        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.08);
 
       const opacity = isCenter
         ? CENTER_OPACITY
-        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.15);
+        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.12);
 
       const rotate = isCenter
         ? 0
@@ -115,11 +110,15 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   );
 
   const handleMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
+    (e: React.MouseEvent) => {
       const container = containerRef.current;
       if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      if (!rect) return;
+
       setIsDragging(true);
-      setStartX(e.pageX - container.offsetLeft);
+      setStartX(e.clientX - rect.left);
       setScrollLeft(activeIndex);
       setDragDistance(0);
     },
@@ -127,11 +126,14 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   );
 
   const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isDragging || !containerRef.current) return;
-
+    (e: React.MouseEvent) => {
       const container = containerRef.current;
-      const x = e.pageX - container.offsetLeft;
+      if (!isDragging || !container) return;
+
+      const rect = container.getBoundingClientRect();
+      if (!rect) return;
+
+      const x = e.clientX - rect.left;
       const distance = startX - x;
       setDragDistance(distance);
 
@@ -152,12 +154,18 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   }, []);
 
   const handleTouchStart = useCallback(
-    (e: React.TouchEvent<HTMLDivElement>) => {
+    (e: React.TouchEvent) => {
       const container = containerRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      if (!rect) return;
+
       const touch = e.touches[0];
-      if (!container || !touch) return;
+      if (!touch) return;
+
       setIsDragging(true);
-      setStartX(touch.pageX - container.offsetLeft);
+      setStartX(touch.clientX - rect.left);
       setScrollLeft(activeIndex);
       setDragDistance(0);
     },
@@ -165,14 +173,17 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   );
 
   const handleTouchMove = useCallback(
-    (e: React.TouchEvent<HTMLDivElement>) => {
-      if (!isDragging || !containerRef.current) return;
-
+    (e: React.TouchEvent) => {
       const container = containerRef.current;
+      if (!isDragging || !container) return;
+
+      const rect = container.getBoundingClientRect();
+      if (!rect) return;
+
       const touch = e.touches[0];
       if (!touch) return;
 
-      const x = touch.pageX - container.offsetLeft;
+      const x = touch.clientX - rect.left;
       const distance = startX - x;
       setDragDistance(distance);
 
@@ -201,10 +212,10 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full">
-      <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-[90vw] mt-8">
+      <div className="relative min-h-[520px] flex items-center justify-center mx-auto w-full max-w-[90vw] mt-12">
         <div
           ref={containerRef}
-          className="relative w-full h-full flex items-center justify-center [perspective:1000px]"
+          className="relative w-full h-full flex items-center justify-center [perspective:1200px]"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -224,8 +235,8 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                 <OverviewCard solution={solution} />
               ) : (
                 <div
-                  className={`rounded-2xl border transition-all duration-300
-                           ${index === activeIndex ? 'border-white/20' : 'border-white/10'}
+                  className={`rounded-2xl border transition-all duration-300 overflow-hidden
+                           ${index === activeIndex ? 'border-white/20 shadow-lg' : 'border-white/10'}
                            ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800' : 'bg-slate-900'}`}
                 >
                   <div className="p-8">
@@ -235,7 +246,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                     >
                       {solution.category}
                     </span>
-                    <h3 className="text-3xl font-bold text-white mt-4">
+                    <h3 className="text-3xl font-bold text-white mt-4 tracking-tight">
                       {solution.title}
                     </h3>
                     <p className={`${solution.textColor} text-xl mt-2`}>
@@ -248,7 +259,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                       {solution.features.slice(0, 3).map((feature, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 rounded-full text-sm bg-slate-800 text-slate-200 border border-slate-700"
+                          className="px-3 py-1 rounded-full text-sm bg-slate-800/80 text-slate-200 border border-slate-700"
                         >
                           {feature}
                         </span>
