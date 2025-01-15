@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface GradientStyle {
   background: string;
@@ -63,3 +63,5 @@ export const MetricCard: React.FC<MetricCardProps> = ({
     </div>
   );
 };
+
+export default MetricCard;

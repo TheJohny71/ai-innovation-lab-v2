@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useRef,
   useEffect,
+  useMemo,
 } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Solution } from '@/app/accelerate/types';
@@ -20,70 +21,78 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   solutions = [],
   onSolutionSelect,
 }) => {
-  const overviewIndex = solutions.findIndex((s) => s.id === 'welcome');
+  // Memoize initial values
+  const overviewIndex = useMemo(
+    () => solutions.findIndex((s) => s.id === 'welcome'),
+    [solutions]
+  );
+
+  // State management
   const [activeIndex, setActiveIndex] = useState(overviewIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const dragThreshold = 5; // Minimum pixels to move before considering it a drag
   const [dragDistance, setDragDistance] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Constants
+  const DRAG_THRESHOLD = 5;
+  const AUTO_ADVANCE_DELAY = 5000;
+  const TRANSITION_DURATION = 400;
+
+  // Carousel parameters
+  const CURVE_RADIUS = 800;
+  const BASE_ROTATION = 8;
+  const CENTER_SCALE = 1.15;
+  const MIN_SCALE = 0.85;
+  const CENTER_OPACITY = 1;
+  const SIDE_OPACITY = 0.7;
+
+  // Memoize solutions length
+  const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
   const normalizeIndex = useCallback(
-    (index: number): number => {
-      const len = solutions.length;
-      return ((index % len) + len) % len;
-    },
-    [solutions.length]
+    (index: number): number =>
+      ((index % solutionsLength) + solutionsLength) % solutionsLength,
+    [solutionsLength]
   );
 
   useEffect(() => {
-    const handleRouteChange = () => {
-      setActiveIndex(overviewIndex);
-    };
-    return () => handleRouteChange();
+    setActiveIndex(overviewIndex);
   }, [overviewIndex]);
 
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
-      const len = solutions.length;
+      const len = solutionsLength;
       let diff = index - activeIndex;
 
-      // Enhanced wraparound logic for smoother transitions
+      // Enhanced wraparound logic
       const altDiff = diff - Math.sign(diff) * len;
       if (Math.abs(altDiff) < Math.abs(diff)) {
         diff = altDiff;
       }
 
-      // Carousel layout parameters
-      const curveRadius = 800;
-      const baseRotation = 8;
-      const centerScale = 1.15;
-      const minScale = 0.85;
-      const centerOpacity = 1;
-      const sideOpacity = 0.7;
-
       // Calculate curve position with smooth easing
       const theta = (diff * Math.PI) / 8;
-      const xOffset = Math.sin(theta) * curveRadius;
+      const xOffset = Math.sin(theta) * CURVE_RADIUS;
       const zOffset = (1 - Math.cos(theta)) * 200;
 
       // Enhanced scaling and rotation based on distance
       const isCenter = index === normalizeIndex(activeIndex);
       const distanceFromCenter = Math.abs(diff);
       const scale = isCenter
-        ? centerScale
-        : Math.max(minScale, 1 - distanceFromCenter * 0.1);
+        ? CENTER_SCALE
+        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.1);
 
       // Progressive opacity falloff
       const opacity = isCenter
-        ? centerOpacity
-        : Math.max(sideOpacity, 1 - distanceFromCenter * 0.15);
+        ? CENTER_OPACITY
+        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.15);
 
       // Dynamic rotation with smooth falloff
       const rotate = isCenter
         ? 0
-        : diff * baseRotation * (1 - distanceFromCenter * 0.1);
+        : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.1);
 
       // Add slight drag effect when dragging
       const dragOffset = isDragging ? dragDistance * 0.1 : 0;
@@ -103,13 +112,13 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         maxWidth: '32rem',
         transition: isDragging
           ? 'none'
-          : 'all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1)',
+          : `all ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
         transformStyle: 'preserve-3d',
         willChange: 'transform, opacity',
-        transformOrigin: 'center center -400px', // Enhanced 3D effect
+        transformOrigin: 'center center -400px',
       };
     },
-    [activeIndex, isDragging, normalizeIndex, dragDistance]
+    [activeIndex, isDragging, normalizeIndex, dragDistance, solutionsLength]
   );
 
   const handleMouseDown = useCallback(
@@ -133,7 +142,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const distance = startX - x;
       setDragDistance(distance);
 
-      if (Math.abs(distance) > dragThreshold) {
+      if (Math.abs(distance) > DRAG_THRESHOLD) {
         const walk = distance / container.offsetWidth;
         const newIndex = normalizeIndex(Math.round(scrollLeft + walk * 2));
         if (newIndex !== activeIndex) {
@@ -141,7 +150,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         }
       }
     },
-    [isDragging, normalizeIndex, scrollLeft, startX, activeIndex, dragThreshold]
+    [isDragging, normalizeIndex, scrollLeft, startX, activeIndex]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -174,7 +183,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const distance = startX - x;
       setDragDistance(distance);
 
-      if (Math.abs(distance) > dragThreshold) {
+      if (Math.abs(distance) > DRAG_THRESHOLD) {
         const walk = distance / container.offsetWidth;
         const newIndex = normalizeIndex(Math.round(scrollLeft + walk * 2));
         if (newIndex !== activeIndex) {
@@ -182,7 +191,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         }
       }
     },
-    [isDragging, normalizeIndex, scrollLeft, startX, activeIndex, dragThreshold]
+    [isDragging, normalizeIndex, scrollLeft, startX, activeIndex]
   );
 
   const handleTouchEnd = useCallback(() => {
@@ -203,7 +212,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
     const timer = setInterval(() => {
       handleScroll(1);
-    }, 5000);
+    }, AUTO_ADVANCE_DELAY);
 
     return () => clearInterval(timer);
   }, [handleScroll, isDragging]);
