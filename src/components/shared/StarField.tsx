@@ -54,9 +54,7 @@ const generateStar = (
     initialX: (Math.random() - 0.5) * spreadFactor,
     initialY: (Math.random() - 0.5) * spreadFactor,
     size: isForeground ? Math.random() * 1 + 0.5 : Math.random() * 2 + 1.5,
-    duration: isForeground
-      ? Math.random() * 30 + 60
-      : Math.random() * 40 + 70,
+    duration: isForeground ? Math.random() * 30 + 60 : Math.random() * 40 + 70,
     delay: Math.random() * -20,
     z: isForeground ? Math.random() * 150 : Math.random() * 250,
     color: isForeground
@@ -71,8 +69,10 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [windowSize, setWindowSize] = useState<WindowDimensions>({
-    width: typeof window !== 'undefined' ? window.innerWidth : BASE_SCREEN.width,
-    height: typeof window !== 'undefined' ? window.innerHeight : BASE_SCREEN.height,
+    width:
+      typeof window !== 'undefined' ? window.innerWidth : BASE_SCREEN.width,
+    height:
+      typeof window !== 'undefined' ? window.innerHeight : BASE_SCREEN.height,
   });
 
   useEffect(() => {
@@ -94,7 +94,8 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
     const handleMotionPreference = (e: MediaQueryListEvent) =>
       setPrefersReducedMotion(e.matches);
     mediaQuery.addEventListener('change', handleMotionPreference);
-    return () => mediaQuery.removeEventListener('change', handleMotionPreference);
+    return () =>
+      mediaQuery.removeEventListener('change', handleMotionPreference);
   }, []);
 
   useEffect(() => {
