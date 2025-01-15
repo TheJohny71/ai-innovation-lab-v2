@@ -51,7 +51,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
           </div>
           <p className="text-sm text-gray-500">{subtitle}</p>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
+        <div className="mt-4 grid grid-cols-2 gap-4 pt-4 border-t border-gray-100/10">
           {Object.entries(stats).map(([key, stat]) => (
             <div key={key} className="flex flex-col">
               <p className="text-sm font-medium">{stat}</p>

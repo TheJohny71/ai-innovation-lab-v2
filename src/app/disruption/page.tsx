@@ -1,7 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Box, Globe, TrendingUp, Zap, ExternalLink } from 'lucide-react';
+import {
+  Box,
+  Globe,
+  TrendingUp,
+  Zap,
+  ExternalLink,
+  LucideIcon,
+} from 'lucide-react';
 import { Button } from '@/components/shared/Button';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { MetricCard } from '@/components/shared/MetricCard';
@@ -13,7 +20,7 @@ import type { Metrics } from '@/types/metrics';
 const dashboardData: Metrics = {
   cards: [
     {
-      icon: Box,
+      icon: Box as LucideIcon,
       title: 'Total Initiatives',
       value: '33',
       subtitle: 'Verified',
@@ -33,7 +40,7 @@ const dashboardData: Metrics = {
       },
     },
     {
-      icon: Globe,
+      icon: Globe as LucideIcon,
       title: 'Global Reach',
       value: '16',
       subtitle: 'deployments',
@@ -53,7 +60,7 @@ const dashboardData: Metrics = {
       },
     },
     {
-      icon: TrendingUp,
+      icon: TrendingUp as LucideIcon,
       title: 'Active Projects',
       value: '22',
       subtitle: 'in production',
@@ -73,7 +80,7 @@ const dashboardData: Metrics = {
       },
     },
     {
-      icon: Zap,
+      icon: Zap as LucideIcon,
       title: '2024 Launches',
       value: '6',
       subtitle: 'in 2024',

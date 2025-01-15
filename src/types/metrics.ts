@@ -1,5 +1,4 @@
-// src/types/metrics.ts
-import type { ComponentProps, ComponentType } from 'react';
+import type { ComponentProps } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface MetricCardStats {
@@ -8,7 +7,7 @@ export interface MetricCardStats {
 }
 
 export interface MetricCardProps extends ComponentProps<'div'> {
-  icon: ComponentType<ComponentProps<LucideIcon>>;
+  icon: LucideIcon;
   title: string;
   value: string;
   subtitle: string;
