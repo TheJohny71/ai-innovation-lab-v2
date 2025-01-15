@@ -33,15 +33,16 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Enhanced carousel parameters
+  // Adjusted carousel parameters for better visual layout
   const DRAG_THRESHOLD = 5;
   const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 900;
-  const BASE_ROTATION = 6;
-  const CENTER_SCALE = 1.1;
-  const MIN_SCALE = 0.9;
+  const CURVE_RADIUS = 600;
+  const BASE_ROTATION = 12;
+  const CENTER_SCALE = 1;
+  const MIN_SCALE = 0.85;
   const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.8;
+  const SIDE_OPACITY = 0.7;
+  const PERSPECTIVE = 1000;
 
   const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
@@ -65,29 +66,33 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         diff = altDiff;
       }
 
-      const theta = (diff * Math.PI) / 10;
+      const theta = (diff * Math.PI) / 12;
       const xOffset = Math.sin(theta) * CURVE_RADIUS;
-      const zOffset = (1 - Math.cos(theta)) * 250;
+      const zOffset = (1 - Math.cos(theta)) * 300;
 
       const isCenter = index === normalizeIndex(activeIndex);
       const distanceFromCenter = Math.abs(diff);
+
       const scale = isCenter
         ? CENTER_SCALE
-        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.08);
+        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.15);
 
       const opacity = isCenter
         ? CENTER_OPACITY
-        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.12);
+        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.2);
 
       const rotate = isCenter
         ? 0
-        : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.1);
+        : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.15);
 
       const dragOffset = isDragging ? dragDistance * 0.1 : 0;
 
+      const maxOffset = Math.min(Math.abs(xOffset), CURVE_RADIUS);
+      const normalizedXOffset = Math.sign(xOffset) * maxOffset;
+
       return {
         transform: `
-          translateX(calc(-50% + ${xOffset + dragOffset}px))
+          translateX(calc(-50% + ${normalizedXOffset + dragOffset}px))
           translateZ(${-zOffset}px)
           scale(${scale})
           rotateY(${rotate}deg)
@@ -97,13 +102,14 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         position: 'absolute',
         left: '50%',
         width: '100%',
-        maxWidth: '32rem',
+        maxWidth: '28rem',
         transition: isDragging
           ? 'none'
           : `all ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
         transformStyle: 'preserve-3d',
         willChange: 'transform, opacity',
-        transformOrigin: 'center center -400px',
+        transformOrigin: 'center center -300px',
+        visibility: Math.abs(diff) > 2 ? 'hidden' : 'visible',
       };
     },
     [activeIndex, isDragging, normalizeIndex, dragDistance, solutionsLength]
@@ -211,11 +217,12 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   );
 
   return (
-    <div className="w-full">
-      <div className="relative min-h-[520px] flex items-center justify-center mx-auto w-full max-w-[90vw] mt-12">
+    <div className="w-full overflow-hidden">
+      <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-[80vw] mt-8">
         <div
           ref={containerRef}
-          className="relative w-full h-full flex items-center justify-center [perspective:1200px]"
+          className="relative w-full h-full flex items-center justify-center"
+          style={{ perspective: `${PERSPECTIVE}px` }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -235,9 +242,9 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                 <OverviewCard solution={solution} />
               ) : (
                 <div
-                  className={`rounded-2xl border transition-all duration-300 overflow-hidden
-                           ${index === activeIndex ? 'border-white/20 shadow-lg' : 'border-white/10'}
-                           ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800' : 'bg-slate-900'}`}
+                  className={`rounded-2xl border transition-all duration-300 overflow-hidden backdrop-blur-sm
+                           ${index === activeIndex ? 'border-white/20 shadow-xl' : 'border-white/10'}
+                           ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900/90 via-slate-900/90 to-slate-800/90' : 'bg-slate-900/90'}`}
                 >
                   <div className="p-8">
                     <span
