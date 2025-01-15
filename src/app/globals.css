@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --background: 222.2 84% 4.9%;
+  --foreground: 0 0% 100%;
+}
+
+@layer base {
+  body {
+    @apply min-h-screen text-white;
+    background: linear-gradient(to bottom, #0A0B14, #0F1117);
+  }
+}
+
+@layer components {
+  .backdrop-blur-nav {
+    @apply backdrop-blur-sm bg-white/[0.01] border border-white/5;
+  }
+}
+
+@layer utilities {
+  .nav-link-active {
+    @apply text-cyan-400 after:scale-x-100;
+  }
+  
+  .nav-link-inactive {
+    @apply text-gray-400/90 hover:text-white after:scale-x-0 hover:after:scale-x-100;
+  }
+}
