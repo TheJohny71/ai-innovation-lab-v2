@@ -2,7 +2,6 @@
 
 import { type FC, useState } from 'react';
 import { ArrowRight, X } from 'lucide-react';
-import { BaseLayout } from '@/components/shared/BaseLayout';
 import { solutions } from './solutions';
 import { type Solution } from './types';
 import SolutionCarousel from '@/components/shared/SolutionCarousel';
@@ -26,12 +25,12 @@ const AcceleratePage: FC = () => {
   return (
     <div className="min-h-screen flex flex-col relative bg-gradient-to-b from-slate-950 to-slate-900">
       <div
-        className={`max-w-7xl mx-auto w-full flex-1 flex flex-col transition-all duration-500 px-8
+        className={`max-w-7xl mx-auto w-full flex-1 flex flex-col transition-all duration-500 px-6 lg:px-8
                    ${activeSolution ? 'opacity-20 pointer-events-none blur-sm' : ''}`}
       >
-        {/* Header section */}
-        <div className="mt-16 mb-12">
-          <h1 className="text-5xl font-bold text-white mb-3 tracking-tight">
+        {/* Header section with reduced vertical margins */}
+        <div className="mt-12 mb-8">
+          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2 tracking-tight">
             <span className="font-extrabold">AI</span>{' '}
             <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">
               Acceleration
@@ -42,18 +41,45 @@ const AcceleratePage: FC = () => {
           </p>
         </div>
 
-        {/* Metrics Section with enhanced spacing */}
-        <div className="mb-16">
+        {/* Compact metrics grid with reduced vertical space */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <SolutionMetrics solutions={solutions} />
         </div>
 
-        {/* Carousel Container */}
-        <div className="flex-1 flex items-center justify-center">
+        {/* Carousel section with adjusted spacing */}
+        <div className="flex-1 flex items-center justify-center min-h-[500px] -mt-4">
           <div className="w-full">
             <SolutionCarousel
               solutions={solutions}
               onSolutionSelect={handleSolutionClick}
             />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom navigation - ensure it's visible */}
+      <div className="fixed bottom-0 left-0 right-0 bg-slate-950/80 backdrop-blur-sm border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-center space-x-8">
+            {[
+              'Nexus',
+              'Accelerate',
+              'Disruption',
+              'Mindset',
+              'Future-Ready',
+            ].map((item) => (
+              <button
+                key={item}
+                className={`px-4 py-2 text-sm font-medium rounded-full transition-all
+                          ${
+                            item === 'Accelerate'
+                              ? 'text-blue-400 bg-blue-500/10'
+                              : 'text-slate-400 hover:text-slate-200'
+                          }`}
+              >
+                {item}
+              </button>
+            ))}
           </div>
         </div>
       </div>

@@ -16,9 +16,10 @@ export interface MetricCardProps {
   title: string;
   value: string;
   subtitle: string;
-  trend: string;
-  stats: Record<string, string>;
-  gradient: GradientStyle;
+  trend?: string;
+  stats?: Record<string, string>;
+  gradient?: GradientStyle;
+  className?: string;
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({
@@ -28,38 +29,48 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   subtitle,
   trend,
   stats,
-  gradient,
+  gradient = {
+    background: 'bg-slate-900/50',
+    border: 'border-white/10',
+    icon: 'bg-transparent',
+    iconColor: 'text-blue-400',
+    text: 'text-blue-400',
+  },
+  className = '',
 }) => {
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border ${gradient.border} p-6
-                backdrop-blur-sm bg-slate-900/50 hover:bg-slate-900/60 transition-all duration-300`}
+      className={`relative rounded-xl border ${gradient.border} ${gradient.background} 
+                 backdrop-blur-sm p-6 hover:bg-slate-900/60 transition-all duration-300 ${className}`}
     >
-      <div
-        className={`absolute inset-0 pointer-events-none opacity-50 ${gradient.background}`}
-      />
-      <div className="relative z-10 flex flex-col h-full">
-        <div className="flex items-center gap-2">
-          <div className={`p-2 rounded-lg ${gradient.icon} backdrop-blur-sm`}>
+      <div className="flex flex-col h-full">
+        <div className="flex items-center gap-2 mb-3">
+          <div className={`${gradient.icon} rounded-lg`}>
             <Icon className={`h-5 w-5 ${gradient.iconColor}`} />
           </div>
-          <h3 className="text-sm font-medium text-slate-200">{title}</h3>
+          <h3 className={`text-sm font-medium ${gradient.text}`}>{title}</h3>
         </div>
-        <div className="mt-4 flex flex-col">
+
+        <div className="flex flex-col">
           <div className="flex items-baseline gap-2">
-            <p className={`text-2xl font-semibold ${gradient.text}`}>{value}</p>
-            <span className="text-sm text-slate-400">{trend}</span>
+            <p className="text-4xl font-bold text-white tracking-tight">
+              {value}
+            </p>
+            {trend && <span className="text-sm text-slate-400">{trend}</span>}
           </div>
-          <p className="text-sm text-slate-400 mt-1">{subtitle}</p>
+          <p className="text-sm text-slate-400 mt-1 line-clamp-2">{subtitle}</p>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-4 pt-4 border-t border-slate-700/50">
-          {Object.entries(stats).map(([key, stat]) => (
-            <div key={key} className="flex flex-col">
-              <p className="text-sm font-medium text-slate-200">{stat}</p>
-              <p className="text-xs text-slate-400 mt-0.5">{key}</p>
-            </div>
-          ))}
-        </div>
+
+        {stats && Object.keys(stats).length > 0 && (
+          <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-white/5">
+            {Object.entries(stats).map(([key, stat]) => (
+              <div key={key} className="flex flex-col">
+                <p className="text-sm font-medium text-white">{stat}</p>
+                <p className="text-xs text-slate-400">{key}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
