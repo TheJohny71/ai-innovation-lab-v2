@@ -107,7 +107,7 @@ const AcceleratePage: FC = () => {
                     Overview
                   </h3>
                   <p className="text-slate-300 leading-relaxed">
-                    {activeSolution.details.overview}
+                    {activeSolution.details?.overview}
                   </p>
                 </section>
 
@@ -116,7 +116,7 @@ const AcceleratePage: FC = () => {
                     Key Benefits
                   </h3>
                   <ul className="space-y-3">
-                    {activeSolution.details.benefits.map(
+                    {activeSolution.details?.benefits.map(
                       (benefit: string, idx: number) => (
                         <li
                           key={idx}

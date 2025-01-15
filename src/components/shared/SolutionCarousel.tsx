@@ -37,7 +37,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   // Constants
   const DRAG_THRESHOLD = 5;
-  const AUTO_ADVANCE_DELAY = 5000;
   const TRANSITION_DURATION = 400;
 
   // Carousel parameters
@@ -66,35 +65,29 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const len = solutionsLength;
       let diff = index - activeIndex;
 
-      // Enhanced wraparound logic
       const altDiff = diff - Math.sign(diff) * len;
       if (Math.abs(altDiff) < Math.abs(diff)) {
         diff = altDiff;
       }
 
-      // Calculate curve position with smooth easing
       const theta = (diff * Math.PI) / 8;
       const xOffset = Math.sin(theta) * CURVE_RADIUS;
       const zOffset = (1 - Math.cos(theta)) * 200;
 
-      // Enhanced scaling and rotation based on distance
       const isCenter = index === normalizeIndex(activeIndex);
       const distanceFromCenter = Math.abs(diff);
       const scale = isCenter
         ? CENTER_SCALE
         : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.1);
 
-      // Progressive opacity falloff
       const opacity = isCenter
         ? CENTER_OPACITY
         : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.15);
 
-      // Dynamic rotation with smooth falloff
       const rotate = isCenter
         ? 0
         : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.1);
 
-      // Add slight drag effect when dragging
       const dragOffset = isDragging ? dragDistance * 0.1 : 0;
 
       return {
@@ -205,17 +198,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     },
     [normalizeIndex]
   );
-
-  // Auto-advance timer with pause on hover/interaction
-  useEffect(() => {
-    if (isDragging) return;
-
-    const timer = setInterval(() => {
-      handleScroll(1);
-    }, AUTO_ADVANCE_DELAY);
-
-    return () => clearInterval(timer);
-  }, [handleScroll, isDragging]);
 
   return (
     <div className="w-full">
