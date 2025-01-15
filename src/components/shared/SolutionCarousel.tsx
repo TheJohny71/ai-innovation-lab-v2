@@ -36,13 +36,13 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   // Adjusted carousel parameters for better visual layout
   const DRAG_THRESHOLD = 5;
   const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 600;
-  const BASE_ROTATION = 12;
+  const CURVE_RADIUS = 500; // Reduced from 600
+  const BASE_ROTATION = 10; // Reduced from 12
   const CENTER_SCALE = 1;
-  const MIN_SCALE = 0.85;
+  const MIN_SCALE = 0.9; // Increased from 0.85
   const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.7;
-  const PERSPECTIVE = 1000;
+  const SIDE_OPACITY = 0.75; // Increased from 0.7
+  const PERSPECTIVE = 800; // Reduced from 1000
 
   const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
@@ -68,22 +68,22 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
       const theta = (diff * Math.PI) / 12;
       const xOffset = Math.sin(theta) * CURVE_RADIUS;
-      const zOffset = (1 - Math.cos(theta)) * 300;
+      const zOffset = (1 - Math.cos(theta)) * 250;
 
       const isCenter = index === normalizeIndex(activeIndex);
       const distanceFromCenter = Math.abs(diff);
 
       const scale = isCenter
         ? CENTER_SCALE
-        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.15);
+        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.1);
 
       const opacity = isCenter
         ? CENTER_OPACITY
-        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.2);
+        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.15);
 
       const rotate = isCenter
         ? 0
-        : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.15);
+        : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.1);
 
       const dragOffset = isDragging ? dragDistance * 0.1 : 0;
 
@@ -108,7 +108,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           : `all ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
         transformStyle: 'preserve-3d',
         willChange: 'transform, opacity',
-        transformOrigin: 'center center -300px',
+        transformOrigin: 'center center -250px',
         visibility: Math.abs(diff) > 2 ? 'hidden' : 'visible',
       };
     },
@@ -218,7 +218,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-[80vw] mt-8">
+      <div className="relative min-h-[400px] flex items-center justify-center mx-auto w-full max-w-[80vw]">
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center"
@@ -286,7 +286,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           ))}
         </div>
 
-        <div className="absolute -bottom-16 left-0 right-0">
+        <div className="absolute -bottom-12 left-0 right-0">
           <div className="flex justify-center items-center space-x-4">
             <button
               onClick={() => handleScroll(-1)}
