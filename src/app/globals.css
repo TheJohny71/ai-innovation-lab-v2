@@ -2,30 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes starfieldForward {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: var(--initial-opacity);
+  }
+  50% {
+    opacity: var(--max-opacity);
+  }
+  100% {
+    transform: scale(2.5) rotate(360deg);
+    opacity: var(--initial-opacity);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.bg-gradient-paint {
+  @apply bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500;
+}
+
 :root {
   --background: 222.2 84% 4.9%;
-  --foreground: 0 0% 100%;
-}
-
-@layer base {
-  body {
-    @apply min-h-screen text-white;
-    background: linear-gradient(to bottom, #0A0B14, #0F1117);
-  }
-}
-
-@layer components {
-  .backdrop-blur-nav {
-    @apply backdrop-blur-sm bg-white/[0.01] border border-white/5;
-  }
-}
-
-@layer utilities {
-  .nav-link-active {
-    @apply text-cyan-400 after:scale-x-100;
-  }
-  
-  .nav-link-inactive {
-    @apply text-gray-400/90 hover:text-white after:scale-x-0 hover:after:scale-x-100;
-  }
+  --foreground: 210 40% 98%;
 }
