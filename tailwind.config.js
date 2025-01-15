@@ -12,8 +12,8 @@ export default {
         foreground: 'hsl(var(--foreground))',
       },
       animation: {
-        'pulse': 'pulse 10s ease-in-out infinite',
-        'float': 'float 5s ease-in-out infinite',
+        pulse: 'pulse 10s ease-in-out infinite',
+        float: 'float 5s ease-in-out infinite',
       },
       keyframes: {
         pulse: {
@@ -28,4 +28,4 @@ export default {
     },
   },
   plugins: [],
-}
+};
