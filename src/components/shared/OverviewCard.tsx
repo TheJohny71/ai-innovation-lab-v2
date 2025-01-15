@@ -1,4 +1,3 @@
-// src/components/shared/OverviewCard.tsx
 'use client';
 
 import React from 'react';
@@ -33,6 +32,7 @@ const defaultSolution: Solution = {
       'Compliance management',
     ],
   },
+  status: 'active',
 };
 
 interface OverviewCardProps {

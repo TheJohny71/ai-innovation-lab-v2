@@ -1,5 +1,4 @@
 // src/app/accelerate/types.ts
-
 export interface Solution {
   id: string;
   title: string;
@@ -15,6 +14,7 @@ export interface Solution {
     overview: string;
     benefits: string[];
   };
+  status: 'active' | 'development';
 }
 
 export function isSolution(obj: any): obj is Solution {
@@ -34,6 +34,7 @@ export function isSolution(obj: any): obj is Solution {
     typeof obj.details === 'object' &&
     obj.details !== null &&
     typeof obj.details.overview === 'string' &&
-    Array.isArray(obj.details.benefits)
+    Array.isArray(obj.details.benefits) &&
+    (obj.status === 'active' || obj.status === 'development')
   );
 }

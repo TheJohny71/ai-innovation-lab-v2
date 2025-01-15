@@ -1,22 +1,24 @@
 'use client';
 
 import React from 'react';
-import { LucideProps } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
-interface MetricCardProps {
-  icon: React.ComponentType<LucideProps>;
+interface GradientStyle {
+  background: string;
+  border: string;
+  icon: string;
+  iconColor: string;
+  text: string;
+}
+
+export interface MetricCardProps {
+  icon: LucideIcon;
   title: string;
   value: string;
   subtitle: string;
   trend: string;
   stats: Record<string, string>;
-  gradient: {
-    background: string;
-    border: string;
-    icon: string;
-    iconColor: string;
-    text: string;
-  };
+  gradient: GradientStyle;
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({
@@ -56,5 +58,3 @@ export const MetricCard: React.FC<MetricCardProps> = ({
     </div>
   </div>
 );
-
-export type { MetricCardProps };

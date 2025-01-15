@@ -1,5 +1,23 @@
-// src/app/accelerate/solutions.ts
+// @/app/accelerate/types.ts
+export interface Solution {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  category: string;
+  gradient: string;
+  textColor: string;
+  cardGradient: string;
+  borderHover: string;
+  features: string[];
+  details: {
+    overview: string;
+    benefits: string[];
+  };
+  status: 'active' | 'development'; // Added this required field
+}
 
+// @/app/accelerate/solutions.ts
 import { type Solution } from './types';
 
 export const solutions: Solution[] = [
@@ -30,6 +48,7 @@ export const solutions: Solution[] = [
         'Compliance management',
       ],
     },
+    status: 'active', // Added status
   },
   {
     id: 'alfie',
@@ -59,6 +78,7 @@ export const solutions: Solution[] = [
         'Enhance employee experience with instant approvals',
       ],
     },
+    status: 'active', // Added status
   },
   {
     id: 'lexliber',
@@ -88,6 +108,7 @@ export const solutions: Solution[] = [
         'Improved resource utilization',
       ],
     },
+    status: 'development', // Added status
   },
   {
     id: 'seneca',
@@ -117,6 +138,7 @@ export const solutions: Solution[] = [
         'Reduced training overhead',
       ],
     },
+    status: 'active', // Added status
   },
   {
     id: 'lexpilot',
@@ -146,6 +168,7 @@ export const solutions: Solution[] = [
         'Enhanced compliance assurance',
       ],
     },
+    status: 'development', // Added status
   },
   {
     id: 'sentinel',
@@ -175,5 +198,6 @@ export const solutions: Solution[] = [
         'Enhanced security and access controls',
       ],
     },
+    status: 'active', // Added status
   },
 ];

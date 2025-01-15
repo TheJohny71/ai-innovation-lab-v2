@@ -6,6 +6,7 @@ import { BaseLayout } from '@/components/shared/BaseLayout';
 import { solutions } from './solutions';
 import { type Solution } from './types';
 import SolutionCarousel from '@/components/shared/SolutionCarousel';
+import SolutionMetrics from '@/components/shared/SolutionMetrics';
 
 const AcceleratePage: FC = () => {
   const [activeSolution, setActiveSolution] = useState<Solution | null>(null);
@@ -41,6 +42,9 @@ const AcceleratePage: FC = () => {
               Human-Led AI-Enabled Solutions
             </p>
           </div>
+
+          {/* Metrics Section */}
+          <SolutionMetrics solutions={solutions} />
 
           {/* Carousel Container */}
           <div className="flex-1 flex items-center justify-center -mt-8">
