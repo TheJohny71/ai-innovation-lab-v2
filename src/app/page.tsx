@@ -1,15 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { StarField } from '@/components/shared/StarField';
 import { GradientBackground } from '@/components/shared/GradientBackground';
 import { cn } from '@/lib/utils';
 
 export default function NexusPage() {
-  const router = useRouter();
   const [mounted, setMounted] = useState(false);
-  const [activePage, setActivePage] = useState('Nexus');
 
   useEffect(() => {
     setMounted(true);
@@ -18,23 +15,6 @@ export default function NexusPage() {
   if (!mounted) {
     return null;
   }
-
-  const navigationItems = [
-    { name: 'Nexus', path: '/' },
-    { name: 'Accelerate', path: '/accelerate' },
-    { name: 'Disruption', path: '/disruption' },
-    { name: 'Mindset', path: '/mindset' },
-    { name: 'Future-Ready', path: '/future-ready' },
-  ];
-
-  const handleNavigation = (item: { name: string; path: string }) => {
-    setActivePage(item.name);
-    if (item.path === '/') {
-      // If we're already on the home page, just update the active state
-      return;
-    }
-    router.push(item.path);
-  };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-deep-blue">
@@ -58,7 +38,7 @@ export default function NexusPage() {
             textShadow: '0 0 20px rgba(166, 197, 247, 0.3)',
           }}
         >
-          Innovation Hub
+          AI Innovation Hub
         </h1>
 
         <h2
@@ -68,7 +48,7 @@ export default function NexusPage() {
           )}
           style={{ animationDelay: '100ms' }}
         >
-          Talent-Driven AI Acceleration
+          Talent-Driven Mindset Acceleration
         </h2>
 
         <p
@@ -81,41 +61,6 @@ export default function NexusPage() {
           INNOVATE · DISRUPT · LEAD
         </p>
       </div>
-
-      {/* Navigation */}
-      <nav
-        className={cn(
-          'fixed bottom-8 left-1/2 -translate-x-1/2',
-          'px-4 py-2 rounded-full',
-          'bg-[#0B1425] bg-opacity-40 backdrop-blur-md',
-          'z-50 transition-all duration-300'
-        )}
-        style={{
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-        }}
-        role="navigation"
-        aria-label="Main navigation"
-      >
-        <div className="flex space-x-2">
-          {navigationItems.map((item) => (
-            <button
-              key={item.name}
-              onClick={() => handleNavigation(item)}
-              className={cn(
-                'nav-item transition-all duration-300',
-                'px-6 py-2 rounded-full',
-                activePage === item.name
-                  ? 'text-cyan-400 bg-cyan-400/10'
-                  : 'text-gray-400 hover:text-gray-300 hover:bg-white/5'
-              )}
-              role="menuitem"
-              aria-current={activePage === item.name ? 'page' : undefined}
-            >
-              {item.name}
-            </button>
-          ))}
-        </div>
-      </nav>
 
       <style jsx>{`
         @keyframes fadeIn {
@@ -131,19 +76,6 @@ export default function NexusPage() {
 
         .animate-fade-in {
           animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        .nav-item {
-          position: relative;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .nav-item:hover {
-          transform: translateY(-1px);
-        }
-
-        .nav-item:active {
-          transform: translateY(0px);
         }
 
         .noise-bg {
