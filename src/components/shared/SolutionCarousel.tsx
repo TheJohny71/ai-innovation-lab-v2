@@ -1,10 +1,10 @@
 import React, {
+  type FC,
   useState,
   useCallback,
   useRef,
   useEffect,
   useMemo,
-  type FC,
 } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Solution } from '@/app/accelerate/types';
@@ -31,17 +31,19 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Adjusted carousel parameters for better visual staging
+  // Carousel parameters
   const DRAG_THRESHOLD = 5;
   const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 800; // Increased for wider spread
-  const BASE_ROTATION = 15; // Increased for more dramatic fan effect
-  const CENTER_SCALE = 0.85; // Center card size
-  const SIDE_SCALE = 0.65; // Reduced size for side cards
+  const CURVE_RADIUS = 1200; // Increased for wider fan spread
+  const BASE_ROTATION = 30; // More dramatic fan effect
+  const PERSPECTIVE = 2000;
+
+  // Card-specific scales
+  const CENTER_SCALE = 0.82; // Slightly reduced center scale
+  const OVERVIEW_SCALE = 0.75; // Specific scale for overview card
+  const SIDE_SCALE = 0.5; // Smaller side cards for more contrast
   const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.4; // More fade for side cards
-  const PERSPECTIVE = 1200; // Enhanced perspective for better depth
-  const CARD_WIDTH = 400; // Fixed card width
+  const SIDE_OPACITY = 0.3; // More fade for better focus
 
   const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
@@ -57,39 +59,49 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
-      const len = solutionsLength;
       let diff = index - activeIndex;
 
-      // Normalize difference for smoother wraparound
-      const altDiff = diff - Math.sign(diff) * len;
-      if (Math.abs(altDiff) < Math.abs(diff)) {
-        diff = altDiff;
+      // Normalize for smoother wraparound
+      if (Math.abs(diff) > solutionsLength / 2) {
+        diff = diff - Math.sign(diff) * solutionsLength;
       }
 
-      // Enhanced positioning logic for better fan effect
-      const theta = (diff * Math.PI) / 8;
+      // Calculate position on the curve
+      const theta = (diff * Math.PI) / 4; // Adjusted for wider spread
       const xOffset = Math.sin(theta) * CURVE_RADIUS;
-      const zOffset = (1 - Math.cos(theta)) * 400;
+      const zOffset = (1 - Math.cos(theta)) * 600;
 
       const isCenter = index === normalizeIndex(activeIndex);
+      const isOverview = solutions[index]?.id === 'welcome';
       const distanceFromCenter = Math.abs(diff);
 
-      // Enhanced scaling logic
-      const scale = isCenter
-        ? CENTER_SCALE
-        : Math.max(SIDE_SCALE, SIDE_SCALE + 0.2 / distanceFromCenter);
+      // Scale calculation with special handling for overview card
+      let scale;
+      if (isCenter) {
+        scale = isOverview ? OVERVIEW_SCALE : CENTER_SCALE;
+      } else {
+        scale = Math.max(
+          SIDE_SCALE,
+          SIDE_SCALE + 0.2 / (distanceFromCenter + 1)
+        );
+      }
 
       // Enhanced opacity falloff
       const opacity = isCenter
         ? CENTER_OPACITY
-        : Math.max(SIDE_OPACITY, SIDE_OPACITY + 0.3 / distanceFromCenter);
+        : Math.max(SIDE_OPACITY, SIDE_OPACITY + 0.3 / (distanceFromCenter + 1));
 
-      // Enhanced rotation for better fan effect
+      // Rotation with enhanced fan effect
       const rotate = isCenter
         ? 0
         : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.15);
 
       const dragOffset = isDragging ? dragDistance * 0.1 : 0;
+
+      // Hide cards too far from center
+      if (Math.abs(diff) > 2.5) {
+        return { display: 'none' };
+      }
 
       return {
         transform: `
@@ -99,23 +111,30 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           rotateY(${rotate}deg)
         `,
         opacity,
-        zIndex: 20 - Math.abs(diff),
+        zIndex: 50 - Math.abs(diff * 10),
         position: 'absolute',
         left: '50%',
         width: '100%',
-        maxWidth: `${CARD_WIDTH}px`,
+        maxWidth: '32rem',
         transition: isDragging
           ? 'none'
           : `all ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
         transformStyle: 'preserve-3d',
-        willChange: 'transform, opacity',
         transformOrigin: 'center center -400px',
-        visibility: Math.abs(diff) > 2 ? 'hidden' : 'visible',
+        willChange: 'transform, opacity',
       };
     },
-    [activeIndex, isDragging, dragDistance, solutionsLength, normalizeIndex]
+    [
+      activeIndex,
+      isDragging,
+      dragDistance,
+      solutionsLength,
+      normalizeIndex,
+      solutions,
+    ]
   );
 
+  // Touch and mouse handlers (keeping existing handlers)
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
       const container = containerRef.current;
@@ -219,7 +238,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="relative min-h-[500px] flex items-center justify-center mx-auto w-full max-w-[90vw] mb-16">
+      <div className="relative min-h-[600px] flex items-center justify-center mx-auto w-full max-w-[90vw] mb-16">
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center"
@@ -243,9 +262,9 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                 <OverviewCard solution={solution} />
               ) : (
                 <div
-                  className={`rounded-2xl border transition-all duration-300 overflow-hidden backdrop-blur-sm
+                  className={`rounded-2xl transition-all duration-300 overflow-hidden backdrop-blur-sm
                              ${index === activeIndex ? 'border-white/20 shadow-xl' : 'border-white/10'}
-                             ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900/90 via-slate-900/90 to-slate-800/90' : 'bg-slate-900/90'}`}
+                             ${solution.cardGradient || 'bg-slate-900/90'}`}
                 >
                   <div className="p-6">
                     <span
