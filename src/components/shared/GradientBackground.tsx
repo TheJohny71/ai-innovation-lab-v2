@@ -20,7 +20,7 @@ export function GradientBackground({
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(circle at 50% 50%, rgba(13, 25, 48, 0.9) 0%, rgba(4, 8, 18, 0.95) 70%, rgba(0, 0, 0, 1) 100%)',
+              'radial-gradient(circle at 50% 50%, rgba(13, 25, 48, 0.9) 0%, rgba(4, 8, 18, 0.95) 50%, rgba(0, 0, 0, 1) 80%)',
           }}
         />
       </div>
@@ -30,7 +30,7 @@ export function GradientBackground({
         className="absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 30%, transparent 60%)',
+            'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 20%, transparent 40%)',
           animation: 'pulse 12s ease-in-out infinite',
         }}
       />
@@ -40,8 +40,8 @@ export function GradientBackground({
         className="absolute inset-0 opacity-10"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 50% 50%, rgba(147, 197, 253, 0.15) 0%, transparent 60%)',
-          transform: 'scale(1.2)',
+            'radial-gradient(circle at 50% 50%, rgba(147, 197, 253, 0.15) 0%, transparent 40%)',
+          transform: 'scale(1.1)',
           animation: 'pulse 15s ease-in-out infinite reverse',
         }}
       />

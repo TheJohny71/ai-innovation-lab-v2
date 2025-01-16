@@ -47,16 +47,16 @@ const generateStar = (
   isForeground: boolean,
   dimensions: WindowDimensions
 ): Star => {
-  const spreadFactor = isForeground ? 300 : 400;
+  const spreadFactor = isForeground ? 200 : 300;
 
   return {
     id,
     initialX: (Math.random() - 0.5) * spreadFactor,
     initialY: (Math.random() - 0.5) * spreadFactor,
-    size: isForeground ? Math.random() * 1 + 0.5 : Math.random() * 2 + 1.5,
-    duration: isForeground ? Math.random() * 30 + 60 : Math.random() * 40 + 70,
+    size: isForeground ? Math.random() * 1.5 + 0.8 : Math.random() * 2.5 + 2,
+    duration: isForeground ? Math.random() * 20 + 40 : Math.random() * 30 + 50,
     delay: Math.random() * -20,
-    z: isForeground ? Math.random() * 150 : Math.random() * 250,
+    z: isForeground ? Math.random() * 300 : Math.random() * 500,
     color: isForeground
       ? getRandomFromArray(FOREGROUND_COLORS)
       : BACKGROUND_COLOR,
@@ -139,7 +139,8 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
 
   const containerStyle = useMemo(
     () => ({
-      perspective: '500px',
+      perspective: '1000px',
+      perspectiveOrigin: '50% 50%',
     }),
     []
   );
@@ -163,7 +164,7 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
               (1 - Math.pow(distanceFromMouse, 2))
             : 0;
 
-        const zOffset = star.z * (mousePosition.x - 0.5) * 0.1;
+        const zOffset = star.z * (mousePosition.x - 0.5) * 0.2; // Doubled z-offset effect
 
         const starStyle: React.CSSProperties & {
           [key: string]: string | number;
@@ -176,8 +177,8 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
           animation: `starfieldForward ${star.duration}s linear infinite`,
           animationDelay: `${star.delay}s`,
           transform: `translateZ(${zOffset}px)`,
-          '--initial-opacity': star.layer === 'foreground' ? '0.2' : '0.1',
-          '--max-opacity': star.layer === 'foreground' ? '0.8' : '0.3',
+          '--initial-opacity': star.layer === 'foreground' ? '0.3' : '0.15',
+          '--max-opacity': star.layer === 'foreground' ? '1' : '0.4',
         };
 
         return (

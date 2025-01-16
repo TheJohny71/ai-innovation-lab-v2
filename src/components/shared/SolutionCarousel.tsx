@@ -36,13 +36,13 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   // Fine-tuned carousel parameters for optimal layout
   const DRAG_THRESHOLD = 5;
   const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 750; // Increased for wider fan spread
-  const BASE_ROTATION = 15; // Increased for more dramatic fan effect
-  const CENTER_SCALE = 0.85; // Reduced further to make center card smaller
-  const MIN_SCALE = 0.75; // Reduced for better size progression
+  const CURVE_RADIUS = 600; // Reduced for tighter curve
+  const BASE_ROTATION = 12; // Reduced for subtler rotation
+  const CENTER_SCALE = 0.75; // Further reduced for smaller center card
+  const MIN_SCALE = 0.65; // Reduced for better size progression
   const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.65; // Reduced for more dramatic fade
-  const PERSPECTIVE = 1200; // Increased for enhanced 3D effect
+  const SIDE_OPACITY = 0.5; // More fade for non-center cards
+  const PERSPECTIVE = 1000; // Adjusted for better depth perception
 
   const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
@@ -90,9 +90,13 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const maxOffset = Math.min(Math.abs(xOffset), CURVE_RADIUS);
       const normalizedXOffset = Math.sign(xOffset) * maxOffset;
 
+      // Add fixed center position offset
+      const centerOffset =
+        index === normalizeIndex(activeIndex) ? 0 : normalizedXOffset;
+
       return {
         transform: `
-          translateX(calc(-50% + ${normalizedXOffset + dragOffset}px))
+          translateX(calc(-50% + ${centerOffset + dragOffset}px))
           translateZ(${-zOffset}px)
           scale(${scale})
           rotateY(${rotate}deg)
@@ -102,7 +106,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         position: 'absolute',
         left: '50%',
         width: '100%',
-        maxWidth: '26rem', // Reduced from 28rem
+        maxWidth: '24rem', // Further reduced for better proportions
         transition: isDragging
           ? 'none'
           : `all ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
