@@ -1,4 +1,14 @@
-'use client';
+export const metadata = {
+  title: 'Innovation Hub | Nexus',
+  description:
+    'Talent-Driven AI Acceleration platform for next-generation innovation',
+};
+
+export const viewport = {
+  themeColor: '#0F172A',
+};
+
+('use client');
 
 import { StarField } from '@/components/shared/StarField';
 import { GradientBackground } from '@/components/shared/GradientBackground';

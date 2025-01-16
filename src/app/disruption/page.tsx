@@ -1,4 +1,13 @@
-'use client';
+export const metadata = {
+  title: 'AI Disruption Index | Legal Innovation Metrics',
+  description: 'Track and analyze AI innovation trends in global law firms',
+};
+
+export const viewport = {
+  themeColor: '#0F172A',
+};
+
+('use client');
 
 import React from 'react';
 import {

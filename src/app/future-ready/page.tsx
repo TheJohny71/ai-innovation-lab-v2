@@ -1,4 +1,13 @@
-'use client';
+export const metadata = {
+  title: 'Future Ready | Innovation Platform',
+  description: 'Preparing for the future of legal practice',
+};
+
+export const viewport = {
+  themeColor: '#0F172A',
+};
+
+('use client');
 
 import React from 'react';
 import { BaseLayout } from '@/components/shared/BaseLayout';
