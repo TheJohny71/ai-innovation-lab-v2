@@ -33,16 +33,16 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Adjusted carousel parameters for better visual layout
+  // Carousel parameters
   const DRAG_THRESHOLD = 5;
   const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 500; // Reduced from 600
-  const BASE_ROTATION = 10; // Reduced from 12
+  const CURVE_RADIUS = 500;
+  const BASE_ROTATION = 10;
   const CENTER_SCALE = 1;
-  const MIN_SCALE = 0.9; // Increased from 0.85
+  const MIN_SCALE = 0.9;
   const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.75; // Increased from 0.7
-  const PERSPECTIVE = 800; // Reduced from 1000
+  const SIDE_OPACITY = 0.75;
+  const PERSPECTIVE = 800;
 
   const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
@@ -218,7 +218,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="relative min-h-[400px] flex items-center justify-center mx-auto w-full max-w-[80vw]">
+      <div className="relative min-h-[500px] flex items-center justify-center mx-auto w-full max-w-[80vw] mb-16">
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center"
@@ -286,18 +286,19 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           ))}
         </div>
 
-        <div className="absolute -bottom-12 left-0 right-0">
-          <div className="flex justify-center items-center space-x-4">
+        {/* Navigation Controls */}
+        <div className="absolute -bottom-8 left-0 right-0">
+          <div className="flex justify-center items-center gap-6">
             <button
               onClick={() => handleScroll(-1)}
               className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
                        text-white hover:bg-slate-700/50 transition-all"
               aria-label="Previous solution"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-6 h-6" />
             </button>
 
-            <div className="flex space-x-2">
+            <div className="flex gap-2">
               {solutions.map((_, index) => (
                 <button
                   key={index}
@@ -319,7 +320,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                        text-white hover:bg-slate-700/50 transition-all"
               aria-label="Next solution"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-6 h-6" />
             </button>
           </div>
         </div>
