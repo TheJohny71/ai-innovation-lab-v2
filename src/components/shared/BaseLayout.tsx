@@ -1,25 +1,42 @@
 'use client';
 
 import React from 'react';
-import { NavigationBar } from './NavigationBar';
+import { cn } from '@/lib/utils';
 
 interface BaseLayoutProps {
   children: React.ReactNode;
 }
 
-const BaseLayout = ({ children }: BaseLayoutProps) => {
+export function BaseLayout({ children }: BaseLayoutProps) {
   return (
     <div className="min-h-screen bg-[#0a0d1f] text-white relative overflow-hidden">
-      {/* Noise Overlay */}
-      <div className="fixed inset-0 opacity-[0.015] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMC4xNSIvPjwvc3ZnPg==')]" />
+      {/* Base noise overlay */}
+      <div className="fixed inset-0 opacity-[0.015] pointer-events-none noise-bg" />
 
-      {/* Main Content */}
-      <div className="relative z-10">{children}</div>
+      {/* Main content container */}
+      <main className="relative z-10 min-h-screen">{children}</main>
 
-      {/* Navigation Bar */}
-      <NavigationBar />
+      <style jsx>{`
+        .noise-bg {
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        @supports (backdrop-filter: blur(4px)) {
+          .glass-effect {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+          }
+        }
+      `}</style>
     </div>
   );
-};
-
-export { BaseLayout };
+}

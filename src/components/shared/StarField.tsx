@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { starfield } from '@/lib/animation';
-import { generateStars, calculateResponsiveCount } from '@/lib/utils';
 
 interface StarFieldProps {
   className?: string;
@@ -45,31 +43,6 @@ const calculateParticleCount = (
   return Math.floor(baseCount * scaleFactor);
 };
 
-const generateStar = (
-  id: number,
-  isForeground: boolean,
-  dimensions: WindowDimensions
-): Star => {
-  const spreadFactor = isForeground ? 300 : 400;
-  const duration = isForeground
-    ? Math.random() * 15 + 25
-    : Math.random() * 20 + 35;
-
-  return {
-    id,
-    initialX: (Math.random() - 0.5) * spreadFactor,
-    initialY: (Math.random() - 0.5) * spreadFactor,
-    size: isForeground ? Math.random() * 1 + 0.5 : Math.random() * 2 + 1,
-    duration,
-    delay: Math.random() * -40,
-    z: isForeground ? Math.random() * 200 : Math.random() * 400,
-    color: isForeground
-      ? getRandomFromArray(FOREGROUND_COLORS)
-      : BACKGROUND_COLOR,
-    layer: isForeground ? 'foreground' : 'background',
-  };
-};
-
 export function StarField({ className = '' }: StarFieldProps): JSX.Element {
   const [stars, setStars] = useState<Star[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
@@ -110,32 +83,31 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
       return;
     }
 
-    const getParticleCount = (baseCount: number) => {
-      const screenArea = windowSize.width * windowSize.height;
-      const baseArea = 1920 * 1080;
-      const scaleFactor = Math.sqrt(screenArea / baseArea);
-      return Math.floor(baseCount * scaleFactor);
-    };
-
-    const generateStarField = (
-      baseCount: number,
-      isForeground: boolean
-    ): Star[] => {
-      const count = getParticleCount(baseCount);
+    const generateStars = (baseCount: number, isForeground: boolean) => {
+      const count = calculateParticleCount(baseCount, windowSize);
       const stars = [];
 
       for (let i = 0; i < count; i++) {
-        stars.push(
-          generateStar(isForeground ? i : i + 1000, isForeground, windowSize)
-        );
+        stars.push({
+          id: isForeground ? i : i + 1000,
+          initialX: (Math.random() - 0.5) * (isForeground ? 400 : 600),
+          initialY: (Math.random() - 0.5) * (isForeground ? 400 : 600),
+          size: isForeground ? Math.random() * 2 + 1 : Math.random() * 3 + 1.5,
+          duration: isForeground
+            ? Math.random() * 20 + 30
+            : Math.random() * 30 + 45,
+          delay: Math.random() * -50,
+          z: isForeground ? Math.random() * 400 : Math.random() * 800,
+          color: isForeground
+            ? getRandomFromArray(FOREGROUND_COLORS)
+            : BACKGROUND_COLOR,
+          layer: isForeground ? 'foreground' : 'background',
+        });
       }
       return stars;
     };
 
-    setStars([
-      ...generateStarField(100, true),
-      ...generateStarField(40, false),
-    ]);
+    setStars([...generateStars(150, true), ...generateStars(80, false)]);
   }, [prefersReducedMotion, windowSize]);
 
   const handleMouseMove = useCallback(
@@ -153,7 +125,7 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
 
   const containerStyle = useMemo(
     () => ({
-      perspective: '500px',
+      perspective: '800px',
       perspectiveOrigin: '50% 50%',
     }),
     []
@@ -166,42 +138,44 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
       onMouseMove={handleMouseMove}
     >
       {stars.map((star) => {
-        const distanceFromMouse = Math.hypot(
-          mousePosition.x - (0.5 + star.initialX / windowSize.width),
-          mousePosition.y - (0.5 + star.initialY / windowSize.height)
+        const distanceFromCenter = Math.hypot(
+          mousePosition.x - 0.5,
+          mousePosition.y - 0.5
         );
 
         const mouseEffect =
           star.layer === 'foreground'
-            ? Math.max(0, 0.15 - distanceFromMouse) *
-              80 *
-              (1 - Math.pow(distanceFromMouse, 2))
-            : 0;
+            ? Math.max(0, 0.2 - distanceFromCenter) * 120
+            : Math.max(0, 0.15 - distanceFromCenter) * 80;
 
-        const zOffset = star.z * (mousePosition.x - 0.5) * 0.1;
-
-        const starStyle: React.CSSProperties & {
-          [key: string]: string | number;
-        } = {
-          left: `calc(50% + ${star.initialX + mouseEffect * (mousePosition.x - 0.5)}px)`,
-          top: `calc(50% + ${star.initialY + mouseEffect * (mousePosition.y - 0.5)}px)`,
-          width: `${star.size}px`,
-          height: `${star.size}px`,
-          color: star.color,
-          animation: `starfieldForward ${star.duration}s linear infinite`,
-          animationDelay: `${star.delay}s`,
-          transform: `translateZ(${zOffset}px)`,
-          '--initial-opacity': star.layer === 'foreground' ? '0.2' : '0.1',
-          '--max-opacity': star.layer === 'foreground' ? '0.8' : '0.3',
-        };
+        const zOffset = star.z * (mousePosition.x - 0.5) * 0.2;
 
         return (
-          <div key={star.id} className="star absolute" style={starStyle} />
+          <div
+            key={star.id}
+            className="star"
+            style={
+              {
+                left: `calc(50% + ${star.initialX + mouseEffect * (mousePosition.x - 0.5)}px)`,
+                top: `calc(50% + ${star.initialY + mouseEffect * (mousePosition.y - 0.5)}px)`,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                color: star.color,
+                animation: `starfieldForward ${star.duration}s linear infinite`,
+                animationDelay: `${star.delay}s`,
+                transform: `translateZ(${zOffset}px)`,
+                '--initial-opacity':
+                  star.layer === 'foreground' ? '0.3' : '0.1',
+                '--max-opacity': star.layer === 'foreground' ? '1' : '0.3',
+              } as React.CSSProperties
+            }
+          />
         );
       })}
 
       <style jsx>{`
         .star {
+          position: absolute;
           transform-style: preserve-3d;
           will-change: transform, opacity;
         }
@@ -213,25 +187,25 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
           height: 100%;
           background: radial-gradient(
             circle,
-            currentColor 0%,
-            transparent 100%
+            currentColor 30%,
+            transparent 70%
           );
           border-radius: 50%;
         }
 
         @keyframes starfieldForward {
           0% {
-            transform: translateZ(0) scale(0.1);
+            transform: translate3d(0, 0, -400px) scale(0.01);
             opacity: 0;
           }
           10% {
-            opacity: var(--initial-opacity, 0.2);
+            opacity: var(--initial-opacity, 0.3);
           }
           90% {
-            opacity: var(--max-opacity, 0.8);
+            opacity: var(--max-opacity, 1);
           }
           100% {
-            transform: translateZ(2000px) scale(2);
+            transform: translate3d(0, 0, 2500px) scale(2.5);
             opacity: 0;
           }
         }

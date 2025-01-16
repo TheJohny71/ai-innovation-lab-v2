@@ -21,23 +21,23 @@ export function GradientBackground({
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(circle at 50% 50%, rgba(13, 25, 48, 0.9) 0%, rgba(4, 8, 18, 0.95) 35%, rgba(0, 0, 0, 1) 70%)',
+              'radial-gradient(circle at 50% 50%, #090D1F 0%, #000000 100%)',
           }}
         />
       </div>
 
-      {/* Deep center glow - reduced size */}
+      {/* Deep center glow */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-80"
         style={{
           background:
-            'radial-gradient(circle at 50% 50%, #090D1F 20%, #000000 70%)',
+            'radial-gradient(circle at 50% 50%, rgba(13, 25, 48, 0.8) 0%, transparent 70%)',
         }}
       />
 
       {/* Subtle blue glow overlay */}
       <div
-        className="absolute inset-0 opacity-40"
+        className="absolute inset-0 opacity-30"
         style={{
           backgroundImage:
             'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 15%, transparent 30%)',
@@ -117,6 +117,20 @@ export function GradientBackground({
 
         .noise-bg {
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .bg-gradient-radial {
+          background: radial-gradient(
+            circle at 50% 50%,
+            rgba(13, 25, 48, 0.5) 0%,
+            transparent 70%
+          );
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .animate-pulse {
+            animation: none !important;
+          }
         }
       `}</style>
     </div>

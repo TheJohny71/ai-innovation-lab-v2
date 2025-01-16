@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { StarField } from '@/components/shared/StarField';
 import { GradientBackground } from '@/components/shared/GradientBackground';
-import { BaseLayout } from '@/components/shared/BaseLayout';
 import { cn } from '@/lib/utils';
 
 export default function NexusPage() {
@@ -16,6 +15,14 @@ export default function NexusPage() {
   if (!mounted) {
     return null;
   }
+
+  const navigationItems = [
+    { name: 'Nexus', active: true },
+    { name: 'Accelerate', active: false },
+    { name: 'Disruption', active: false },
+    { name: 'Mindset', active: false },
+    { name: 'Future-Ready', active: false },
+  ];
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-deep-blue">
@@ -36,7 +43,7 @@ export default function NexusPage() {
           )}
           style={{
             color: '#A6C5F7',
-            textShadow: '0 2px 4px rgba(166, 197, 247, 0.2)',
+            textShadow: '0 0 20px rgba(166, 197, 247, 0.3)',
           }}
         >
           Innovation Hub
@@ -52,7 +59,7 @@ export default function NexusPage() {
           Talent-Driven AI Acceleration
         </h2>
 
-        <div
+        <p
           className={cn(
             'text-sm text-emerald-300 uppercase tracking-[0.3em]',
             'animate-fade-in'
@@ -60,83 +67,45 @@ export default function NexusPage() {
           style={{ animationDelay: '200ms' }}
         >
           INNOVATE · DISRUPT · LEAD
-        </div>
+        </p>
       </div>
 
       {/* Navigation */}
       <nav
         className={cn(
-          'fixed bottom-8 left-1/2 -translate-x-1/2 px-8 py-4',
-          'rounded-full bg-[#0B1425] bg-opacity-70 backdrop-blur-sm z-50',
-          'glass-effect'
+          'fixed bottom-8 left-1/2 -translate-x-1/2',
+          'px-4 py-2 rounded-full',
+          'bg-[#0B1425] bg-opacity-40 backdrop-blur-md',
+          'z-50 transition-all duration-300'
         )}
+        style={{
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+        }}
         role="navigation"
         aria-label="Main navigation"
-        style={{
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-        }}
       >
-        <ul className="flex space-x-8" role="menubar">
-          {[
-            { name: 'Nexus', active: true },
-            { name: 'Accelerate' },
-            { name: 'Disruption' },
-            { name: 'Mindset' },
-            { name: 'Future-Ready' },
-          ].map((item) => (
-            <li key={item.name} role="none">
-              <a
-                href="#"
-                className={cn(
-                  'nav-link transition-all duration-300 ease-in-out',
-                  item.active
-                    ? 'text-cyan-400'
-                    : 'text-gray-400 hover:text-gray-300'
-                )}
-                role="menuitem"
-                tabIndex={item.active ? 0 : -1}
-                aria-current={item.active ? 'page' : undefined}
-              >
-                {item.name}
-              </a>
-            </li>
+        <div className="flex space-x-2">
+          {navigationItems.map((item) => (
+            <a
+              key={item.name}
+              href="#"
+              className={cn(
+                'nav-item transition-all duration-300',
+                'px-6 py-2 rounded-full',
+                item.active
+                  ? 'text-cyan-400 bg-cyan-400/10'
+                  : 'text-gray-400 hover:text-gray-300 hover:bg-white/5'
+              )}
+              role="menuitem"
+              aria-current={item.active ? 'page' : undefined}
+            >
+              {item.name}
+            </a>
           ))}
-        </ul>
+        </div>
       </nav>
 
       <style jsx>{`
-        .nav-link {
-          position: relative;
-          padding: 0.5rem 1rem;
-        }
-
-        .nav-link::after {
-          content: '';
-          position: absolute;
-          bottom: -4px;
-          left: 0;
-          width: 100%;
-          height: 2px;
-          background-color: #06b6d4;
-          transform: scaleX(0);
-          transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .nav-link.active::after {
-          transform: scaleX(1);
-        }
-
-        .nav-link:hover:not(.active),
-        .nav-link:focus:not(.active) {
-          color: #f3f4f6;
-        }
-
-        .nav-link:focus-visible {
-          outline: 2px solid #06b6d4;
-          outline-offset: 4px;
-          border-radius: 4px;
-        }
-
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -145,6 +114,33 @@ export default function NexusPage() {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .nav-item {
+          position: relative;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item:hover {
+          transform: translateY(-1px);
+        }
+
+        .nav-item:active {
+          transform: translateY(0px);
+        }
+
+        .noise-bg {
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .animate-fade-in {
+            animation: none;
           }
         }
       `}</style>
