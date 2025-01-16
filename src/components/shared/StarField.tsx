@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { starfield } from '@/lib/animations';
 
 interface StarFieldProps {
   className?: string;
@@ -48,14 +49,22 @@ const generateStar = (
   dimensions: WindowDimensions
 ): Star => {
   const spreadFactor = isForeground ? 200 : 300;
+  const duration = isForeground
+    ? starfield.animation.duration.min +
+      Math.random() *
+        (starfield.animation.duration.max - starfield.animation.duration.min)
+    : starfield.animation.duration.max + Math.random() * 20;
 
   return {
     id,
     initialX: (Math.random() - 0.5) * spreadFactor,
     initialY: (Math.random() - 0.5) * spreadFactor,
     size: isForeground ? Math.random() * 1.5 + 0.8 : Math.random() * 2.5 + 2,
-    duration: isForeground ? Math.random() * 20 + 40 : Math.random() * 30 + 50,
-    delay: Math.random() * -20,
+    duration,
+    delay:
+      Math.random() *
+        (starfield.animation.delay.max - starfield.animation.delay.min) +
+      starfield.animation.delay.min,
     z: isForeground ? Math.random() * 300 : Math.random() * 500,
     color: isForeground
       ? getRandomFromArray(FOREGROUND_COLORS)
@@ -164,7 +173,7 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
               (1 - Math.pow(distanceFromMouse, 2))
             : 0;
 
-        const zOffset = star.z * (mousePosition.x - 0.5) * 0.2; // Doubled z-offset effect
+        const zOffset = star.z * (mousePosition.x - 0.5) * 0.2;
 
         const starStyle: React.CSSProperties & {
           [key: string]: string | number;
@@ -177,8 +186,14 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
           animation: `starfieldForward ${star.duration}s linear infinite`,
           animationDelay: `${star.delay}s`,
           transform: `translateZ(${zOffset}px)`,
-          '--initial-opacity': star.layer === 'foreground' ? '0.3' : '0.15',
-          '--max-opacity': star.layer === 'foreground' ? '1' : '0.4',
+          '--initial-opacity':
+            star.layer === 'foreground'
+              ? starfield.animation.opacity.initial.toString()
+              : '0.15',
+          '--max-opacity':
+            star.layer === 'foreground'
+              ? starfield.animation.opacity.max.toString()
+              : '0.4',
         };
 
         return (
@@ -201,6 +216,16 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
             transparent 100%
           );
           border-radius: 50%;
+        }
+        @keyframes starfieldForward {
+          0% {
+            transform: translateZ(0) translateY(0);
+            opacity: var(--initial-opacity);
+          }
+          100% {
+            transform: translateZ(-400px) translateY(-100px);
+            opacity: var(--max-opacity);
+          }
         }
         @media (prefers-reduced-motion: reduce) {
           .star {
