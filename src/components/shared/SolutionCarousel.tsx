@@ -33,16 +33,16 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Carousel parameters
+  // Adjusted carousel parameters for better visual layout
   const DRAG_THRESHOLD = 5;
   const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 500;
-  const BASE_ROTATION = 10;
-  const CENTER_SCALE = 1;
-  const MIN_SCALE = 0.9;
+  const CURVE_RADIUS = 600; // Increased from 500 for wider spread
+  const BASE_ROTATION = 12; // Increased from 10 for more pronounced fan effect
+  const CENTER_SCALE = 0.9; // Reduced from 1.0 to make center card smaller
+  const MIN_SCALE = 0.8; // Adjusted for better proportion
   const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.75;
-  const PERSPECTIVE = 800;
+  const SIDE_OPACITY = 0.7;
+  const PERSPECTIVE = 1000; // Increased from 800 for more pronounced 3D effect
 
   const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
@@ -66,20 +66,20 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         diff = altDiff;
       }
 
-      const theta = (diff * Math.PI) / 12;
+      const theta = (diff * Math.PI) / 10; // Adjusted for wider spread
       const xOffset = Math.sin(theta) * CURVE_RADIUS;
-      const zOffset = (1 - Math.cos(theta)) * 250;
+      const zOffset = (1 - Math.cos(theta)) * 300; // Increased from 250 for more depth
 
       const isCenter = index === normalizeIndex(activeIndex);
       const distanceFromCenter = Math.abs(diff);
 
       const scale = isCenter
         ? CENTER_SCALE
-        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.1);
+        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.15); // Increased scale reduction
 
       const opacity = isCenter
         ? CENTER_OPACITY
-        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.15);
+        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.2);
 
       const rotate = isCenter
         ? 0
@@ -102,13 +102,13 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         position: 'absolute',
         left: '50%',
         width: '100%',
-        maxWidth: '28rem',
+        maxWidth: '26rem', // Reduced from 28rem
         transition: isDragging
           ? 'none'
           : `all ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
         transformStyle: 'preserve-3d',
         willChange: 'transform, opacity',
-        transformOrigin: 'center center -250px',
+        transformOrigin: 'center center -300px', // Adjusted from -250px
         visibility: Math.abs(diff) > 2 ? 'hidden' : 'visible',
       };
     },
@@ -218,7 +218,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="relative min-h-[500px] flex items-center justify-center mx-auto w-full max-w-[80vw] mb-16">
+      <div className="relative min-h-[450px] flex items-center justify-center mx-auto w-full max-w-[80vw] mb-16">
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center"
@@ -246,20 +246,20 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                            ${index === activeIndex ? 'border-white/20 shadow-xl' : 'border-white/10'}
                            ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900/90 via-slate-900/90 to-slate-800/90' : 'bg-slate-900/90'}`}
                 >
-                  <div className="p-8">
+                  <div className="p-6">
                     <span
                       className={`text-sm font-medium px-3 py-1 rounded-full 
                                ${solution.gradient} ${solution.textColor} mb-4 inline-block`}
                     >
                       {solution.category}
                     </span>
-                    <h3 className="text-3xl font-bold text-white mt-4 tracking-tight">
+                    <h3 className="text-2xl font-bold text-white mt-4 tracking-tight">
                       {solution.title}
                     </h3>
-                    <p className={`${solution.textColor} text-xl mt-2`}>
+                    <p className={`${solution.textColor} text-lg mt-2`}>
                       {solution.subtitle}
                     </p>
-                    <p className="text-slate-200 text-lg my-4 line-clamp-2">
+                    <p className="text-slate-200 text-base my-4 line-clamp-2">
                       {solution.description}
                     </p>
                     <div className="flex flex-wrap gap-2">
