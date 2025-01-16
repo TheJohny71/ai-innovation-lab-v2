@@ -1,14 +1,5 @@
 'use client';
 
-export const metadata = {
-  title: 'Cultural Mindset Change | Innovation Platform',
-  description: 'Transform organizational culture for AI innovation',
-};
-
-export const viewport = {
-  themeColor: '#0F172A',
-};
-
 import React, { useState, useEffect } from 'react';
 import { Lightbulb, Users, Target, TrendingUp } from 'lucide-react';
 import { BaseLayout } from '@/components/shared/BaseLayout';

@@ -1,14 +1,5 @@
 'use client';
 
-export const metadata = {
-  title: 'AI Acceleration | Solutions',
-  description: 'Explore our AI-enabled solutions for legal innovation',
-};
-
-export const viewport = {
-  themeColor: '#0F172A',
-};
-
 import { type FC, useState } from 'react';
 import { ArrowRight, X } from 'lucide-react';
 import { solutions } from './solutions';
