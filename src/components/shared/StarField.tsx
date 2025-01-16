@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { starfield } from '@/lib/animations';
+import { starfield } from '@/lib/animation';
 
 interface StarFieldProps {
   className?: string;
