@@ -1,12 +1,10 @@
-'use client';
-
 import React, {
-  type FC,
   useState,
   useCallback,
   useRef,
   useEffect,
   useMemo,
+  type FC,
 } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Solution } from '@/app/accelerate/types';
@@ -33,16 +31,17 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Fine-tuned carousel parameters for optimal layout
+  // Adjusted carousel parameters for better visual staging
   const DRAG_THRESHOLD = 5;
   const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 600; // Reduced for tighter curve
-  const BASE_ROTATION = 12; // Reduced for subtler rotation
-  const CENTER_SCALE = 0.75; // Further reduced for smaller center card
-  const MIN_SCALE = 0.65; // Reduced for better size progression
+  const CURVE_RADIUS = 800; // Increased for wider spread
+  const BASE_ROTATION = 15; // Increased for more dramatic fan effect
+  const CENTER_SCALE = 0.85; // Center card size
+  const SIDE_SCALE = 0.65; // Reduced size for side cards
   const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.5; // More fade for non-center cards
-  const PERSPECTIVE = 1000; // Adjusted for better depth perception
+  const SIDE_OPACITY = 0.4; // More fade for side cards
+  const PERSPECTIVE = 1200; // Enhanced perspective for better depth
+  const CARD_WIDTH = 400; // Fixed card width
 
   const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
@@ -61,42 +60,40 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const len = solutionsLength;
       let diff = index - activeIndex;
 
+      // Normalize difference for smoother wraparound
       const altDiff = diff - Math.sign(diff) * len;
       if (Math.abs(altDiff) < Math.abs(diff)) {
         diff = altDiff;
       }
 
-      const theta = (diff * Math.PI) / 10; // Adjusted for wider spread
+      // Enhanced positioning logic for better fan effect
+      const theta = (diff * Math.PI) / 8;
       const xOffset = Math.sin(theta) * CURVE_RADIUS;
-      const zOffset = (1 - Math.cos(theta)) * 300; // Increased from 250 for more depth
+      const zOffset = (1 - Math.cos(theta)) * 400;
 
       const isCenter = index === normalizeIndex(activeIndex);
       const distanceFromCenter = Math.abs(diff);
 
+      // Enhanced scaling logic
       const scale = isCenter
         ? CENTER_SCALE
-        : Math.max(MIN_SCALE, 1 - distanceFromCenter * 0.15); // Increased scale reduction
+        : Math.max(SIDE_SCALE, SIDE_SCALE + 0.2 / distanceFromCenter);
 
+      // Enhanced opacity falloff
       const opacity = isCenter
         ? CENTER_OPACITY
-        : Math.max(SIDE_OPACITY, 1 - distanceFromCenter * 0.2);
+        : Math.max(SIDE_OPACITY, SIDE_OPACITY + 0.3 / distanceFromCenter);
 
+      // Enhanced rotation for better fan effect
       const rotate = isCenter
         ? 0
-        : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.1);
+        : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.15);
 
       const dragOffset = isDragging ? dragDistance * 0.1 : 0;
 
-      const maxOffset = Math.min(Math.abs(xOffset), CURVE_RADIUS);
-      const normalizedXOffset = Math.sign(xOffset) * maxOffset;
-
-      // Add fixed center position offset
-      const centerOffset =
-        index === normalizeIndex(activeIndex) ? 0 : normalizedXOffset;
-
       return {
         transform: `
-          translateX(calc(-50% + ${centerOffset + dragOffset}px))
+          translateX(calc(-50% + ${xOffset + dragOffset}px))
           translateZ(${-zOffset}px)
           scale(${scale})
           rotateY(${rotate}deg)
@@ -106,17 +103,17 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         position: 'absolute',
         left: '50%',
         width: '100%',
-        maxWidth: '24rem', // Further reduced for better proportions
+        maxWidth: `${CARD_WIDTH}px`,
         transition: isDragging
           ? 'none'
           : `all ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
         transformStyle: 'preserve-3d',
         willChange: 'transform, opacity',
-        transformOrigin: 'center center -300px', // Adjusted from -250px
+        transformOrigin: 'center center -400px',
         visibility: Math.abs(diff) > 2 ? 'hidden' : 'visible',
       };
     },
-    [activeIndex, isDragging, normalizeIndex, dragDistance, solutionsLength]
+    [activeIndex, isDragging, dragDistance, solutionsLength, normalizeIndex]
   );
 
   const handleMouseDown = useCallback(
@@ -222,7 +219,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="relative min-h-[450px] flex items-center justify-center mx-auto w-full max-w-[80vw] mb-16">
+      <div className="relative min-h-[500px] flex items-center justify-center mx-auto w-full max-w-[90vw] mb-16">
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center"
@@ -247,8 +244,8 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
               ) : (
                 <div
                   className={`rounded-2xl border transition-all duration-300 overflow-hidden backdrop-blur-sm
-                           ${index === activeIndex ? 'border-white/20 shadow-xl' : 'border-white/10'}
-                           ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900/90 via-slate-900/90 to-slate-800/90' : 'bg-slate-900/90'}`}
+                             ${index === activeIndex ? 'border-white/20 shadow-xl' : 'border-white/10'}
+                             ${solution.cardGradient ? 'bg-gradient-to-br from-slate-900/90 via-slate-900/90 to-slate-800/90' : 'bg-slate-900/90'}`}
                 >
                   <div className="p-6">
                     <span
