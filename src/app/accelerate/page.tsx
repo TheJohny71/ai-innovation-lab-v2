@@ -1,3 +1,5 @@
+'use client';
+
 export const metadata = {
   title: 'AI Acceleration | Solutions',
   description: 'Explore our AI-enabled solutions for legal innovation',
@@ -7,8 +9,6 @@ export const viewport = {
   themeColor: '#0F172A',
 };
 
-('use client');
-
 import { type FC, useState } from 'react';
 import { ArrowRight, X } from 'lucide-react';
 import { solutions } from './solutions';
@@ -17,7 +17,6 @@ import SolutionCarousel from '@/components/shared/SolutionCarousel';
 import SolutionMetrics from '@/components/shared/SolutionMetrics';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 
-// Rest of your existing AcceleratePage code remains the same
 const AcceleratePage: FC = () => {
   const [activeSolution, setActiveSolution] = useState<Solution | null>(null);
 

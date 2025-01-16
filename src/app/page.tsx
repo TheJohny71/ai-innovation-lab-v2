@@ -1,3 +1,5 @@
+'use client';
+
 export const metadata = {
   title: 'Innovation Hub | Nexus',
   description:
@@ -7,8 +9,6 @@ export const metadata = {
 export const viewport = {
   themeColor: '#0F172A',
 };
-
-('use client');
 
 import { StarField } from '@/components/shared/StarField';
 import { GradientBackground } from '@/components/shared/GradientBackground';
