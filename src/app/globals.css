@@ -26,7 +26,12 @@
 @layer base {
   body {
     @apply bg-black text-foreground overflow-x-hidden;
-    background: radial-gradient(ellipse at center, #0a0d1f 0%, #000000 100%);
+    background: radial-gradient(
+      circle at center,
+      #0d1930 0%,
+      #040812 60%,
+      #000000 100%
+    );
   }
 }
 
@@ -49,15 +54,31 @@
   color: transparent;
 }
 
+.bg-gradient-radial {
+  background: radial-gradient(
+    circle at center,
+    rgba(59, 130, 246, 0.15) 0%,
+    rgba(59, 130, 246, 0.05) 30%,
+    transparent 60%
+  );
+}
+
+.bg-deep-blue {
+  background-color: #040812;
+}
+
 @keyframes pulse {
   0% {
     transform: scale(1);
+    opacity: var(--tw-opacity, 1);
   }
   50% {
-    transform: scale(1.1);
+    transform: scale(1.05);
+    opacity: calc(var(--tw-opacity, 1) * 0.8);
   }
   100% {
     transform: scale(1);
+    opacity: var(--tw-opacity, 1);
   }
 }
 
@@ -149,20 +170,49 @@
 /* Background noise texture */
 .noise-bg {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.05;
+  opacity: 0.03;
   pointer-events: none;
 }
 
-/* Background gradient styles */
-.bg-dark-blue {
-  background-color: #0a0d1f;
+/* For modal/dialog backdrops */
+.backdrop-blur {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.bg-gradient-radial {
-  background: radial-gradient(
-    circle at center,
-    rgba(74, 144, 226, 0.15) 0%,
-    rgba(74, 144, 226, 0.05) 25%,
-    transparent 50%
+/* Gradient button styles */
+.gradient-button {
+  background: linear-gradient(
+    45deg,
+    rgba(59, 130, 246, 0.8),
+    rgba(37, 99, 235, 0.9)
   );
+  transition: all 0.3s ease;
+}
+
+.gradient-button:hover {
+  background: linear-gradient(
+    45deg,
+    rgba(59, 130, 246, 0.9),
+    rgba(37, 99, 235, 1)
+  );
+  transform: translateY(-1px);
+}
+
+/* Glass effect utilities */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+  background: rgba(13, 25, 48, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }

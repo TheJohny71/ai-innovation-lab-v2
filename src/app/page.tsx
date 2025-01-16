@@ -7,10 +7,10 @@ import { BaseLayout } from '@/components/shared/BaseLayout';
 export default function NexusPage() {
   return (
     <BaseLayout>
-      <div className="relative min-h-screen w-full overflow-hidden bg-dark-blue">
-        <StarField className="z-0" />
-        <GradientBackground className="z-10" />
-        <div className="absolute inset-0 noise-bg" />
+      <div className="relative min-h-screen w-full overflow-hidden bg-deep-blue">
+        <GradientBackground className="z-0" />
+        <StarField className="z-10" />
+        <div className="absolute inset-0 noise-bg opacity-[0.03]" />
 
         <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-4 text-center">
           <h1 className="text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-blue-300 to-blue-500 filter drop-shadow-lg animate-fade-in">
@@ -31,32 +31,6 @@ export default function NexusPage() {
             INNOVATE · DISRUPT · LEAD
           </div>
         </div>
-
-        <nav className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
-          <ul className="flex gap-8 text-gray-400">
-            <li>
-              <button className="nav-link hover:text-blue-400">Nexus</button>
-            </li>
-            <li>
-              <button className="nav-link hover:text-blue-400">
-                Accelerate
-              </button>
-            </li>
-            <li>
-              <button className="nav-link hover:text-blue-400">
-                Disruption
-              </button>
-            </li>
-            <li>
-              <button className="nav-link hover:text-blue-400">Mindset</button>
-            </li>
-            <li>
-              <button className="nav-link hover:text-blue-400">
-                Future-Ready
-              </button>
-            </li>
-          </ul>
-        </nav>
       </div>
     </BaseLayout>
   );

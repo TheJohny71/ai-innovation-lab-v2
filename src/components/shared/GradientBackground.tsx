@@ -11,42 +11,52 @@ export function GradientBackground({
 }: GradientBackgroundProps) {
   return (
     <div className={`fixed inset-0 -z-10 overflow-hidden ${className}`}>
-      {/* Base gradient layer with darker blue */}
-      <div className="absolute inset-0 bg-[#0a0d1f]" />
+      {/* Rich blue-black base gradient */}
+      <div className="absolute inset-0 bg-[#040812]" />
 
-      {/* Animated radial gradient overlay with reduced opacity */}
+      {/* Primary radial gradient for the deep blue center */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(circle at 50% 50%, rgba(13, 25, 48, 0.9) 0%, rgba(4, 8, 18, 0.95) 70%, rgba(0, 0, 0, 1) 100%)',
+          }}
+        />
+      </div>
+
+      {/* Subtle blue glow overlay */}
       <div
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 50% 50%, rgba(74, 144, 226, 0.15) 0%, rgba(74, 144, 226, 0.05) 25%, transparent 50%)',
-          animation: 'pulse 10s ease-in-out infinite',
+            'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 30%, transparent 60%)',
+          animation: 'pulse 12s ease-in-out infinite',
         }}
       />
 
-      {/* Secondary pulsing gradient */}
+      {/* Accent glow for depth */}
       <div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-10"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 50% 50%, rgba(103, 232, 249, 0.05) 0%, transparent 50%)',
-          transform: 'scale(1.5)',
-          animation: 'pulse 8s ease-in-out infinite reverse',
+            'radial-gradient(circle at 50% 50%, rgba(147, 197, 253, 0.15) 0%, transparent 60%)',
+          transform: 'scale(1.2)',
+          animation: 'pulse 15s ease-in-out infinite reverse',
         }}
       />
 
-      {/* Floating particles */}
-      {[...Array(40)].map((_, i) => (
+      {/* Floating particles with reduced opacity */}
+      {[...Array(30)].map((_, i) => (
         <div
           key={i}
           className="absolute rounded-full blur-sm"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
-            width: `${Math.random() * 3 + 1}px`,
-            height: `${Math.random() * 3 + 1}px`,
-            backgroundColor:
-              i % 2 ? 'rgba(103, 232, 249, 0.2)' : 'rgba(74, 144, 226, 0.2)',
+            width: `${Math.random() * 2 + 1}px`,
+            height: `${Math.random() * 2 + 1}px`,
+            backgroundColor: 'rgba(59, 130, 246, 0.15)',
             animation: `float ${5 + Math.random() * 10}s ease-in-out infinite`,
             animationDelay: `${Math.random() * 5}s`,
           }}
