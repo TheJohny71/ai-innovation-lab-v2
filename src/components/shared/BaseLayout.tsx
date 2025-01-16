@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { NavigationBar } from '@/components/shared/NavigationBar';
 
 interface BaseLayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,9 @@ export function BaseLayout({ children }: BaseLayoutProps) {
 
       {/* Main content container */}
       <main className="relative z-10 min-h-screen">{children}</main>
+
+      {/* Navigation Bar */}
+      <NavigationBar />
 
       <style jsx>{`
         .noise-bg {
