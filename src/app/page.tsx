@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { StarField } from '@/components/shared/StarField';
 import { GradientBackground } from '@/components/shared/GradientBackground';
 import { BaseLayout } from '@/components/shared/BaseLayout';
