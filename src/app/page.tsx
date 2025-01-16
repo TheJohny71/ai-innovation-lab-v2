@@ -1,12 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { StarField } from '@/components/shared/StarField';
 import { GradientBackground } from '@/components/shared/GradientBackground';
 import { cn } from '@/lib/utils';
 
 export default function NexusPage() {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [activePage, setActivePage] = useState('Nexus');
 
   useEffect(() => {
     setMounted(true);
@@ -17,12 +20,21 @@ export default function NexusPage() {
   }
 
   const navigationItems = [
-    { name: 'Nexus', active: true },
-    { name: 'Accelerate', active: false },
-    { name: 'Disruption', active: false },
-    { name: 'Mindset', active: false },
-    { name: 'Future-Ready', active: false },
+    { name: 'Nexus', path: '/' },
+    { name: 'Accelerate', path: '/accelerate' },
+    { name: 'Disruption', path: '/disruption' },
+    { name: 'Mindset', path: '/mindset' },
+    { name: 'Future-Ready', path: '/future-ready' },
   ];
+
+  const handleNavigation = (item: { name: string; path: string }) => {
+    setActivePage(item.name);
+    if (item.path === '/') {
+      // If we're already on the home page, just update the active state
+      return;
+    }
+    router.push(item.path);
+  };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-deep-blue">
@@ -86,21 +98,21 @@ export default function NexusPage() {
       >
         <div className="flex space-x-2">
           {navigationItems.map((item) => (
-            <a
+            <button
               key={item.name}
-              href="#"
+              onClick={() => handleNavigation(item)}
               className={cn(
                 'nav-item transition-all duration-300',
                 'px-6 py-2 rounded-full',
-                item.active
+                activePage === item.name
                   ? 'text-cyan-400 bg-cyan-400/10'
                   : 'text-gray-400 hover:text-gray-300 hover:bg-white/5'
               )}
               role="menuitem"
-              aria-current={item.active ? 'page' : undefined}
+              aria-current={activePage === item.name ? 'page' : undefined}
             >
               {item.name}
-            </a>
+            </button>
           ))}
         </div>
       </nav>
