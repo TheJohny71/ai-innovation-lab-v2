@@ -83,9 +83,12 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
       return;
     }
 
-    const generateStars = (baseCount: number, isForeground: boolean) => {
+    const generateStars = (
+      baseCount: number,
+      isForeground: boolean
+    ): Star[] => {
       const count = calculateParticleCount(baseCount, windowSize);
-      const stars = [];
+      const stars: Star[] = [];
 
       for (let i = 0; i < count; i++) {
         stars.push({
