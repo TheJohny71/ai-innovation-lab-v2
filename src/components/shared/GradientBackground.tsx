@@ -25,6 +25,15 @@ export function GradientBackground({
         />
       </div>
 
+      {/* Deep center glow */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(circle at 50% 50%, #090D1F 30%, #000000 100%)',
+        }}
+      />
+
       {/* Subtle blue glow overlay */}
       <div
         className="absolute inset-0 opacity-40"
