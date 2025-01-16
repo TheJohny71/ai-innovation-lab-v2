@@ -33,16 +33,16 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Adjusted carousel parameters for better visual layout
+  // Fine-tuned carousel parameters for optimal layout
   const DRAG_THRESHOLD = 5;
   const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 600; // Increased from 500 for wider spread
-  const BASE_ROTATION = 12; // Increased from 10 for more pronounced fan effect
-  const CENTER_SCALE = 0.9; // Reduced from 1.0 to make center card smaller
-  const MIN_SCALE = 0.8; // Adjusted for better proportion
+  const CURVE_RADIUS = 750; // Increased for wider fan spread
+  const BASE_ROTATION = 15; // Increased for more dramatic fan effect
+  const CENTER_SCALE = 0.85; // Reduced further to make center card smaller
+  const MIN_SCALE = 0.75; // Reduced for better size progression
   const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.7;
-  const PERSPECTIVE = 1000; // Increased from 800 for more pronounced 3D effect
+  const SIDE_OPACITY = 0.65; // Reduced for more dramatic fade
+  const PERSPECTIVE = 1200; // Increased for enhanced 3D effect
 
   const solutionsLength = useMemo(() => solutions.length, [solutions]);
 
