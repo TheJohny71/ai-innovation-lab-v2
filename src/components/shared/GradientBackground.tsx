@@ -11,8 +11,8 @@ export function GradientBackground({
 }: GradientBackgroundProps) {
   return (
     <div className={`fixed inset-0 -z-10 overflow-hidden ${className}`}>
-      {/* Base gradient layer with reduced transparency */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#090D1F] via-[#0F1631] to-[#090D1F]" />
+      {/* Base gradient layer with darker blue */}
+      <div className="absolute inset-0 bg-[#0a0d1f]" />
 
       {/* Animated radial gradient overlay with reduced opacity */}
       <div
@@ -24,7 +24,7 @@ export function GradientBackground({
         }}
       />
 
-      {/* Secondary pulsing gradient with reduced opacity */}
+      {/* Secondary pulsing gradient */}
       <div
         className="absolute inset-0 opacity-20"
         style={{
@@ -35,7 +35,7 @@ export function GradientBackground({
         }}
       />
 
-      {/* Floating particles with reduced opacity */}
+      {/* Floating particles */}
       {[...Array(40)].map((_, i) => (
         <div
           key={i}
