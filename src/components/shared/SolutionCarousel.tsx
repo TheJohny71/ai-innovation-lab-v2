@@ -34,14 +34,14 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   // Carousel parameters
   const DRAG_THRESHOLD = 5;
   const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 1200; // Increased for wider fan spread
-  const BASE_ROTATION = 30; // More dramatic fan effect
-  const PERSPECTIVE = 2000;
+  const CURVE_RADIUS = 600; // Reduced for closer background cards
+  const BASE_ROTATION = 15; // Gentler fan effect
+  const PERSPECTIVE = 1000;
 
   // Card-specific scales
-  const CENTER_SCALE = 0.82; // Slightly reduced center scale
-  const OVERVIEW_SCALE = 0.75; // Specific scale for overview card
-  const SIDE_SCALE = 0.5; // Smaller side cards for more contrast
+  const CENTER_SCALE = 0.85; // Regular cards in center
+  const OVERVIEW_SCALE = 0.85; // Overview card same size as others
+  const SIDE_SCALE = 0.7; // Larger side cards for better visibility
   const CENTER_OPACITY = 1;
   const SIDE_OPACITY = 0.3; // More fade for better focus
 
@@ -67,9 +67,10 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       }
 
       // Calculate position on the curve
-      const theta = (diff * Math.PI) / 4; // Adjusted for wider spread
+      // Adjusted curve calculation for better visibility
+      const theta = (diff * Math.PI) / 8; // Gentler spread
       const xOffset = Math.sin(theta) * CURVE_RADIUS;
-      const zOffset = (1 - Math.cos(theta)) * 600;
+      const zOffset = (1 - Math.cos(theta)) * 300; // Reduced depth
 
       const isCenter = index === normalizeIndex(activeIndex);
       const isOverview = solutions[index]?.id === 'welcome';
@@ -87,9 +88,10 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       }
 
       // Enhanced opacity falloff
+      // Adjusted opacity for better visibility of side cards
       const opacity = isCenter
         ? CENTER_OPACITY
-        : Math.max(SIDE_OPACITY, SIDE_OPACITY + 0.3 / (distanceFromCenter + 1));
+        : Math.max(0.5, 0.7 - distanceFromCenter * 0.15);
 
       // Rotation with enhanced fan effect
       const rotate = isCenter
@@ -98,8 +100,8 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
       const dragOffset = isDragging ? dragDistance * 0.1 : 0;
 
-      // Hide cards too far from center
-      if (Math.abs(diff) > 2.5) {
+      // Show more cards
+      if (Math.abs(diff) > 3.5) {
         return { display: 'none' };
       }
 
