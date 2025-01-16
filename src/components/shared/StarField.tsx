@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { starfield } from '@/lib/animation';
+import { generateStars, calculateResponsiveCount } from '@/lib/utils';
 
 interface StarFieldProps {
   className?: string;
@@ -26,8 +27,8 @@ interface WindowDimensions {
   height: number;
 }
 
-const FOREGROUND_COLORS = ['white', '#E6E6FA', '#B0C4DE'] as const;
-const BACKGROUND_COLOR = 'rgba(255, 255, 255, 0.15)' as const;
+const FOREGROUND_COLORS = ['white', '#E6E6FA', '#B0C4DE', '#87CEEB'] as const;
+const BACKGROUND_COLOR = 'rgba(255, 255, 255, 0.2)' as const;
 const BASE_SCREEN = { width: 1920, height: 1080 };
 
 const getRandomFromArray = <T extends readonly any[]>(arr: T): T[number] => {
@@ -40,7 +41,8 @@ const calculateParticleCount = (
 ): number => {
   const screenArea = dimensions.width * dimensions.height;
   const baseArea = BASE_SCREEN.width * BASE_SCREEN.height;
-  return Math.floor(baseCount * Math.sqrt(screenArea / baseArea));
+  const scaleFactor = Math.sqrt(screenArea / baseArea);
+  return Math.floor(baseCount * scaleFactor);
 };
 
 const generateStar = (
@@ -48,24 +50,19 @@ const generateStar = (
   isForeground: boolean,
   dimensions: WindowDimensions
 ): Star => {
-  const spreadFactor = isForeground ? 200 : 300;
+  const spreadFactor = isForeground ? 300 : 400;
   const duration = isForeground
-    ? starfield.animation.duration.min +
-      Math.random() *
-        (starfield.animation.duration.max - starfield.animation.duration.min)
-    : starfield.animation.duration.max + Math.random() * 20;
+    ? Math.random() * 15 + 25
+    : Math.random() * 20 + 35;
 
   return {
     id,
     initialX: (Math.random() - 0.5) * spreadFactor,
     initialY: (Math.random() - 0.5) * spreadFactor,
-    size: isForeground ? Math.random() * 1.5 + 0.8 : Math.random() * 2.5 + 2,
+    size: isForeground ? Math.random() * 1 + 0.5 : Math.random() * 2 + 1,
     duration,
-    delay:
-      Math.random() *
-        (starfield.animation.delay.max - starfield.animation.delay.min) +
-      starfield.animation.delay.min,
-    z: isForeground ? Math.random() * 300 : Math.random() * 500,
+    delay: Math.random() * -40,
+    z: isForeground ? Math.random() * 200 : Math.random() * 400,
     color: isForeground
       ? getRandomFromArray(FOREGROUND_COLORS)
       : BACKGROUND_COLOR,
@@ -113,23 +110,31 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
       return;
     }
 
+    const getParticleCount = (baseCount: number) => {
+      const screenArea = windowSize.width * windowSize.height;
+      const baseArea = 1920 * 1080;
+      const scaleFactor = Math.sqrt(screenArea / baseArea);
+      return Math.floor(baseCount * scaleFactor);
+    };
+
     const generateStarField = (
       baseCount: number,
       isForeground: boolean
     ): Star[] => {
-      const count = calculateParticleCount(baseCount, windowSize);
-      return Array.from({ length: count }, (_, index) =>
-        generateStar(
-          isForeground ? index : index + 1000,
-          isForeground,
-          windowSize
-        )
-      );
+      const count = getParticleCount(baseCount);
+      const stars = [];
+
+      for (let i = 0; i < count; i++) {
+        stars.push(
+          generateStar(isForeground ? i : i + 1000, isForeground, windowSize)
+        );
+      }
+      return stars;
     };
 
     setStars([
-      ...generateStarField(150, true),
-      ...generateStarField(60, false),
+      ...generateStarField(100, true),
+      ...generateStarField(40, false),
     ]);
   }, [prefersReducedMotion, windowSize]);
 
@@ -148,7 +153,7 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
 
   const containerStyle = useMemo(
     () => ({
-      perspective: '1000px',
+      perspective: '500px',
       perspectiveOrigin: '50% 50%',
     }),
     []
@@ -173,7 +178,7 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
               (1 - Math.pow(distanceFromMouse, 2))
             : 0;
 
-        const zOffset = star.z * (mousePosition.x - 0.5) * 0.2;
+        const zOffset = star.z * (mousePosition.x - 0.5) * 0.1;
 
         const starStyle: React.CSSProperties & {
           [key: string]: string | number;
@@ -186,25 +191,21 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
           animation: `starfieldForward ${star.duration}s linear infinite`,
           animationDelay: `${star.delay}s`,
           transform: `translateZ(${zOffset}px)`,
-          '--initial-opacity':
-            star.layer === 'foreground'
-              ? starfield.animation.opacity.initial.toString()
-              : '0.15',
-          '--max-opacity':
-            star.layer === 'foreground'
-              ? starfield.animation.opacity.max.toString()
-              : '0.4',
+          '--initial-opacity': star.layer === 'foreground' ? '0.2' : '0.1',
+          '--max-opacity': star.layer === 'foreground' ? '0.8' : '0.3',
         };
 
         return (
           <div key={star.id} className="star absolute" style={starStyle} />
         );
       })}
+
       <style jsx>{`
         .star {
           transform-style: preserve-3d;
           will-change: transform, opacity;
         }
+
         .star::before {
           content: '';
           position: absolute;
@@ -217,16 +218,24 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
           );
           border-radius: 50%;
         }
+
         @keyframes starfieldForward {
           0% {
-            transform: translateZ(0) translateY(0);
-            opacity: var(--initial-opacity);
+            transform: translateZ(0) scale(0.1);
+            opacity: 0;
+          }
+          10% {
+            opacity: var(--initial-opacity, 0.2);
+          }
+          90% {
+            opacity: var(--max-opacity, 0.8);
           }
           100% {
-            transform: translateZ(-400px) translateY(-100px);
-            opacity: var(--max-opacity);
+            transform: translateZ(2000px) scale(2);
+            opacity: 0;
           }
         }
+
         @media (prefers-reduced-motion: reduce) {
           .star {
             animation: none !important;
