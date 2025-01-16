@@ -15,70 +15,70 @@ export function GradientBackground({
       {/* Base background */}
       <div className="absolute inset-0 bg-[#040812]" />
 
-      {/* Deep background gradient */}
+      {/* Deep background gradient - made more gradual */}
       <div className="absolute inset-0">
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(circle at 50% 50%, #07091A 0%, #000000 100%)',
+              'radial-gradient(100% 100% at 50% 50%, #07091A 0%, #000000 100%)',
           }}
         />
       </div>
 
-      {/* Main ambient glow - darker with purple tint */}
+      {/* Main ambient glow - much more diffused */}
       <div
-        className="absolute inset-0 opacity-25"
+        className="absolute inset-0 opacity-20"
         style={{
           background:
-            'radial-gradient(circle at 50% 50%, rgba(30, 35, 60, 0.8) 0%, transparent 60%)',
-          filter: 'blur(30px)',
+            'radial-gradient(140% 140% at 50% 50%, rgba(30, 35, 60, 0.6) -20%, transparent 100%)',
+          filter: 'blur(60px)',
         }}
       />
 
-      {/* Subtle purple tint */}
+      {/* Subtle purple tint - expanded spread */}
+      <div
+        className="absolute inset-0 opacity-8"
+        style={{
+          backgroundImage:
+            'radial-gradient(150% 150% at 50% 50%, rgba(88, 91, 124, 0.2) -30%, transparent 100%)',
+          filter: 'blur(80px)',
+        }}
+      />
+
+      {/* Very soft deep blue undertone - wider spread */}
       <div
         className="absolute inset-0 opacity-10"
         style={{
-          backgroundImage:
-            'radial-gradient(circle at 50% 50%, rgba(88, 91, 124, 0.3) 0%, transparent 70%)',
-          filter: 'blur(40px)',
-        }}
-      />
-
-      {/* Very soft deep blue undertone */}
-      <div
-        className="absolute inset-0 opacity-15"
-        style={{
           background:
-            'radial-gradient(circle at 50% 50%, rgba(13, 25, 48, 0.5) 0%, transparent 70%)',
-          filter: 'blur(50px)',
+            'radial-gradient(160% 160% at 50% 50%, rgba(13, 25, 48, 0.4) -40%, transparent 100%)',
+          filter: 'blur(100px)',
         }}
       />
 
-      {/* Subtle center highlight */}
+      {/* Subtle distributed highlight */}
       <div
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 opacity-3"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 50% 50%, rgba(147, 197, 253, 0.1) 0%, transparent 50%)',
+            'radial-gradient(170% 170% at 50% 50%, rgba(147, 197, 253, 0.05) -50%, transparent 100%)',
+          filter: 'blur(90px)',
         }}
       />
 
-      {/* Additional glow effects - preserved from original */}
+      {/* Additional glow effects - preserved but softened */}
       <div className="absolute inset-0">
         <div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-15"
           style={{
             background:
-              'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 30%)',
-            filter: 'blur(30px)',
+              'radial-gradient(180% 180% at 50% 50%, rgba(59, 130, 246, 0.1) -60%, transparent 100%)',
+            filter: 'blur(70px)',
           }}
         />
       </div>
 
-      {/* Gradient overlay for depth - preserved from original */}
-      <div className="absolute inset-0 bg-gradient-radial opacity-60" />
+      {/* Gradient overlay for depth */}
       <div
         className="absolute inset-0"
         style={{
@@ -87,13 +87,14 @@ export function GradientBackground({
         }}
       />
 
-      {/* Animated pulse effect - preserved from original */}
-      <div className="absolute inset-0 animate-pulse opacity-10">
+      {/* Animated pulse effect - preserved but more subtle */}
+      <div className="absolute inset-0 animate-pulse opacity-5">
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 35%)',
+              'radial-gradient(200% 200% at 50% 50%, rgba(59, 130, 246, 0.1) -70%, transparent 100%)',
+            filter: 'blur(100px)',
           }}
         />
       </div>
@@ -120,9 +121,9 @@ export function GradientBackground({
 
         .bg-gradient-radial {
           background: radial-gradient(
-            circle at 50% 50%,
-            rgba(13, 25, 48, 0.5) 0%,
-            transparent 50%
+            180% 180% at 50% 50%,
+            rgba(13, 25, 48, 0.3) -50%,
+            transparent 100%
           );
         }
 
