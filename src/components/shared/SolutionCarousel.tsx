@@ -27,7 +27,7 @@ interface CardStyle extends React.CSSProperties {
   position: 'absolute';
   left: '50%';
   width: '100%';
-  maxWidth: '32rem';
+  maxWidth: '28rem';
   transition: string;
   transformStyle: 'preserve-3d';
 }
@@ -48,13 +48,13 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
       translateY: -20,
       rotateX: 5,
       rotateY: 0,
-      scale: 1.2,
+      scale: 1.1,
       opacity: 1,
       zIndex: 20,
     },
     // First right card
     {
-      translateX: 306.1467458920718,
+      translateX: 250.1467458920718,
       translateZ: -15.224093497742652,
       translateY: 0,
       rotateX: 0,
@@ -65,7 +65,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     },
     // First left card
     {
-      translateX: -306.1467458920718,
+      translateX: -250.1467458920718,
       translateZ: -15.224093497742652,
       translateY: 0,
       rotateX: 0,
@@ -76,7 +76,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     },
     // Second right card
     {
-      translateX: 565.6854249492379,
+      translateX: 465.6854249492379,
       translateZ: -58.57864376269048,
       translateY: 0,
       rotateX: 0,
@@ -87,7 +87,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     },
     // Second left card
     {
-      translateX: -565.6854249492379,
+      translateX: -465.6854249492379,
       translateZ: -58.57864376269048,
       translateY: 0,
       rotateX: 0,
@@ -98,7 +98,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     },
     // Third right card
     {
-      translateX: 739.1036260090294,
+      translateX: 639.1036260090294,
       translateZ: -123.46331352698203,
       translateY: 0,
       rotateX: 0,
@@ -150,7 +150,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         position: 'absolute',
         left: '50%',
         width: '100%',
-        maxWidth: '32rem',
+        maxWidth: '28rem',
         transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
         transformStyle: 'preserve-3d',
       };
@@ -170,7 +170,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
       position: 'absolute',
       left: '50%',
       width: '100%',
-      maxWidth: '32rem',
+      maxWidth: '28rem',
       transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
       transformStyle: 'preserve-3d',
     };
@@ -198,17 +198,19 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
             <div
               className={`absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] ${solution.cardGradient}`}
             ></div>
-            <div
-              className="absolute inset-0 opacity-20"
-              style={{
-                backgroundImage: `linear-gradient(45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
-                  linear-gradient(-45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
-                  linear-gradient(45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%),
-                  linear-gradient(-45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%)`,
-                backgroundSize: '40px 40px',
-                backgroundPosition: '0 0, 0 20px, 20px -20px, -20px 0px',
-              }}
-            ></div>
+            {solution.id === 'welcome' && (
+              <div
+                className="absolute inset-0 opacity-20"
+                style={{
+                  backgroundImage: `linear-gradient(45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
+                    linear-gradient(-45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%),
+                    linear-gradient(-45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%)`,
+                  backgroundSize: '40px 40px',
+                  backgroundPosition: '0 0, 0 20px, 20px -20px, -20px 0px',
+                }}
+              />
+            )}
             <div className="absolute top-20 right-20 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl"></div>
             <div className="absolute bottom-10 left-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl"></div>
           </div>
