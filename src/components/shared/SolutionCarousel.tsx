@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { useState, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import type { Solution } from '@/app/accelerate/types';
 
@@ -19,328 +13,180 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   solutions = [],
   onSolutionSelect,
 }) => {
-  // Find overview index
-  const overviewIndex = useMemo(
-    () => solutions.findIndex((s) => s.id === 'overview'),
-    [solutions]
-  );
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // State management with default to overview
-  const [activeIndex, setActiveIndex] = useState(
-    overviewIndex !== -1 ? overviewIndex : 0
-  );
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const [dragDistance, setDragDistance] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  // Constants for carousel configuration
+  const ROTATION_FACTOR = 8;
+  const TRANSLATION_FACTOR = 306;
+  const Z_TRANSLATION_FACTOR = 15;
+  const SCALE_BASE = 1.15;
 
-  // Carousel configuration based on the example image
-  const PERSPECTIVE = 1000;
-  const CARD_GAP = 24;
-  const MAX_VISIBLE_CARDS = 5;
-  const CARD_WIDTH = 320;
-  const DRAG_THRESHOLD = 50;
-  const ROTATION_ANGLE = 6;
-  const BASE_OPACITY = 0.8;
-  const TRANSITION_DURATION = 500;
-  const TRANSITION_TIMING = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
-
-  // Reset to overview when solutions change
-  useEffect(() => {
-    if (overviewIndex !== -1) {
-      setActiveIndex(overviewIndex);
-    }
-  }, [overviewIndex, solutions]);
-
-  // Index normalization for continuous loop
-  const normalizeIndex = useCallback(
-    (index: number): number => {
-      return ((index % solutions.length) + solutions.length) % solutions.length;
-    },
-    [solutions.length]
-  );
-
-  // Enhanced card style calculation to match the example
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
-      let diff = index - activeIndex;
+      const offset = index - activeIndex;
+      const zIndex = 20 - Math.abs(offset);
+      const opacity = offset === 0 ? 1 : 0.7;
 
-      if (Math.abs(diff) > solutions.length / 2) {
-        diff = diff - Math.sign(diff) * solutions.length;
+      let translateX = 0;
+      let rotateY = 0;
+      let translateZ = 0;
+      let scale = 1;
+
+      if (offset === 0) {
+        scale = SCALE_BASE;
+      } else if (offset > 0) {
+        translateX = TRANSLATION_FACTOR * offset;
+        rotateY = ROTATION_FACTOR;
+        translateZ = -Z_TRANSLATION_FACTOR * offset;
+      } else {
+        translateX = TRANSLATION_FACTOR * offset;
+        rotateY = -ROTATION_FACTOR;
+        translateZ = Z_TRANSLATION_FACTOR * offset;
       }
-
-      const xOffset = diff * (CARD_WIDTH + CARD_GAP);
-      const rotation = diff * ROTATION_ANGLE;
-
-      const scale = Math.max(0.95, 1 - Math.abs(diff) * 0.05);
-      const opacity = Math.max(BASE_OPACITY, 1 - Math.abs(diff) * 0.2);
-
-      if (Math.abs(diff) > MAX_VISIBLE_CARDS / 2) {
-        return { display: 'none' };
-      }
-
-      const transform = `
-        translateX(${xOffset + (isDragging ? dragDistance : 0)}px)
-        rotate(${rotation}deg)
-        scale(${scale})
-      `;
 
       return {
-        transform,
+        transform: `translateX(calc(-50% + ${translateX}px)) translateZ(${translateZ}px) scale(${scale}) rotateY(${rotateY}deg)`,
         opacity,
-        transition: isDragging
-          ? 'none'
-          : `all ${TRANSITION_DURATION}ms ${TRANSITION_TIMING}`,
+        zIndex,
         position: 'absolute',
         left: '50%',
-        marginLeft: -(CARD_WIDTH / 2),
-        width: CARD_WIDTH,
-        transformOrigin: 'center center',
-        zIndex: 1000 - Math.abs(diff * 10),
-        willChange: 'transform, opacity',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transformStyle: 'preserve-3d',
       };
     },
-    [activeIndex, isDragging, dragDistance, solutions.length]
+    [activeIndex]
   );
 
-  // Card content renderer to match the example design
   const renderCardContent = (solution: Solution, isActive: boolean) => {
-    const getColorScheme = (category: string) => {
-      switch (category?.toLowerCase()) {
-        case 'governance':
-          return 'text-emerald-400';
-        case 'practice management':
-          return 'text-purple-400';
+    const getCategoryStyles = (category: string) => {
+      switch (category.toLowerCase()) {
         case 'overview':
-          return 'text-blue-400';
+          return 'bg-blue-500/30 text-blue-400';
+        case 'practice management':
+          return 'bg-purple-500/10 text-purple-400';
+        case 'knowledge management':
+          return 'bg-teal-500/10 text-teal-400';
         case 'research':
-          return 'text-emerald-400';
+          return 'bg-cyan-500/10 text-cyan-400';
+        case 'governance':
+          return 'bg-emerald-500/10 text-emerald-400';
         default:
-          return 'text-gray-400';
+          return 'bg-blue-500/30 text-blue-400';
       }
     };
 
-    const colorClass = getColorScheme(solution.category);
-
-    if (isActive && solution.id === 'overview') {
-      return (
-        <div className="p-8 bg-blue-900/10 backdrop-blur-sm rounded-xl w-full">
-          <div className="flex justify-between items-center mb-6">
-            <div className={colorClass}>Overview</div>
-            <ArrowUpRight className={colorClass} size={20} />
-          </div>
-          <h1 className="text-white text-3xl font-semibold mb-4">
-            AI Solutions Overview
-          </h1>
-          <h2 className={`${colorClass} text-xl mb-6`}>
-            Explore Available Tools
-          </h2>
-          <p className="text-gray-400 mb-8">{solution.description}</p>
-          <div className="flex flex-wrap gap-3">
-            <button className="bg-emerald-900/20 text-emerald-400 px-4 py-2 rounded-full text-sm">
-              Practice Management Tools
-            </button>
-            <button className="bg-blue-900/20 text-blue-400 px-4 py-2 rounded-full text-sm">
-              Research Assistance
-            </button>
-            <button className="bg-blue-900/20 text-blue-400 px-4 py-2 rounded-full text-sm">
-              Knowledge Management
-            </button>
-            <div className="text-blue-400 text-sm mt-2">+1 more</div>
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div className="p-6 bg-blue-900/10 backdrop-blur-sm rounded-xl w-full">
-        <div className={`${colorClass} text-sm mb-1`}>{solution.category}</div>
-        <h2 className="text-white text-2xl font-semibold mb-2">
-          {solution.title}
-        </h2>
-        <div className={`${colorClass} text-sm mb-4`}>{solution.subtitle}</div>
-        <p className="text-gray-400 text-sm">{solution.description}</p>
-        <div className="mt-4 space-y-2">
-          {solution.features?.slice(0, 3).map((feature, idx) => (
-            <div key={idx} className="text-gray-400 text-sm">
-              {feature}
+      <div className="w-full max-w-xl rounded-2xl border border-white/20 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-600/20 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-600/20 via-transparent to-transparent" />
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              backgroundImage: `linear-gradient(45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
+              linear-gradient(-45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
+              linear-gradient(45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%),
+              linear-gradient(-45deg, transparent 75%, rgba(59, 130, 246, 0.1) 75%)`,
+              backgroundSize: '40px 40px',
+              backgroundPosition: '0 0, 0 20px, 20px -20px, -20px 0px',
+            }}
+          />
+          <div className="absolute top-20 right-20 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl" />
+        </div>
+        <div className="relative h-full">
+          <div className="bg-blue-500/10">
+            <div className="h-1 w-full" />
+          </div>
+          <div className="p-8 backdrop-blur-sm">
+            <div className="flex items-start justify-between">
+              <span
+                className={`text-sm font-medium px-3 py-1 rounded-full ${getCategoryStyles(solution.category)}`}
+              >
+                {solution.category}
+              </span>
+              <ArrowUpRight className="w-6 h-6 text-blue-300" />
             </div>
-          ))}
-          {solution.features && solution.features.length > 3 && (
-            <div className={`${colorClass} text-sm`}>
-              +{solution.features.length - 3} more
+            <div className="mt-4 space-y-2">
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
+                {solution.title}
+              </h3>
+              <p className="text-xl text-blue-400">{solution.subtitle}</p>
+              <p className="text-slate-300 text-lg line-clamp-2">
+                {solution.description}
+              </p>
             </div>
-          )}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {solution.features.slice(0, 3).map((feature, idx) => (
+                <div
+                  key={idx}
+                  className="px-3 py-1 rounded-full text-sm bg-slate-800 text-slate-200 border border-slate-700"
+                >
+                  {feature}
+                </div>
+              ))}
+              {solution.features.length > 3 && (
+                <span className="px-3 py-1 rounded-full text-sm bg-blue-500/10 text-blue-400">
+                  +{solution.features.length - 3} more
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     );
   };
 
-  // [Drag handlers and event handlers remain unchanged]
-  const handleDragStart = useCallback(
-    (clientX: number) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      setIsDragging(true);
-      setStartX(clientX - rect.left);
-      setScrollLeft(activeIndex);
-      setDragDistance(0);
-    },
-    [activeIndex]
-  );
-
-  const handleDragMove = useCallback(
-    (clientX: number) => {
-      if (!isDragging || !containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = clientX - rect.left;
-      const distance = startX - x;
-      setDragDistance(-distance);
-
-      if (Math.abs(distance) > DRAG_THRESHOLD) {
-        const direction = distance > 0 ? 1 : -1;
-        setActiveIndex(normalizeIndex(scrollLeft + direction));
-      }
-    },
-    [isDragging, normalizeIndex, scrollLeft, startX]
-  );
-
-  const handleDragEnd = useCallback(() => {
-    setIsDragging(false);
-    setDragDistance(0);
-  }, []);
-
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      handleDragStart(e.clientX);
-    },
-    [handleDragStart]
-  );
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      handleDragMove(e.clientX);
-    },
-    [handleDragMove]
-  );
-
-  const handleMouseUp = useCallback(() => {
-    handleDragEnd();
-  }, [handleDragEnd]);
-
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      const touch = e.touches[0];
-      if (touch) {
-        handleDragStart(touch.clientX);
-      }
-    },
-    [handleDragStart]
-  );
-
-  const handleTouchMove = useCallback(
-    (e: React.TouchEvent) => {
-      const touch = e.touches[0];
-      if (touch) {
-        handleDragMove(touch.clientX);
-        e.preventDefault();
-      }
-    },
-    [handleDragMove]
-  );
-
-  const handleTouchEnd = useCallback(() => {
-    handleDragEnd();
-  }, [handleDragEnd]);
-
-  const navigate = useCallback(
-    (direction: number) => {
-      setActiveIndex((current) => normalizeIndex(current + direction));
-    },
-    [normalizeIndex]
-  );
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleMouseLeave = () => {
-      if (isDragging) {
-        handleDragEnd();
-      }
-    };
-
-    container.addEventListener('mouseleave', handleMouseLeave);
-    return () => {
-      container.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, [isDragging, handleDragEnd]);
+  const navigate = (direction: number) => {
+    setActiveIndex((current) => {
+      const newIndex = current + direction;
+      if (newIndex < 0) return solutions.length - 1;
+      if (newIndex >= solutions.length) return 0;
+      return newIndex;
+    });
+  };
 
   return (
-    <div className="w-full overflow-hidden bg-[#080B14]">
-      <div className="relative min-h-[600px] flex items-center justify-center mx-auto w-full max-w-[1400px]">
-        <div
-          ref={containerRef}
-          className="relative w-full h-full flex items-center justify-center"
-          style={{
-            perspective: `${PERSPECTIVE}px`,
-            perspectiveOrigin: '50% 50%',
-          }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          {solutions.map((solution, index) => (
-            <div
-              key={solution.id}
-              style={getCardStyles(index)}
-              onClick={() => !isDragging && onSolutionSelect(solution)}
-              className={`cursor-pointer ${isDragging ? 'cursor-grabbing' : ''}`}
-            >
-              {renderCardContent(
-                solution,
-                normalizeIndex(index) === normalizeIndex(activeIndex)
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className="absolute -bottom-4 left-0 right-0 flex items-center justify-center gap-2">
+    <div className="relative min-h-[480px] flex items-center justify-center mx-auto w-full max-w-[90vw] mt-8">
+      <div className="relative w-full h-full flex items-center justify-center [perspective:1000px]">
+        {solutions.map((solution, index) => (
+          <div
+            key={solution.id}
+            className="absolute left-1/2 w-full max-w-xl px-4 cursor-pointer"
+            style={getCardStyles(index)}
+            onClick={() => onSolutionSelect(solution)}
+          >
+            {renderCardContent(solution, index === activeIndex)}
+          </div>
+        ))}
+      </div>
+      <div className="absolute -bottom-16 left-0 right-0">
+        <div className="flex justify-center items-center space-x-4">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-white"
+            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 text-white hover:bg-slate-700/50 transition-all"
             aria-label="Previous solution"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
-
-          <div className="flex gap-2">
+          <div className="flex space-x-2">
             {solutions.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setActiveIndex(index)}
                 className={`transition-all duration-300 rounded-full 
-                  ${
-                    index === normalizeIndex(activeIndex)
-                      ? 'w-8 h-2 bg-blue-500'
-                      : 'w-2 h-2 bg-gray-600'
-                  }`}
+                  ${index === activeIndex ? 'w-8 h-2 bg-blue-500' : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'}`}
                 aria-label={`Go to solution ${index + 1}`}
-                aria-current={index === normalizeIndex(activeIndex)}
               />
             ))}
           </div>
-
           <button
             onClick={() => navigate(1)}
-            className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-white"
+            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 text-white hover:bg-slate-700/50 transition-all"
             aria-label="Next solution"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
       </div>

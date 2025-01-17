@@ -4,7 +4,7 @@ import { type FC, useState } from 'react';
 import { ArrowRight, X } from 'lucide-react';
 import { solutions } from './solutions';
 import { type Solution } from './types';
-import SolutionCarousel from '@/components/shared/SolutionCarousel';
+import { SolutionCarousel } from '@/components/shared/SolutionCarousel';
 import SolutionMetrics from '@/components/shared/SolutionMetrics';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 
@@ -27,12 +27,12 @@ const AcceleratePage: FC = () => {
     <BaseLayout>
       <div className="relative min-h-screen">
         <div
-          className={`max-w-7xl mx-auto w-full flex-1 flex flex-col transition-all duration-500 px-6 lg:px-8 pt-16 pb-24
+          className={`max-w-7xl mx-auto w-full flex-1 flex flex-col transition-all duration-500 px-8
                      ${activeSolution ? 'opacity-20 pointer-events-none blur-sm' : ''}`}
         >
           {/* Header section */}
-          <div className="mb-12">
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-2 tracking-tight">
+          <div className="mt-16 mb-20">
+            <h1 className="text-5xl font-bold text-white mb-3 tracking-tight">
               <span className="font-extrabold">AI</span>{' '}
               <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">
                 Acceleration
@@ -49,7 +49,7 @@ const AcceleratePage: FC = () => {
           </div>
 
           {/* Carousel section */}
-          <div className="flex-1 flex items-start justify-center">
+          <div className="flex-1 flex items-center justify-center -mt-8">
             <div className="w-full">
               <SolutionCarousel
                 solutions={solutions}
