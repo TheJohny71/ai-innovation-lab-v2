@@ -12,6 +12,8 @@ interface SolutionCarouselProps {
 interface CardPosition {
   translateX: number;
   translateZ: number;
+  translateY: number;
+  rotateX: number;
   rotateY: number;
   scale: number;
   opacity: number;
@@ -34,15 +36,19 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   solutions = [],
   onSolutionSelect,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  // Find the index of the AI Solutions Overview card
+  const defaultIndex = solutions.findIndex((s) => s.id === 'welcome') || 0;
+  const [activeIndex, setActiveIndex] = useState(defaultIndex);
 
   const cardPositions: CardPosition[] = [
-    // Center card
+    // Center card with enhanced 3D effect
     {
       translateX: 0,
-      translateZ: 0,
+      translateZ: 75,
+      translateY: -20,
+      rotateX: 5,
       rotateY: 0,
-      scale: 1.15,
+      scale: 1.2,
       opacity: 1,
       zIndex: 20,
     },
@@ -50,6 +56,8 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     {
       translateX: 306.1467458920718,
       translateZ: -15.224093497742652,
+      translateY: 0,
+      rotateX: 0,
       rotateY: 8,
       scale: 1,
       opacity: 0.7,
@@ -59,6 +67,8 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     {
       translateX: -306.1467458920718,
       translateZ: -15.224093497742652,
+      translateY: 0,
+      rotateX: 0,
       rotateY: -8,
       scale: 1,
       opacity: 0.7,
@@ -68,6 +78,8 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     {
       translateX: 565.6854249492379,
       translateZ: -58.57864376269048,
+      translateY: 0,
+      rotateX: 0,
       rotateY: 16,
       scale: 1,
       opacity: 0.7,
@@ -77,6 +89,8 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     {
       translateX: -565.6854249492379,
       translateZ: -58.57864376269048,
+      translateY: 0,
+      rotateX: 0,
       rotateY: -16,
       scale: 1,
       opacity: 0.7,
@@ -86,6 +100,8 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     {
       translateX: 739.1036260090294,
       translateZ: -123.46331352698203,
+      translateY: 0,
+      rotateX: 0,
       rotateY: 24,
       scale: 1,
       opacity: 0.7,
@@ -94,15 +110,23 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   ];
 
   const getCardTransform = (index: number): CardStyle => {
-    const relativeIndex =
-      (((index - activeIndex) % solutions.length) + solutions.length) %
-      solutions.length;
+    // Ensure continuous looping by calculating the shortest path to the target
+    let relativeIndex = index - activeIndex;
+    const length = solutions.length;
+
+    // Adjust for shortest path around the circle
+    if (relativeIndex > length / 2) {
+      relativeIndex -= length;
+    } else if (relativeIndex < -length / 2) {
+      relativeIndex += length;
+    }
+
     let positionIndex = Math.min(
       Math.abs(relativeIndex),
       cardPositions.length - 1
     );
 
-    // Handle the case for negative indices (left side cards)
+    // Handle left/right positioning
     if (relativeIndex < 0) {
       positionIndex =
         Math.min(
@@ -127,39 +151,29 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         left: '50%',
         width: '100%',
         maxWidth: '32rem',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
         transformStyle: 'preserve-3d',
       };
     }
 
     return {
-      transform: `translateX(calc(-50% + ${position.translateX}px)) translateZ(${position.translateZ}px) scale(${position.scale}) rotateY(${position.rotateY}deg)`,
+      transform: `
+        translateX(calc(-50% + ${position.translateX}px))
+        translateZ(${position.translateZ}px)
+        translateY(${position.translateY || 0}px)
+        rotateX(${position.rotateX || 0}deg)
+        rotateY(${position.rotateY}deg)
+        scale(${position.scale})
+      `,
       opacity: position.opacity,
       zIndex: position.zIndex,
       position: 'absolute',
       left: '50%',
       width: '100%',
       maxWidth: '32rem',
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
       transformStyle: 'preserve-3d',
     };
-  };
-
-  const getCategoryColor = (category: string): string => {
-    switch (category.toLowerCase()) {
-      case 'overview':
-        return 'bg-blue-500/30 text-blue-400';
-      case 'practice management':
-        return 'bg-purple-500/10 text-purple-400';
-      case 'knowledge management':
-        return 'bg-teal-500/10 text-teal-400';
-      case 'research':
-        return 'bg-cyan-500/10 text-cyan-400';
-      case 'governance':
-        return 'bg-emerald-500/10 text-emerald-400';
-      default:
-        return 'bg-blue-500/30 text-blue-400';
-    }
   };
 
   const renderCard = (solution: Solution, index: number) => {
@@ -172,13 +186,20 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         style={getCardTransform(index)}
         onClick={() => onSolutionSelect(solution)}
       >
-        <div className="w-full max-w-xl rounded-2xl border border-white/20 overflow-hidden">
+        <div
+          className={`w-full max-w-xl rounded-2xl border border-white/10 overflow-hidden 
+                     transition-all duration-300 ${solution.borderHover}`}
+        >
           <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800"></div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-600/20 via-transparent to-transparent"></div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-purple-600/20 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-slate-900/90 to-slate-800/90"></div>
             <div
-              className="absolute inset-0 opacity-30"
+              className={`absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] ${solution.cardGradient}`}
+            ></div>
+            <div
+              className={`absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] ${solution.cardGradient}`}
+            ></div>
+            <div
+              className="absolute inset-0 opacity-20"
               style={{
                 backgroundImage: `linear-gradient(45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
                   linear-gradient(-45deg, rgba(59, 130, 246, 0.1) 25%, transparent 25%),
@@ -192,38 +213,42 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
             <div className="absolute bottom-10 left-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl"></div>
           </div>
           <div className="relative h-full">
-            <div className="bg-blue-500/10">
-              <div className="h-1 w-full"></div>
+            <div className="bg-blue-500/5">
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-500/10 to-transparent"></div>
             </div>
             <div className="p-8 backdrop-blur-sm">
               <div className="flex items-start justify-between">
                 <span
-                  className={`text-sm font-medium px-3 py-1 rounded-full ${getCategoryColor(solution.category)}`}
+                  className={`text-sm font-medium px-3 py-1 rounded-full backdrop-blur-md ${solution.gradient} ${solution.textColor}`}
                 >
                   {solution.category}
                 </span>
-                <ArrowUpRight className="w-6 h-6 text-blue-300" />
+                <ArrowUpRight className={`w-6 h-6 ${solution.textColor}`} />
               </div>
               <div className="mt-4 space-y-2">
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
+                <h3 className="text-3xl font-bold bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
                   {solution.title}
                 </h3>
-                <p className="text-xl text-blue-400">{solution.subtitle}</p>
-                <p className="text-slate-300 text-lg line-clamp-2">
+                <p className={`text-xl ${solution.textColor}`}>
+                  {solution.subtitle}
+                </p>
+                <p className="text-slate-300/90 text-lg line-clamp-2">
                   {solution.description}
                 </p>
               </div>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-6 flex flex-wrap gap-2">
                 {solution.features.slice(0, 3).map((feature, idx) => (
                   <div
                     key={idx}
-                    className="px-3 py-1 rounded-full text-sm bg-slate-800 text-slate-200 border border-slate-700"
+                    className="px-3 py-1 rounded-full text-sm bg-slate-800/50 text-slate-300 border border-slate-700/50 backdrop-blur-sm"
                   >
                     {feature}
                   </div>
                 ))}
                 {solution.features.length > 3 && (
-                  <span className="px-3 py-1 rounded-full text-sm bg-blue-500/10 text-blue-400">
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm backdrop-blur-sm ${solution.gradient} ${solution.textColor}`}
+                  >
                     +{solution.features.length - 3} more
                   </span>
                 )}
@@ -249,7 +274,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
                 (current) => (current - 1 + solutions.length) % solutions.length
               )
             }
-            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 text-white hover:bg-slate-700/50 transition-all"
+            className="p-2 rounded-full bg-slate-800/30 backdrop-blur-sm border border-white/5 text-white hover:bg-slate-700/30 transition-all"
             aria-label="Previous solution"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -260,7 +285,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
                 key={index}
                 onClick={() => setActiveIndex(index)}
                 className={`transition-all duration-300 rounded-full 
-                  ${index === activeIndex ? 'w-8 h-2 bg-blue-500' : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'}`}
+                  ${index === activeIndex ? 'w-8 h-2 bg-blue-500/90' : 'w-2 h-2 bg-slate-600/50 hover:bg-slate-500/50'}`}
                 aria-label={`Go to solution ${index + 1}`}
               />
             ))}
@@ -269,7 +294,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
             onClick={() =>
               setActiveIndex((current) => (current + 1) % solutions.length)
             }
-            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 text-white hover:bg-slate-700/50 transition-all"
+            className="p-2 rounded-full bg-slate-800/30 backdrop-blur-sm border border-white/5 text-white hover:bg-slate-700/30 transition-all"
             aria-label="Next solution"
           >
             <ChevronRight className="w-5 h-5" />
