@@ -1,246 +1,175 @@
-import React, {
-  type FC,
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useMemo,
-} from 'react';
+'use client';
+
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Solution } from '@/app/accelerate/types';
-import OverviewCard from '@/components/shared/OverviewCard';
+import { SolutionCard } from './SolutionCard';
 
 interface SolutionCarouselProps {
   solutions: Solution[];
   onSolutionSelect: (solution: Solution) => void;
 }
 
-const SolutionCarousel: FC<SolutionCarouselProps> = ({
+const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   solutions = [],
   onSolutionSelect,
 }) => {
-  const overviewIndex = useMemo(
-    () => solutions.findIndex((s) => s.id === 'welcome'),
-    [solutions]
-  );
-
-  const [activeIndex, setActiveIndex] = useState(overviewIndex);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Carousel parameters
-  const DRAG_THRESHOLD = 5;
-  const TRANSITION_DURATION = 500;
-  const CURVE_RADIUS = 600; // Reduced for closer background cards
-  const BASE_ROTATION = 15; // Gentler fan effect
+  // Carousel configuration
   const PERSPECTIVE = 1000;
-
-  // Card-specific scales
-  const CENTER_SCALE = 0.85; // Regular cards in center
-  const OVERVIEW_SCALE = 0.85; // Overview card same size as others
-  const SIDE_SCALE = 0.7; // Larger side cards for better visibility
-  const CENTER_OPACITY = 1;
-  const SIDE_OPACITY = 0.3; // More fade for better focus
-
-  const solutionsLength = useMemo(() => solutions.length, [solutions]);
-
-  const normalizeIndex = useCallback(
-    (index: number): number =>
-      ((index % solutionsLength) + solutionsLength) % solutionsLength,
-    [solutionsLength]
-  );
-
-  useEffect(() => {
-    setActiveIndex(overviewIndex);
-  }, [overviewIndex]);
+  const CARD_GAP = 20;
+  const MAX_VISIBLE_CARDS = 5;
+  const CARD_WIDTH = 400;
+  const DRAG_THRESHOLD = 50;
 
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
-      let diff = index - activeIndex;
+      const diff = index - activeIndex;
 
-      // Normalize for smoother wraparound
-      if (Math.abs(diff) > solutionsLength / 2) {
-        diff = diff - Math.sign(diff) * solutionsLength;
-      }
-
-      // Calculate position on the curve
-      // Adjusted curve calculation for better visibility
-      const theta = (diff * Math.PI) / 8; // Gentler spread
-      const xOffset = Math.sin(theta) * CURVE_RADIUS;
-      const zOffset = (1 - Math.cos(theta)) * 300; // Reduced depth
-
-      const isCenter = index === normalizeIndex(activeIndex);
-      const isOverview = solutions[index]?.id === 'welcome';
-      const distanceFromCenter = Math.abs(diff);
-
-      // Scale calculation with special handling for overview card
-      let scale;
-      if (isCenter) {
-        scale = isOverview ? OVERVIEW_SCALE : CENTER_SCALE;
-      } else {
-        scale = Math.max(
-          SIDE_SCALE,
-          SIDE_SCALE + 0.2 / (distanceFromCenter + 1)
-        );
-      }
-
-      // Enhanced opacity falloff
-      // Adjusted opacity for better visibility of side cards
-      const opacity = isCenter
-        ? CENTER_OPACITY
-        : Math.max(0.5, 0.7 - distanceFromCenter * 0.15);
-
-      // Rotation with enhanced fan effect
-      const rotate = isCenter
-        ? 0
-        : diff * BASE_ROTATION * (1 - distanceFromCenter * 0.15);
-
-      const dragOffset = isDragging ? dragDistance * 0.1 : 0;
-
-      // Show more cards
-      if (Math.abs(diff) > 3.5) {
+      // Hide cards too far from active
+      if (Math.abs(diff) > MAX_VISIBLE_CARDS / 2) {
         return { display: 'none' };
       }
 
+      // Calculate position and transform
+      const xOffset = diff * (CARD_WIDTH + CARD_GAP);
+      const scale = 1 - Math.abs(diff) * 0.15;
+      const zOffset = -Math.abs(diff) * 100;
+      const opacity = 1 - Math.abs(diff) * 0.2;
+
       return {
-        transform: `
-          translateX(calc(-50% + ${xOffset + dragOffset}px))
-          translateZ(${-zOffset}px)
-          scale(${scale})
-          rotateY(${rotate}deg)
-        `,
+        transform: `translateX(${xOffset + (isDragging ? dragDistance : 0)}px) 
+                 translateZ(${zOffset}px) 
+                 scale(${scale})`,
         opacity,
-        zIndex: 50 - Math.abs(diff * 10),
+        transition: isDragging ? 'none' : 'all 0.5s ease-out',
         position: 'absolute',
         left: '50%',
-        width: '100%',
-        maxWidth: '32rem',
-        transition: isDragging
-          ? 'none'
-          : `all ${TRANSITION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
-        transformStyle: 'preserve-3d',
-        transformOrigin: 'center center -400px',
-        willChange: 'transform, opacity',
+        marginLeft: -(CARD_WIDTH / 2),
+        width: CARD_WIDTH,
+        zIndex: MAX_VISIBLE_CARDS - Math.abs(diff),
       };
     },
-    [
-      activeIndex,
-      isDragging,
-      dragDistance,
-      solutionsLength,
-      normalizeIndex,
-      solutions,
-    ]
+    [activeIndex, isDragging, dragDistance]
   );
 
-  // Touch and mouse handlers (keeping existing handlers)
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      const container = containerRef.current;
-      if (!container) return;
-
-      const rect = container.getBoundingClientRect();
-      if (!rect) return;
-
+  const handleDragStart = useCallback(
+    (clientX: number) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
       setIsDragging(true);
-      setStartX(e.clientX - rect.left);
+      setStartX(clientX - rect.left);
       setScrollLeft(activeIndex);
       setDragDistance(0);
     },
     [activeIndex]
+  );
+
+  const handleDragMove = useCallback(
+    (clientX: number) => {
+      if (!isDragging || !containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const distance = startX - x;
+      setDragDistance(-distance);
+
+      if (Math.abs(distance) > DRAG_THRESHOLD) {
+        const direction = distance > 0 ? 1 : -1;
+        const newIndex = Math.max(
+          0,
+          Math.min(scrollLeft + direction, solutions.length - 1)
+        );
+        setActiveIndex(newIndex);
+      }
+    },
+    [isDragging, startX, scrollLeft, solutions.length]
+  );
+
+  const handleDragEnd = useCallback(() => {
+    setIsDragging(false);
+    setDragDistance(0);
+  }, []);
+
+  // Mouse event handlers
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      handleDragStart(e.clientX);
+    },
+    [handleDragStart]
   );
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
-      const container = containerRef.current;
-      if (!isDragging || !container) return;
-
-      const rect = container.getBoundingClientRect();
-      if (!rect) return;
-
-      const x = e.clientX - rect.left;
-      const distance = startX - x;
-      setDragDistance(distance);
-
-      if (Math.abs(distance) > DRAG_THRESHOLD) {
-        const walk = distance / container.offsetWidth;
-        const newIndex = normalizeIndex(Math.round(scrollLeft + walk * 2));
-        if (newIndex !== activeIndex) {
-          setActiveIndex(newIndex);
-        }
-      }
+      handleDragMove(e.clientX);
     },
-    [isDragging, normalizeIndex, scrollLeft, startX, activeIndex]
+    [handleDragMove]
   );
 
   const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-    setDragDistance(0);
-  }, []);
+    handleDragEnd();
+  }, [handleDragEnd]);
 
+  // Touch event handlers
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
-      const container = containerRef.current;
-      if (!container) return;
-
-      const rect = container.getBoundingClientRect();
-      if (!rect) return;
-
       const touch = e.touches[0];
-      if (!touch) return;
-
-      setIsDragging(true);
-      setStartX(touch.clientX - rect.left);
-      setScrollLeft(activeIndex);
-      setDragDistance(0);
+      if (touch) {
+        handleDragStart(touch.clientX);
+      }
     },
-    [activeIndex]
+    [handleDragStart]
   );
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent) => {
-      const container = containerRef.current;
-      if (!isDragging || !container) return;
-
-      const rect = container.getBoundingClientRect();
-      if (!rect) return;
-
       const touch = e.touches[0];
-      if (!touch) return;
-
-      const x = touch.clientX - rect.left;
-      const distance = startX - x;
-      setDragDistance(distance);
-
-      if (Math.abs(distance) > DRAG_THRESHOLD) {
-        const walk = distance / container.offsetWidth;
-        const newIndex = normalizeIndex(Math.round(scrollLeft + walk * 2));
-        if (newIndex !== activeIndex) {
-          setActiveIndex(newIndex);
-        }
+      if (touch) {
+        handleDragMove(touch.clientX);
       }
     },
-    [isDragging, normalizeIndex, scrollLeft, startX, activeIndex]
+    [handleDragMove]
   );
 
   const handleTouchEnd = useCallback(() => {
-    setIsDragging(false);
-    setDragDistance(0);
-  }, []);
+    handleDragEnd();
+  }, [handleDragEnd]);
 
-  const handleScroll = useCallback(
+  // Navigation handlers
+  const navigate = useCallback(
     (direction: number) => {
-      setActiveIndex((prev) => normalizeIndex(prev + direction));
+      setActiveIndex((current) => {
+        const newIndex = current + direction;
+        return Math.max(0, Math.min(newIndex, solutions.length - 1));
+      });
     },
-    [normalizeIndex]
+    [solutions.length]
   );
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleMouseLeave = () => {
+      if (isDragging) {
+        handleDragEnd();
+      }
+    };
+
+    container.addEventListener('mouseleave', handleMouseLeave);
+    return () => {
+      container.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [isDragging, handleDragEnd]);
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="relative min-h-[600px] flex items-center justify-center mx-auto w-full max-w-[90vw] mb-16">
+      <div className="relative min-h-[600px] flex items-center justify-center mx-auto w-full max-w-[90vw]">
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center"
@@ -248,7 +177,6 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -256,65 +184,28 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           {solutions.map((solution, index) => (
             <div
               key={solution.id}
-              className="absolute left-1/2 w-full max-w-xl px-4 cursor-pointer"
               style={getCardStyles(index)}
               onClick={() => !isDragging && onSolutionSelect(solution)}
+              className={`cursor-pointer ${isDragging ? 'cursor-grabbing' : ''}`}
             >
-              {solution.id === 'welcome' ? (
-                <OverviewCard solution={solution} />
-              ) : (
-                <div
-                  className={`rounded-2xl transition-all duration-300 overflow-hidden backdrop-blur-sm
-                             ${index === activeIndex ? 'border-white/20 shadow-xl' : 'border-white/10'}
-                             ${solution.cardGradient || 'bg-slate-900/90'}`}
-                >
-                  <div className="p-6">
-                    <span
-                      className={`text-sm font-medium px-3 py-1 rounded-full 
-                               ${solution.gradient} ${solution.textColor} mb-4 inline-block`}
-                    >
-                      {solution.category}
-                    </span>
-                    <h3 className="text-2xl font-bold text-white mt-4 tracking-tight">
-                      {solution.title}
-                    </h3>
-                    <p className={`${solution.textColor} text-lg mt-2`}>
-                      {solution.subtitle}
-                    </p>
-                    <p className="text-slate-200 text-base my-4 line-clamp-2">
-                      {solution.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {solution.features.slice(0, 3).map((feature, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 rounded-full text-sm bg-slate-800/80 text-slate-200 border border-slate-700"
-                        >
-                          {feature}
-                        </span>
-                      ))}
-                      {solution.features.length > 3 && (
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm ${solution.gradient} ${solution.textColor}`}
-                        >
-                          +{solution.features.length - 3} more
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
+              <SolutionCard
+                solution={solution}
+                isActive={index === activeIndex}
+              />
             </div>
           ))}
         </div>
 
         {/* Navigation Controls */}
-        <div className="absolute -bottom-8 left-0 right-0">
+        <div className="absolute -bottom-12 left-0 right-0">
           <div className="flex justify-center items-center gap-6">
             <button
-              onClick={() => handleScroll(-1)}
-              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
-                       text-white hover:bg-slate-700/50 transition-all"
+              onClick={() => navigate(-1)}
+              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
+                     border border-white/10 text-white 
+                     hover:bg-slate-700/50 transition-all
+                     disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={activeIndex === 0}
               aria-label="Previous solution"
             >
               <ChevronLeft className="w-6 h-6" />
@@ -327,7 +218,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
                   onClick={() => setActiveIndex(index)}
                   className={`transition-all duration-300 rounded-full 
                             ${
-                              index === normalizeIndex(activeIndex)
+                              index === activeIndex
                                 ? 'w-8 h-2 bg-blue-500'
                                 : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
                             }`}
@@ -337,9 +228,12 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
             </div>
 
             <button
-              onClick={() => handleScroll(1)}
-              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 
-                       text-white hover:bg-slate-700/50 transition-all"
+              onClick={() => navigate(1)}
+              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
+                     border border-white/10 text-white 
+                     hover:bg-slate-700/50 transition-all
+                     disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={activeIndex === solutions.length - 1}
               aria-label="Next solution"
             >
               <ChevronRight className="w-6 h-6" />

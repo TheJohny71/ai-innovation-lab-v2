@@ -64,56 +64,61 @@ export const SolutionCard = ({
 
   return (
     <div
-      className="rounded-xl bg-slate-900 border border-white/10 overflow-hidden"
+      className={`w-full max-w-md mx-auto rounded-2xl overflow-hidden transition-all duration-300
+                ${solution.cardGradient || 'bg-slate-900/90'} 
+                backdrop-blur-sm border-2
+                ${isActive ? 'border-white/20 shadow-xl' : 'border-white/10'}`}
+      onClick={onClick}
       role="button"
       tabIndex={0}
-      onClick={onClick}
       onKeyPress={(e: React.KeyboardEvent) => {
         if (e.key === 'Enter' || e.key === ' ') {
           onClick?.();
         }
       }}
     >
-      <div className="p-8 bg-gradient-to-b from-slate-900 to-slate-900/95">
-        <div className="flex flex-col space-y-6">
-          <div>
-            <span
-              className={`text-sm font-medium px-3 py-1 rounded-full 
-                       ${solution.gradient} ${solution.textColor}`}
-            >
-              {solution.category}
-            </span>
-            <h3 className={`text-2xl font-bold mt-4 text-white`}>
-              {solution.title}
-            </h3>
-            <p className="text-slate-200 mt-2">{solution.subtitle}</p>
-            <p className="text-slate-300 mt-4">{solution.description}</p>
-          </div>
+      <div className="p-6 h-full flex flex-col">
+        <div className="flex-1">
+          <span
+            className={`text-sm font-medium px-3 py-1 rounded-full 
+                     ${solution.gradient} ${solution.textColor} 
+                     inline-block mb-4`}
+          >
+            {solution.category}
+          </span>
+          <h3 className="text-2xl font-bold text-white mt-4 tracking-tight">
+            {solution.title}
+          </h3>
+          <p className={`${solution.textColor} text-lg mt-2`}>
+            {solution.subtitle}
+          </p>
+          <p className="text-slate-200 text-base my-4 line-clamp-2">
+            {solution.description}
+          </p>
+        </div>
 
-          <div className="space-y-6">
-            <div className="flex flex-wrap gap-2">
-              {solution.features.slice(0, 3).map((feature, idx) => (
-                <span
-                  key={idx}
-                  className="px-3 py-1 rounded-full text-sm
-                          bg-slate-800 text-slate-200 
-                          border border-slate-700"
-                >
-                  {feature}
-                </span>
-              ))}
-              {solution.features.length > 3 && (
-                <span
-                  className={`px-3 py-1 rounded-full text-sm 
-                           ${solution.gradient} ${solution.textColor}`}
-                >
-                  +{solution.features.length - 3} more
-                </span>
-              )}
-            </div>
-          </div>
+        <div className="flex flex-wrap gap-2 mt-4">
+          {solution.features.slice(0, 3).map((feature, idx) => (
+            <span
+              key={idx}
+              className="px-3 py-1 rounded-full text-sm 
+                       bg-slate-800/80 text-slate-200 
+                       border border-slate-700"
+            >
+              {feature}
+            </span>
+          ))}
+          {solution.features.length > 3 && (
+            <span
+              className={`px-3 py-1 rounded-full text-sm ${solution.gradient} ${solution.textColor}`}
+            >
+              +{solution.features.length - 3} more
+            </span>
+          )}
         </div>
       </div>
     </div>
   );
 };
+
+export default SolutionCard;

@@ -34,28 +34,28 @@ const MetricCard: React.FC<MetricCardProps> = ({
   gradient,
 }) => (
   <div
-    className={`rounded-xl ${gradient.background} border ${gradient.border} p-6 relative backdrop-blur-sm`}
+    className={`rounded-xl ${gradient.background} border ${gradient.border} p-4 relative backdrop-blur-sm`}
   >
-    <div className="flex justify-between items-start mb-6">
+    <div className="flex justify-between items-start mb-4">
       <h3 className="text-gray-200 text-sm font-medium">{title}</h3>
       <div
-        className={`${gradient.icon} w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm`}
+        className={`${gradient.icon} w-8 h-8 rounded-lg flex items-center justify-center backdrop-blur-sm`}
       >
-        <Icon className={gradient.iconColor} size={20} />
+        <Icon className={gradient.iconColor} size={16} />
       </div>
     </div>
 
-    <div className="space-y-2 mb-6">
-      <div className="text-4xl font-bold text-white">{value}</div>
-      <div className="text-gray-300 text-sm">{subtitle}</div>
-      <div className={`${gradient.text} text-sm`}>{trend}</div>
+    <div className="space-y-1 mb-4">
+      <div className="text-2xl font-bold text-white">{value}</div>
+      <div className="text-gray-300 text-xs">{subtitle}</div>
+      <div className={`${gradient.text} text-xs`}>{trend}</div>
     </div>
 
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-3">
       {Object.entries(stats).map(([label, value]) => (
         <div key={label} className="min-w-0">
-          <div className="text-gray-400 text-xs truncate mb-1">{label}</div>
-          <div className="text-white text-base font-medium">{value}</div>
+          <div className="text-gray-400 text-xs truncate mb-0.5">{label}</div>
+          <div className="text-white text-sm font-medium">{value}</div>
         </div>
       ))}
     </div>
@@ -171,13 +171,13 @@ const SolutionMetrics: React.FC<SolutionMetricsProps> = ({ solutions }) => {
   }, [solutions]);
 
   return (
-    <div className="w-full max-w-[90vw] mx-auto mb-12">
+    <div className="w-full max-w-[90vw] mx-auto mb-8">
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-900/30 to-slate-900/50" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800/20 via-slate-900/10 to-transparent" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {metrics.map((metric, index) => (
           <MetricCard key={index} {...metric} />
         ))}
