@@ -67,10 +67,12 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         diff = diff - Math.sign(diff) * solutions.length;
       }
 
-      // Flatter, more subtle positioning
+      // Arc positioning with upward curve
       const xOffset = diff * (CARD_WIDTH + CARD_GAP);
       const zOffset = Math.abs(diff) * 100;
-      const yOffset = Math.abs(diff) * VERTICAL_OFFSET;
+      // Quadratic curve for upward arc
+      const yOffset =
+        -Math.abs(diff * diff) * 15 + Math.abs(diff) * VERTICAL_OFFSET;
 
       // Adjusted scale and opacity for design match
       const scale = Math.max(0.85, 1 - Math.abs(diff) * 0.08);
@@ -249,72 +251,46 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         </div>
 
         {/* Navigation UI */}
-        <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center gap-8 pb-8">
-          {/* Navigation Controls */}
-          <div className="flex items-center gap-6">
-            <button
-              onClick={() => navigate(-1)}
-              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
-                     border border-white/10 text-white 
-                     hover:bg-slate-700/50 transition-all
-                     focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-              aria-label="Previous solution"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
+        <div className="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-2">
+          <button
+            onClick={() => navigate(-1)}
+            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
+                   border border-white/10 text-white 
+                   hover:bg-slate-700/50 transition-all
+                   focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            aria-label="Previous solution"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
 
-            <div className="flex gap-2">
-              {solutions.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveIndex(index)}
-                  className={`transition-all duration-300 rounded-full 
-                          ${
-                            index === normalizeIndex(activeIndex)
-                              ? 'w-8 h-2 bg-blue-500'
-                              : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
-                          }
-                          focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                  aria-label={`Go to solution ${index + 1}`}
-                  aria-current={index === normalizeIndex(activeIndex)}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={() => navigate(1)}
-              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
-                     border border-white/10 text-white 
-                     hover:bg-slate-700/50 transition-all
-                     focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-              aria-label="Next solution"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
-
-          {/* Bottom Navigation */}
-          <div className="flex items-center gap-1 p-1.5 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10">
-            {[
-              'Nexus',
-              'Accelerate',
-              'Disruption',
-              'Mindset',
-              'Future-Ready',
-            ].map((item) => (
+          <div className="flex gap-2">
+            {solutions.map((_, index) => (
               <button
-                key={item}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all
-                           ${
-                             item === 'Accelerate'
-                               ? 'bg-blue-500 text-white'
-                               : 'text-slate-300 hover:text-white hover:bg-white/10'
-                           }`}
-              >
-                {item}
-              </button>
+                key={index}
+                onClick={() => setActiveIndex(index)}
+                className={`transition-all duration-300 rounded-full 
+                        ${
+                          index === normalizeIndex(activeIndex)
+                            ? 'w-8 h-2 bg-blue-500'
+                            : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
+                        }
+                        focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
+                aria-label={`Go to solution ${index + 1}`}
+                aria-current={index === normalizeIndex(activeIndex)}
+              />
             ))}
           </div>
+
+          <button
+            onClick={() => navigate(1)}
+            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
+                   border border-white/10 text-white 
+                   hover:bg-slate-700/50 transition-all
+                   focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            aria-label="Next solution"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
         </div>
       </div>
     </div>
