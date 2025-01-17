@@ -16,40 +16,46 @@ interface SolutionCarouselProps {
   onSolutionSelect: (solution: Solution) => void;
 }
 
-const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
+export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   solutions = [],
   onSolutionSelect,
 }) => {
+  // Find overview index
   const overviewIndex = useMemo(
-    () => solutions.findIndex((s) => s.id === 'welcome'),
+    () => solutions.findIndex((s) => s.id === 'overview'),
     [solutions]
   );
 
-  // State management
-  const [activeIndex, setActiveIndex] = useState(overviewIndex);
+  // State management with default to overview
+  const [activeIndex, setActiveIndex] = useState(
+    overviewIndex !== -1 ? overviewIndex : 0
+  );
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Refined carousel configuration with more pronounced effects
+  // Enhanced carousel configuration for better visibility and arch
   const PERSPECTIVE = 800;
-  const CARD_GAP = -120; // More aggressive overlap
+  const CARD_GAP = -140;
   const MAX_VISIBLE_CARDS = 5;
   const CARD_WIDTH = 480;
   const DRAG_THRESHOLD = 50;
-  const ROTATION_ANGLE = 5; // Reduced rotation for flatter cards
-  const RADIUS = 600;
-  const VERTICAL_OFFSET = 60; // Increased vertical offset
-  const ARC_MULTIPLIER = 45; // Increased arc height
-  const Y_OFFSET_START = 1.2; // Controls when cards start moving upward
+  const ROTATION_ANGLE = 3;
+  const VERTICAL_OFFSET = 80;
+  const ARC_MULTIPLIER = 80;
+  const Y_OFFSET_START = 0.8;
+  const BASE_OPACITY = 0.6;
   const TRANSITION_DURATION = 500;
   const TRANSITION_TIMING = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
 
+  // Reset to overview when solutions change
   useEffect(() => {
-    setActiveIndex(overviewIndex);
-  }, [overviewIndex]);
+    if (overviewIndex !== -1) {
+      setActiveIndex(overviewIndex);
+    }
+  }, [overviewIndex, solutions]);
 
   // Index normalization for continuous loop
   const normalizeIndex = useCallback(
@@ -69,21 +75,27 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         diff = diff - Math.sign(diff) * solutions.length;
       }
 
-      // Enhanced arc positioning with more pronounced overlapping and upward curve
-      const xOffset = diff * (CARD_WIDTH + CARD_GAP); // More overlap due to smaller CARD_GAP
+      // Enhanced arc positioning with stronger upward curve
+      const xOffset = diff * (CARD_WIDTH + CARD_GAP);
 
-      // More pronounced upward arc with smoother curve
-      const yOffset =
-        Math.abs(diff) < 0.8
+      // More dramatic upward arc
+      const normalizedDiff = Math.abs(diff);
+      const arcHeight =
+        normalizedDiff < Y_OFFSET_START
           ? 0
-          : -Math.pow(Math.abs(diff) - Y_OFFSET_START, 2) * ARC_MULTIPLIER;
+          : -Math.pow(normalizedDiff, 2) * ARC_MULTIPLIER;
 
-      // More aggressive z-offset for better depth
-      const zOffset = Math.pow(Math.abs(diff), 1.2) * 200;
+      const yOffset = arcHeight + normalizedDiff * VERTICAL_OFFSET;
 
-      // More aggressive scale and opacity for background cards
-      const scale = Math.max(0.75, 1 - Math.pow(Math.abs(diff), 0.8) * 0.2);
-      const opacity = Math.max(0.2, 1 - Math.pow(Math.abs(diff), 0.9) * 0.5);
+      // Progressive z-offset with less extreme depth
+      const zOffset = Math.pow(normalizedDiff, 1.2) * 150;
+
+      // Higher base opacity for better visibility
+      const scale = Math.max(0.85, 1 - Math.pow(normalizedDiff, 0.6) * 0.15);
+      const opacity = Math.max(
+        BASE_OPACITY,
+        1 - Math.pow(normalizedDiff, 0.7) * 0.4
+      );
 
       // Hide cards too far from view
       if (Math.abs(diff) > MAX_VISIBLE_CARDS / 2) {
@@ -224,7 +236,6 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   return (
     <div className="w-full overflow-hidden">
       <div className="relative min-h-[500px] flex items-center justify-center mx-auto w-full max-w-[1200px]">
-        {/* Enhanced carousel container with perspective */}
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center"
@@ -239,7 +250,6 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Background gradient for depth effect */}
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/0 via-slate-900/80 to-slate-900/0 pointer-events-none" />
 
           {solutions.map((solution, index) => (
@@ -257,31 +267,27 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
           ))}
         </div>
 
-        {/* Navigation UI */}
-        <div className="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-2">
+        <div className="absolute -bottom-4 left-0 right-0 flex items-center justify-center gap-2">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
-                   border border-white/10 text-white 
-                   hover:bg-slate-700/50 transition-all
-                   focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 text-white hover:bg-slate-700/50 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/50 z-[1001]"
             aria-label="Previous solution"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 z-[1001]">
             {solutions.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setActiveIndex(index)}
                 className={`transition-all duration-300 rounded-full 
-                        ${
-                          index === normalizeIndex(activeIndex)
-                            ? 'w-8 h-2 bg-blue-500'
-                            : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
-                        }
-                        focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
+                  ${
+                    index === normalizeIndex(activeIndex)
+                      ? 'w-8 h-2 bg-blue-500'
+                      : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
+                  }
+                  focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
                 aria-label={`Go to solution ${index + 1}`}
                 aria-current={index === normalizeIndex(activeIndex)}
               />
@@ -290,10 +296,7 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
 
           <button
             onClick={() => navigate(1)}
-            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
-                   border border-white/10 text-white 
-                   hover:bg-slate-700/50 transition-all
-                   focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 text-white hover:bg-slate-700/50 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/50 z-[1001]"
             aria-label="Next solution"
           >
             <ChevronRight className="w-6 h-6" />
