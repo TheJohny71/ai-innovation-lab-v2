@@ -14,22 +14,50 @@ export default {
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out forwards',
+        'slide-up': 'slideUp 0.5s ease-out forwards',
         pulse: 'pulse 10s ease-in-out infinite',
         float: 'float 5s ease-in-out infinite',
         'enhanced-pulse': 'enhancedPulse 4s ease-in-out infinite',
+        'starfield-forward': 'starfieldForward var(--duration) linear infinite',
       },
       keyframes: {
         fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(10px)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+        slideUp: {
+          '0%': {
+            transform: 'translateY(20px)',
+            opacity: '0',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+            opacity: '1',
+          },
         },
         pulse: {
-          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
-          '50%': { transform: 'scale(1.1)', opacity: '0.8' },
+          '0%, 100%': {
+            transform: 'scale(1)',
+            opacity: '1',
+          },
+          '50%': {
+            transform: 'scale(1.1)',
+            opacity: '0.8',
+          },
         },
         float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
+          '0%, 100%': {
+            transform: 'translateY(0)',
+          },
+          '50%': {
+            transform: 'translateY(-20px)',
+          },
         },
         enhancedPulse: {
           '0%, 100%': {
@@ -41,9 +69,59 @@ export default {
             opacity: '1',
           },
         },
+        starfieldForward: {
+          '0%': {
+            transform: 'translate3d(0, 0, -400px) scale(0.01)',
+            opacity: '0',
+          },
+          '10%': {
+            opacity: 'var(--initial-opacity, 0.3)',
+          },
+          '90%': {
+            opacity: 'var(--max-opacity, 1)',
+          },
+          '100%': {
+            transform: 'translate3d(0, 0, 2500px) scale(2.5)',
+            opacity: '0',
+          },
+        },
       },
       backdropBlur: {
         sm: '4px',
+      },
+      transitionProperty: {
+        'transform-opacity': 'transform, opacity',
+      },
+      transformStyle: {
+        '3d': 'preserve-3d',
+      },
+      willChange: {
+        'transform-opacity': 'transform, opacity',
+      },
+      perspective: {
+        500: '500px',
+        800: '800px',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-paint':
+          'linear-gradient(to bottom right, var(--tw-gradient-stops))',
+      },
+      opacity: {
+        1: '0.01',
+        2: '0.02',
+        3: '0.03',
+        15: '0.15',
+      },
+      zIndex: {
+        '-10': '-10',
+      },
+      transitionDuration: {
+        2000: '2000ms',
+      },
+      scale: {
+        101: '1.01',
+        102: '1.02',
       },
     },
   },

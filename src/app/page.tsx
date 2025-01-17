@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { StarField } from '@/components/shared/StarField';
-import { GradientBackground } from '@/components/shared/GradientBackground';
 import { cn } from '@/lib/utils';
 
 export default function NexusPage() {
@@ -17,49 +16,85 @@ export default function NexusPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-deep-blue">
-      {/* Background layers */}
-      <div className="fixed inset-0">
-        <GradientBackground className="absolute inset-0" />
-        <StarField className="absolute inset-0" />
-        <div className="absolute inset-0 noise-bg opacity-[0.03]" />
-      </div>
+    <div className="min-h-screen bg-deep-blue text-white relative overflow-hidden">
+      {/* Background with noise texture */}
+      <div className="absolute inset-0 opacity-[0.015] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMC4xNSIvPjwvc3ZnPg==')]" />
 
-      {/* Content layer */}
-      <div className="relative z-20 flex min-h-screen flex-col items-center justify-center px-4 text-center">
-        <h1
-          className={cn(
-            'text-6xl font-bold mb-4',
-            'bg-gradient-to-b from-blue-300 to-blue-500 bg-clip-text',
-            'filter drop-shadow-lg animate-fade-in'
-          )}
+      {/* Main content area with gradient background */}
+      <div className="relative z-10">
+        <div
+          className="relative w-full h-screen overflow-hidden"
           style={{
-            color: '#A6C5F7',
-            textShadow: '0 0 20px rgba(166, 197, 247, 0.3)',
+            background:
+              'radial-gradient(circle at 50% 50%, #0B1A36 10%, #000000 60%)',
           }}
         >
-          AI Innovation Hub
-        </h1>
+          {/* Star Field Animation */}
+          <StarField />
 
-        <h2
-          className={cn(
-            'text-2xl text-gray-300 mb-8',
-            'filter drop-shadow-md animate-fade-in'
-          )}
-          style={{ animationDelay: '100ms' }}
-        >
-          Talent-Driven Mindset Acceleration
-        </h2>
+          {/* Center content */}
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+            <h1
+              className={cn(
+                'text-6xl font-bold mb-8',
+                'bg-gradient-to-b from-blue-300 to-blue-500 bg-clip-text',
+                'filter drop-shadow-lg animate-fade-in'
+              )}
+            >
+              AI Innovation Hub
+            </h1>
+            <p
+              className={cn(
+                'text-xl text-gray-400 mb-12',
+                'filter drop-shadow-md animate-fade-in'
+              )}
+              style={{ animationDelay: '100ms' }}
+            >
+              Talent-Driven Mindset Acceleration
+            </p>
+            <p
+              className={cn(
+                'text-sm text-emerald-300 uppercase tracking-widest',
+                'animate-fade-in'
+              )}
+              style={{ animationDelay: '200ms' }}
+            >
+              Innovate · Disrupt · Lead
+            </p>
+          </div>
+        </div>
+      </div>
 
-        <p
-          className={cn(
-            'text-sm text-emerald-300 uppercase tracking-[0.3em]',
-            'animate-fade-in'
-          )}
-          style={{ animationDelay: '200ms' }}
-        >
-          INNOVATE · DISRUPT · LEAD
-        </p>
+      {/* Navigation bar */}
+      <div className="fixed bottom-8 left-0 right-0 z-50">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center">
+            <div className="backdrop-blur-sm bg-white/[0.01] rounded-full px-6 py-2 flex space-x-10 border border-white/5">
+              {[
+                { name: 'Nexus', href: '/', active: true },
+                { name: 'Accelerate', href: '/accelerate' },
+                { name: 'Disruption', href: '/disruption' },
+                { name: 'Mindset', href: '/mindset' },
+                { name: 'Future-Ready', href: '/future-ready' },
+              ].map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={`
+                    relative px-3 py-1.5 text-sm transition-all duration-200
+                    ${
+                      item.active
+                        ? 'text-cyan-400 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-cyan-400 after:transform after:scale-x-100'
+                        : 'text-gray-400/90 hover:text-white after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-cyan-400 after:transform after:scale-x-0 after:transition-transform hover:after:scale-x-100'
+                    }
+                  `}
+                >
+                  {item.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <style jsx>{`

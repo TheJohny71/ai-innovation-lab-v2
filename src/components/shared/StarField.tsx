@@ -180,7 +180,7 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
         .star {
           position: absolute;
           transform-style: preserve-3d;
-          will-change: transform, opacity;
+          @apply will-change-[transform-opacity] transform-gpu;
         }
 
         .star::before {
