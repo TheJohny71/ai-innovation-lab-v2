@@ -33,16 +33,17 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Refined carousel configuration for overlapping cards and arc effect
+  // Refined carousel configuration with more pronounced effects
   const PERSPECTIVE = 800;
-  const CARD_GAP = -80; // Negative gap for card overlap
+  const CARD_GAP = -120; // More aggressive overlap
   const MAX_VISIBLE_CARDS = 5;
   const CARD_WIDTH = 480;
   const DRAG_THRESHOLD = 50;
-  const ROTATION_ANGLE = 8; // Slightly increased for better depth
+  const ROTATION_ANGLE = 5; // Reduced rotation for flatter cards
   const RADIUS = 600;
-  const VERTICAL_OFFSET = 40;
-  const ARC_MULTIPLIER = 25; // Controls the height of the arc
+  const VERTICAL_OFFSET = 60; // Increased vertical offset
+  const ARC_MULTIPLIER = 45; // Increased arc height
+  const Y_OFFSET_START = 1.2; // Controls when cards start moving upward
   const TRANSITION_DURATION = 500;
   const TRANSITION_TIMING = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
 
@@ -68,20 +69,21 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         diff = diff - Math.sign(diff) * solutions.length;
       }
 
-      // Enhanced arc positioning with overlapping and upward curve
-      const xOffset = diff * (CARD_WIDTH + CARD_GAP);
-      // Quadratic curve for upward arc with smoother progression
-      const yOffset =
-        Math.abs(diff) < 0.5
-          ? 0
-          : -Math.pow(Math.abs(diff) - 1, 2) * ARC_MULTIPLIER +
-            Math.abs(diff) * VERTICAL_OFFSET;
-      // Progressive z-offset for better depth perception
-      const zOffset = Math.pow(Math.abs(diff), 1.5) * 150;
+      // Enhanced arc positioning with more pronounced overlapping and upward curve
+      const xOffset = diff * (CARD_WIDTH + CARD_GAP); // More overlap due to smaller CARD_GAP
 
-      // Refined scale and opacity for better visual hierarchy
-      const scale = Math.max(0.88, 1 - Math.pow(Math.abs(diff), 0.7) * 0.15);
-      const opacity = Math.max(0.25, 1 - Math.pow(Math.abs(diff), 0.8) * 0.4);
+      // More pronounced upward arc with smoother curve
+      const yOffset =
+        Math.abs(diff) < 0.8
+          ? 0
+          : -Math.pow(Math.abs(diff) - Y_OFFSET_START, 2) * ARC_MULTIPLIER;
+
+      // More aggressive z-offset for better depth
+      const zOffset = Math.pow(Math.abs(diff), 1.2) * 200;
+
+      // More aggressive scale and opacity for background cards
+      const scale = Math.max(0.75, 1 - Math.pow(Math.abs(diff), 0.8) * 0.2);
+      const opacity = Math.max(0.2, 1 - Math.pow(Math.abs(diff), 0.9) * 0.5);
 
       // Hide cards too far from view
       if (Math.abs(diff) > MAX_VISIBLE_CARDS / 2) {
