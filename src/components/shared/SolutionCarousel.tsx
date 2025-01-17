@@ -33,15 +33,16 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Adjusted carousel configuration to match design
-  const PERSPECTIVE = 1000;
-  const CARD_GAP = 20;
+  // Refined carousel configuration for overlapping cards and arc effect
+  const PERSPECTIVE = 800;
+  const CARD_GAP = -80; // Negative gap for card overlap
   const MAX_VISIBLE_CARDS = 5;
-  const CARD_WIDTH = 450;
+  const CARD_WIDTH = 480;
   const DRAG_THRESHOLD = 50;
-  const ROTATION_ANGLE = 5; // Reduced for flatter appearance
-  const RADIUS = 800;
-  const VERTICAL_OFFSET = 20; // Reduced vertical offset
+  const ROTATION_ANGLE = 8; // Slightly increased for better depth
+  const RADIUS = 600;
+  const VERTICAL_OFFSET = 40;
+  const ARC_MULTIPLIER = 25; // Controls the height of the arc
   const TRANSITION_DURATION = 500;
   const TRANSITION_TIMING = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
 
@@ -67,16 +68,20 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         diff = diff - Math.sign(diff) * solutions.length;
       }
 
-      // Arc positioning with upward curve
+      // Enhanced arc positioning with overlapping and upward curve
       const xOffset = diff * (CARD_WIDTH + CARD_GAP);
-      const zOffset = Math.abs(diff) * 100;
-      // Quadratic curve for upward arc
+      // Quadratic curve for upward arc with smoother progression
       const yOffset =
-        -Math.abs(diff * diff) * 15 + Math.abs(diff) * VERTICAL_OFFSET;
+        Math.abs(diff) < 0.5
+          ? 0
+          : -Math.pow(Math.abs(diff) - 1, 2) * ARC_MULTIPLIER +
+            Math.abs(diff) * VERTICAL_OFFSET;
+      // Progressive z-offset for better depth perception
+      const zOffset = Math.pow(Math.abs(diff), 1.5) * 150;
 
-      // Adjusted scale and opacity for design match
-      const scale = Math.max(0.85, 1 - Math.abs(diff) * 0.08);
-      const opacity = Math.max(0.3, 1 - Math.abs(diff) * 0.3);
+      // Refined scale and opacity for better visual hierarchy
+      const scale = Math.max(0.88, 1 - Math.pow(Math.abs(diff), 0.7) * 0.15);
+      const opacity = Math.max(0.25, 1 - Math.pow(Math.abs(diff), 0.8) * 0.4);
 
       // Hide cards too far from view
       if (Math.abs(diff) > MAX_VISIBLE_CARDS / 2) {
