@@ -33,15 +33,15 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Enhanced carousel configuration
-  const PERSPECTIVE = 2000;
-  const CARD_GAP = 30;
-  const MAX_VISIBLE_CARDS = 7;
-  const CARD_WIDTH = 400;
+  // Adjusted carousel configuration to match design
+  const PERSPECTIVE = 1000;
+  const CARD_GAP = 20;
+  const MAX_VISIBLE_CARDS = 5;
+  const CARD_WIDTH = 450;
   const DRAG_THRESHOLD = 50;
-  const ROTATION_ANGLE = 25;
-  const RADIUS = 1200;
-  const VERTICAL_OFFSET = 100;
+  const ROTATION_ANGLE = 5; // Reduced for flatter appearance
+  const RADIUS = 800;
+  const VERTICAL_OFFSET = 20; // Reduced vertical offset
   const TRANSITION_DURATION = 500;
   const TRANSITION_TIMING = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
 
@@ -67,15 +67,14 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         diff = diff - Math.sign(diff) * solutions.length;
       }
 
-      // Calculate enhanced arch position
-      const angle = (diff * ROTATION_ANGLE * Math.PI) / 180;
-      const xOffset = Math.sin(angle) * RADIUS;
-      const zOffset = (1 - Math.cos(angle)) * RADIUS;
+      // Flatter, more subtle positioning
+      const xOffset = diff * (CARD_WIDTH + CARD_GAP);
+      const zOffset = Math.abs(diff) * 100;
       const yOffset = Math.abs(diff) * VERTICAL_OFFSET;
 
-      // Improved scale and opacity calculations
-      const scale = Math.max(0.7, 1 - Math.abs(diff) * 0.12);
-      const opacity = Math.max(0.4, 1 - Math.abs(diff) * 0.25);
+      // Adjusted scale and opacity for design match
+      const scale = Math.max(0.85, 1 - Math.abs(diff) * 0.08);
+      const opacity = Math.max(0.3, 1 - Math.abs(diff) * 0.3);
 
       // Hide cards too far from view
       if (Math.abs(diff) > MAX_VISIBLE_CARDS / 2) {
@@ -83,12 +82,12 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
       }
 
       const transform = `
-      translateX(${xOffset + (isDragging ? dragDistance : 0)}px)
-      translateY(${yOffset}px)
-      translateZ(${-zOffset}px)
-      rotateY(${diff * ROTATION_ANGLE}deg)
-      scale(${scale})
-    `;
+        translateX(${xOffset + (isDragging ? dragDistance : 0)}px)
+        translateY(${yOffset}px)
+        translateZ(${-zOffset}px)
+        rotateY(${diff * ROTATION_ANGLE}deg)
+        scale(${scale})
+      `;
 
       return {
         transform,
@@ -215,7 +214,7 @@ const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="relative min-h-[600px] flex items-center justify-center mx-auto w-full max-w-[90vw]">
+      <div className="relative min-h-[500px] flex items-center justify-center mx-auto w-full max-w-[1200px]">
         {/* Enhanced carousel container with perspective */}
         <div
           ref={containerRef}
