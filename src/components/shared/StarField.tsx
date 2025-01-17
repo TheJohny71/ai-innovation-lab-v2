@@ -25,8 +25,15 @@ interface WindowDimensions {
   height: number;
 }
 
-const FOREGROUND_COLORS = ['white', '#E6E6FA', '#B0C4DE', '#87CEEB'] as const;
-const BACKGROUND_COLOR = 'rgba(255, 255, 255, 0.2)' as const;
+// Enhanced color palette for more dramatic contrast
+const FOREGROUND_COLORS = [
+  '#FFFFFF',
+  '#E6E6FA',
+  '#B0C4DE',
+  '#87CEEB',
+  '#ADD8E6',
+] as const;
+const BACKGROUND_COLOR = 'rgba(255, 255, 255, 0.15)' as const;
 const BASE_SCREEN = { width: 1920, height: 1080 };
 
 const getRandomFromArray = <T extends readonly any[]>(arr: T): T[number] => {
@@ -91,16 +98,19 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
       const stars: Star[] = [];
 
       for (let i = 0; i < count; i++) {
+        // Enhanced distribution and sizing for more dramatic effect
         stars.push({
           id: isForeground ? i : i + 1000,
-          initialX: (Math.random() - 0.5) * (isForeground ? 400 : 600),
-          initialY: (Math.random() - 0.5) * (isForeground ? 400 : 600),
-          size: isForeground ? Math.random() * 2 + 1 : Math.random() * 3 + 1.5,
+          initialX: (Math.random() - 0.5) * (isForeground ? 300 : 800),
+          initialY: (Math.random() - 0.5) * (isForeground ? 300 : 800),
+          size: isForeground
+            ? Math.random() * 1.5 + 0.8 // Slightly smaller foreground stars
+            : Math.random() * 4 + 2, // Larger background stars
           duration: isForeground
-            ? Math.random() * 20 + 30
-            : Math.random() * 30 + 45,
-          delay: Math.random() * -50,
-          z: isForeground ? Math.random() * 400 : Math.random() * 800,
+            ? Math.random() * 15 + 25 // Faster foreground movement
+            : Math.random() * 35 + 50, // Slower background movement
+          delay: Math.random() * -60,
+          z: isForeground ? Math.random() * 300 : Math.random() * 1000,
           color: isForeground
             ? getRandomFromArray(FOREGROUND_COLORS)
             : BACKGROUND_COLOR,
@@ -110,7 +120,8 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
       return stars;
     };
 
-    setStars([...generateStars(150, true), ...generateStars(80, false)]);
+    // Adjusted star counts for more dramatic density variation
+    setStars([...generateStars(180, true), ...generateStars(60, false)]);
   }, [prefersReducedMotion, windowSize]);
 
   const handleMouseMove = useCallback(
@@ -128,7 +139,7 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
 
   const containerStyle = useMemo(
     () => ({
-      perspective: '800px',
+      perspective: '1000px', // Enhanced perspective for more dramatic depth
       perspectiveOrigin: '50% 50%',
     }),
     []
@@ -146,12 +157,13 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
           mousePosition.y - 0.5
         );
 
+        // Enhanced mouse effect for more dramatic interaction
         const mouseEffect =
           star.layer === 'foreground'
-            ? Math.max(0, 0.2 - distanceFromCenter) * 120
-            : Math.max(0, 0.15 - distanceFromCenter) * 80;
+            ? Math.max(0, 0.25 - distanceFromCenter) * 150
+            : Math.max(0, 0.2 - distanceFromCenter) * 100;
 
-        const zOffset = star.z * (mousePosition.x - 0.5) * 0.2;
+        const zOffset = star.z * (mousePosition.x - 0.5) * 0.25;
 
         return (
           <div
@@ -168,7 +180,7 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
                 animationDelay: `${star.delay}s`,
                 transform: `translateZ(${zOffset}px)`,
                 '--initial-opacity':
-                  star.layer === 'foreground' ? '0.3' : '0.1',
+                  star.layer === 'foreground' ? '0.4' : '0.1',
                 '--max-opacity': star.layer === 'foreground' ? '1' : '0.3',
               } as React.CSSProperties
             }
@@ -194,6 +206,7 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
             transparent 70%
           );
           border-radius: 50%;
+          filter: blur(0.1px);
         }
 
         @keyframes starfieldForward {

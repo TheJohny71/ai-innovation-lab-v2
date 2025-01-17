@@ -6,66 +6,95 @@ import { cn } from '@/lib/utils';
 
 export default function NexusPage() {
   const [mounted, setMounted] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 2;
+    const y = (e.clientY / window.innerHeight - 0.5) * 2;
+    setMousePosition({ x, y });
+  };
 
   if (!mounted) {
     return null;
   }
 
   return (
-    <div className="min-h-screen bg-deep-blue text-white relative overflow-hidden">
+    <div
+      className="min-h-screen bg-deep-blue text-white relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
       {/* Background with noise texture */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMC4xNSIvPjwvc3ZnPg==')]" />
 
-      {/* Main content area with gradient background */}
+      {/* Main content area with enhanced elliptical gradient background */}
       <div className="relative z-10">
         <div
           className="relative w-full h-screen overflow-hidden"
           style={{
             background:
-              'radial-gradient(circle at 50% 50%, #0B1A36 10%, #000000 60%)',
+              'radial-gradient(ellipse at 50% 50%, #0B1A36 10%, #000000 70%)',
+            backgroundSize: '200% 150%',
           }}
         >
-          {/* Star Field Animation */}
-          <StarField />
+          {/* Star Field Animation with adjusted density */}
+          <StarField className="opacity-90" />
 
-          {/* Center content */}
+          {/* Center content with parallax effect */}
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
-            <h1
-              className={cn(
-                'text-6xl font-bold mb-8',
-                'bg-gradient-to-b from-blue-300 to-blue-500 bg-clip-text',
-                'filter drop-shadow-lg animate-fade-in'
-              )}
+            <div
+              className="transform transition-transform duration-100 ease-out"
+              style={{
+                transform: `translate(${mousePosition.x * 5}px, ${mousePosition.y * 5}px)`,
+              }}
             >
-              AI Innovation Hub
-            </h1>
-            <p
-              className={cn(
-                'text-xl text-gray-400 mb-12',
-                'filter drop-shadow-md animate-fade-in'
-              )}
-              style={{ animationDelay: '100ms' }}
-            >
-              Talent-Driven Mindset Acceleration
-            </p>
-            <p
-              className={cn(
-                'text-sm text-emerald-300 uppercase tracking-widest',
-                'animate-fade-in'
-              )}
-              style={{ animationDelay: '200ms' }}
-            >
-              Innovate · Disrupt · Lead
-            </p>
+              <h1
+                className={cn(
+                  'text-6xl font-semibold mb-10',
+                  'bg-gradient-to-b from-blue-300 to-blue-500 bg-clip-text',
+                  'filter drop-shadow-lg animate-fade-in'
+                )}
+                style={{
+                  textShadow: '0 0 30px rgba(166, 197, 247, 0.2)',
+                }}
+              >
+                AI Innovation Hub
+              </h1>
+
+              <p
+                className={cn(
+                  'text-xl text-gray-300 mb-14',
+                  'filter animate-fade-in'
+                )}
+                style={{
+                  animationDelay: '100ms',
+                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                Talent-Driven Mindset Acceleration
+              </p>
+
+              <p
+                className={cn(
+                  'text-sm text-emerald-300 uppercase',
+                  'tracking-[0.25em] animate-fade-in'
+                )}
+                style={{
+                  animationDelay: '200ms',
+                  letterSpacing: '0.25em',
+                }}
+              >
+                Innovate · Disrupt · Lead
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation bar */}
+      {/* Navigation bar - keeping original styling */}
       <div className="fixed bottom-8 left-0 right-0 z-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-center">
