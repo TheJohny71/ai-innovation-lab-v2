@@ -107,8 +107,8 @@ export function StarField({ className = '' }: StarFieldProps): JSX.Element {
             ? Math.random() * 1.5 + 0.8 // Slightly smaller foreground stars
             : Math.random() * 4 + 2, // Larger background stars
           duration: isForeground
-            ? Math.random() * 15 + 25 // Faster foreground movement
-            : Math.random() * 35 + 50, // Slower background movement
+            ? Math.random() * 20 + 35 // Foreground: 35-55 seconds
+            : Math.random() * 40 + 65, // Background: 65-105 seconds
           delay: Math.random() * -60,
           z: isForeground ? Math.random() * 300 : Math.random() * 1000,
           color: isForeground
