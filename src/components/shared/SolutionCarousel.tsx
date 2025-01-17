@@ -7,9 +7,8 @@ import React, {
   useEffect,
   useMemo,
 } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import type { Solution } from '@/app/accelerate/types';
-import { SolutionCard } from './SolutionCard';
 
 interface SolutionCarouselProps {
   solutions: Solution[];
@@ -36,17 +35,14 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Enhanced carousel configuration for better visibility and arch
-  const PERSPECTIVE = 800;
-  const CARD_GAP = -140;
+  // Carousel configuration based on the example image
+  const PERSPECTIVE = 1000;
+  const CARD_GAP = 24;
   const MAX_VISIBLE_CARDS = 5;
-  const CARD_WIDTH = 480;
+  const CARD_WIDTH = 320;
   const DRAG_THRESHOLD = 50;
-  const ROTATION_ANGLE = 3;
-  const VERTICAL_OFFSET = 80;
-  const ARC_MULTIPLIER = 80;
-  const Y_OFFSET_START = 0.8;
-  const BASE_OPACITY = 0.6;
+  const ROTATION_ANGLE = 6;
+  const BASE_OPACITY = 0.8;
   const TRANSITION_DURATION = 500;
   const TRANSITION_TIMING = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
 
@@ -65,48 +61,28 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     [solutions.length]
   );
 
-  // Enhanced card style calculation
+  // Enhanced card style calculation to match the example
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
       let diff = index - activeIndex;
 
-      // Normalize diff for continuous looping
       if (Math.abs(diff) > solutions.length / 2) {
         diff = diff - Math.sign(diff) * solutions.length;
       }
 
-      // Enhanced arc positioning with stronger upward curve
       const xOffset = diff * (CARD_WIDTH + CARD_GAP);
+      const rotation = diff * ROTATION_ANGLE;
 
-      // More dramatic upward arc
-      const normalizedDiff = Math.abs(diff);
-      const arcHeight =
-        normalizedDiff < Y_OFFSET_START
-          ? 0
-          : -Math.pow(normalizedDiff, 2) * ARC_MULTIPLIER;
+      const scale = Math.max(0.95, 1 - Math.abs(diff) * 0.05);
+      const opacity = Math.max(BASE_OPACITY, 1 - Math.abs(diff) * 0.2);
 
-      const yOffset = arcHeight + normalizedDiff * VERTICAL_OFFSET;
-
-      // Progressive z-offset with less extreme depth
-      const zOffset = Math.pow(normalizedDiff, 1.2) * 150;
-
-      // Higher base opacity for better visibility
-      const scale = Math.max(0.85, 1 - Math.pow(normalizedDiff, 0.6) * 0.15);
-      const opacity = Math.max(
-        BASE_OPACITY,
-        1 - Math.pow(normalizedDiff, 0.7) * 0.4
-      );
-
-      // Hide cards too far from view
       if (Math.abs(diff) > MAX_VISIBLE_CARDS / 2) {
         return { display: 'none' };
       }
 
       const transform = `
         translateX(${xOffset + (isDragging ? dragDistance : 0)}px)
-        translateY(${yOffset}px)
-        translateZ(${-zOffset}px)
-        rotateY(${diff * ROTATION_ANGLE}deg)
+        rotate(${rotation}deg)
         scale(${scale})
       `;
 
@@ -123,13 +99,85 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         transformOrigin: 'center center',
         zIndex: 1000 - Math.abs(diff * 10),
         willChange: 'transform, opacity',
-        filter: `blur(${Math.abs(diff) * 1}px)`,
       };
     },
     [activeIndex, isDragging, dragDistance, solutions.length]
   );
 
-  // Drag handlers
+  // Card content renderer to match the example design
+  const renderCardContent = (solution: Solution, isActive: boolean) => {
+    const getColorScheme = (category: string) => {
+      switch (category?.toLowerCase()) {
+        case 'governance':
+          return 'text-emerald-400';
+        case 'practice management':
+          return 'text-purple-400';
+        case 'overview':
+          return 'text-blue-400';
+        case 'research':
+          return 'text-emerald-400';
+        default:
+          return 'text-gray-400';
+      }
+    };
+
+    const colorClass = getColorScheme(solution.category);
+
+    if (isActive && solution.id === 'overview') {
+      return (
+        <div className="p-8 bg-blue-900/10 backdrop-blur-sm rounded-xl w-full">
+          <div className="flex justify-between items-center mb-6">
+            <div className={colorClass}>Overview</div>
+            <ArrowUpRight className={colorClass} size={20} />
+          </div>
+          <h1 className="text-white text-3xl font-semibold mb-4">
+            AI Solutions Overview
+          </h1>
+          <h2 className={`${colorClass} text-xl mb-6`}>
+            Explore Available Tools
+          </h2>
+          <p className="text-gray-400 mb-8">{solution.description}</p>
+          <div className="flex flex-wrap gap-3">
+            <button className="bg-emerald-900/20 text-emerald-400 px-4 py-2 rounded-full text-sm">
+              Practice Management Tools
+            </button>
+            <button className="bg-blue-900/20 text-blue-400 px-4 py-2 rounded-full text-sm">
+              Research Assistance
+            </button>
+            <button className="bg-blue-900/20 text-blue-400 px-4 py-2 rounded-full text-sm">
+              Knowledge Management
+            </button>
+            <div className="text-blue-400 text-sm mt-2">+1 more</div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="p-6 bg-blue-900/10 backdrop-blur-sm rounded-xl w-full">
+        <div className={`${colorClass} text-sm mb-1`}>{solution.category}</div>
+        <h2 className="text-white text-2xl font-semibold mb-2">
+          {solution.title}
+        </h2>
+        <div className={`${colorClass} text-sm mb-4`}>{solution.subtitle}</div>
+        <p className="text-gray-400 text-sm">{solution.description}</p>
+        <div className="mt-4 space-y-2">
+          {solution.features?.slice(0, 3).map((feature, idx) => (
+            <div key={idx} className="text-gray-400 text-sm">
+              {feature}
+            </div>
+          ))}
+          {solution.features && solution.features.length > 3 && (
+            <div className={`${colorClass} text-sm`}>
+              +{solution.features.length - 3} more
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // [Drag handlers and event handlers remain unchanged]
   const handleDragStart = useCallback(
     (clientX: number) => {
       if (!containerRef.current) return;
@@ -163,7 +211,6 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     setDragDistance(0);
   }, []);
 
-  // Mouse event handlers
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
       handleDragStart(e.clientX);
@@ -182,7 +229,6 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     handleDragEnd();
   }, [handleDragEnd]);
 
-  // Touch event handlers
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
       const touch = e.touches[0];
@@ -208,7 +254,6 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     handleDragEnd();
   }, [handleDragEnd]);
 
-  // Navigation handler
   const navigate = useCallback(
     (direction: number) => {
       setActiveIndex((current) => normalizeIndex(current + direction));
@@ -216,7 +261,6 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     [normalizeIndex]
   );
 
-  // Mouse leave cleanup
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -234,8 +278,8 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   }, [isDragging, handleDragEnd]);
 
   return (
-    <div className="w-full overflow-hidden">
-      <div className="relative min-h-[500px] flex items-center justify-center mx-auto w-full max-w-[1200px]">
+    <div className="w-full overflow-hidden bg-[#080B14]">
+      <div className="relative min-h-[600px] flex items-center justify-center mx-auto w-full max-w-[1400px]">
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center"
@@ -250,8 +294,6 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/0 via-slate-900/80 to-slate-900/0 pointer-events-none" />
-
           {solutions.map((solution, index) => (
             <div
               key={solution.id}
@@ -259,10 +301,10 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
               onClick={() => !isDragging && onSolutionSelect(solution)}
               className={`cursor-pointer ${isDragging ? 'cursor-grabbing' : ''}`}
             >
-              <SolutionCard
-                solution={solution}
-                isActive={normalizeIndex(index) === normalizeIndex(activeIndex)}
-              />
+              {renderCardContent(
+                solution,
+                normalizeIndex(index) === normalizeIndex(activeIndex)
+              )}
             </div>
           ))}
         </div>
@@ -270,13 +312,13 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
         <div className="absolute -bottom-4 left-0 right-0 flex items-center justify-center gap-2">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 text-white hover:bg-slate-700/50 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/50 z-[1001]"
+            className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-white"
             aria-label="Previous solution"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
 
-          <div className="flex gap-2 z-[1001]">
+          <div className="flex gap-2">
             {solutions.map((_, index) => (
               <button
                 key={index}
@@ -285,9 +327,8 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
                   ${
                     index === normalizeIndex(activeIndex)
                       ? 'w-8 h-2 bg-blue-500'
-                      : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
-                  }
-                  focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
+                      : 'w-2 h-2 bg-gray-600'
+                  }`}
                 aria-label={`Go to solution ${index + 1}`}
                 aria-current={index === normalizeIndex(activeIndex)}
               />
@@ -296,7 +337,7 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
 
           <button
             onClick={() => navigate(1)}
-            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10 text-white hover:bg-slate-700/50 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/50 z-[1001]"
+            className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-white"
             aria-label="Next solution"
           >
             <ChevronRight className="w-6 h-6" />
