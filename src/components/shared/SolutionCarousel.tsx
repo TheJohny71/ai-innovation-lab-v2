@@ -1,7 +1,6 @@
 'use client';
 
 import React, {
-  type FC,
   useState,
   useCallback,
   useRef,
@@ -17,28 +16,38 @@ interface SolutionCarouselProps {
   onSolutionSelect: (solution: Solution) => void;
 }
 
-const SolutionCarousel: FC<SolutionCarouselProps> = ({
+const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
   solutions = [],
   onSolutionSelect,
 }) => {
+  const overviewIndex = useMemo(
+    () => solutions.findIndex((s) => s.id === 'welcome'),
+    [solutions]
+  );
+
   // State management
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(overviewIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Carousel configuration
-  const PERSPECTIVE = 1200;
-  const CARD_GAP = 40;
+  // Enhanced carousel configuration
+  const PERSPECTIVE = 2000;
+  const CARD_GAP = 30;
   const MAX_VISIBLE_CARDS = 7;
   const CARD_WIDTH = 400;
   const DRAG_THRESHOLD = 50;
-  const ROTATION_ANGLE = 30;
-  const RADIUS = 800;
+  const ROTATION_ANGLE = 25;
+  const RADIUS = 1200;
+  const VERTICAL_OFFSET = 100;
   const TRANSITION_DURATION = 500;
   const TRANSITION_TIMING = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
+
+  useEffect(() => {
+    setActiveIndex(overviewIndex);
+  }, [overviewIndex]);
 
   // Index normalization for continuous loop
   const normalizeIndex = useCallback(
@@ -48,7 +57,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     [solutions.length]
   );
 
-  // Calculate styles for each card
+  // Enhanced card style calculation
   const getCardStyles = useCallback(
     (index: number): React.CSSProperties => {
       let diff = index - activeIndex;
@@ -58,14 +67,15 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         diff = diff - Math.sign(diff) * solutions.length;
       }
 
-      // Calculate position on the arch
+      // Calculate enhanced arch position
       const angle = (diff * ROTATION_ANGLE * Math.PI) / 180;
       const xOffset = Math.sin(angle) * RADIUS;
       const zOffset = (1 - Math.cos(angle)) * RADIUS;
+      const yOffset = Math.abs(diff) * VERTICAL_OFFSET;
 
-      // Scale and opacity based on position
-      const scale = Math.max(0.6, 1 - Math.abs(diff) * 0.15);
-      const opacity = Math.max(0.2, 1 - Math.abs(diff) * 0.3);
+      // Improved scale and opacity calculations
+      const scale = Math.max(0.7, 1 - Math.abs(diff) * 0.12);
+      const opacity = Math.max(0.4, 1 - Math.abs(diff) * 0.25);
 
       // Hide cards too far from view
       if (Math.abs(diff) > MAX_VISIBLE_CARDS / 2) {
@@ -74,6 +84,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
 
       const transform = `
       translateX(${xOffset + (isDragging ? dragDistance : 0)}px)
+      translateY(${yOffset}px)
       translateZ(${-zOffset}px)
       rotateY(${diff * ROTATION_ANGLE}deg)
       scale(${scale})
@@ -92,17 +103,10 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
         transformOrigin: 'center center',
         zIndex: 1000 - Math.abs(diff * 10),
         willChange: 'transform, opacity',
+        filter: `blur(${Math.abs(diff) * 1}px)`,
       };
     },
     [activeIndex, isDragging, dragDistance, solutions.length]
-  );
-
-  // Navigation handlers
-  const navigate = useCallback(
-    (direction: number) => {
-      setActiveIndex((current) => normalizeIndex(current + direction));
-    },
-    [normalizeIndex]
   );
 
   // Drag handlers
@@ -174,7 +178,7 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
       const touch = e.touches[0];
       if (touch) {
         handleDragMove(touch.clientX);
-        e.preventDefault(); // Prevent scrolling while dragging
+        e.preventDefault();
       }
     },
     [handleDragMove]
@@ -184,7 +188,15 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
     handleDragEnd();
   }, [handleDragEnd]);
 
-  // Cleanup and event handlers
+  // Navigation handler
+  const navigate = useCallback(
+    (direction: number) => {
+      setActiveIndex((current) => normalizeIndex(current + direction));
+    },
+    [normalizeIndex]
+  );
+
+  // Mouse leave cleanup
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -204,11 +216,14 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
   return (
     <div className="w-full overflow-hidden">
       <div className="relative min-h-[600px] flex items-center justify-center mx-auto w-full max-w-[90vw]">
-        {/* Carousel Container */}
+        {/* Enhanced carousel container with perspective */}
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center"
-          style={{ perspective: `${PERSPECTIVE}px` }}
+          style={{
+            perspective: `${PERSPECTIVE}px`,
+            perspectiveOrigin: '50% 50%',
+          }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -216,6 +231,9 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
+          {/* Background gradient for depth effect */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/0 via-slate-900/80 to-slate-900/0 pointer-events-none" />
+
           {solutions.map((solution, index) => (
             <div
               key={solution.id}
@@ -231,47 +249,73 @@ const SolutionCarousel: FC<SolutionCarouselProps> = ({
           ))}
         </div>
 
-        {/* Navigation Controls */}
-        <div className="absolute -bottom-16 left-0 right-0 flex justify-center items-center gap-6">
-          <button
-            onClick={() => navigate(-1)}
-            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
+        {/* Navigation UI */}
+        <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center gap-8 pb-8">
+          {/* Navigation Controls */}
+          <div className="flex items-center gap-6">
+            <button
+              onClick={() => navigate(-1)}
+              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
                      border border-white/10 text-white 
                      hover:bg-slate-700/50 transition-all
                      focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-            aria-label="Previous solution"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
+              aria-label="Previous solution"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
 
-          <div className="flex gap-2">
-            {solutions.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveIndex(index)}
-                className={`transition-all duration-300 rounded-full 
+            <div className="flex gap-2">
+              {solutions.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveIndex(index)}
+                  className={`transition-all duration-300 rounded-full 
                           ${
                             index === normalizeIndex(activeIndex)
                               ? 'w-8 h-2 bg-blue-500'
                               : 'w-2 h-2 bg-slate-600 hover:bg-slate-500'
                           }
                           focus:outline-none focus:ring-2 focus:ring-blue-500/50`}
-                aria-label={`Go to solution ${index + 1}`}
-                aria-current={index === normalizeIndex(activeIndex)}
-              />
-            ))}
-          </div>
+                  aria-label={`Go to solution ${index + 1}`}
+                  aria-current={index === normalizeIndex(activeIndex)}
+                />
+              ))}
+            </div>
 
-          <button
-            onClick={() => navigate(1)}
-            className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
+            <button
+              onClick={() => navigate(1)}
+              className="p-2 rounded-full bg-slate-800/50 backdrop-blur-sm 
                      border border-white/10 text-white 
                      hover:bg-slate-700/50 transition-all
                      focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-            aria-label="Next solution"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
+              aria-label="Next solution"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Bottom Navigation */}
+          <div className="flex items-center gap-1 p-1.5 rounded-full bg-slate-800/50 backdrop-blur-sm border border-white/10">
+            {[
+              'Nexus',
+              'Accelerate',
+              'Disruption',
+              'Mindset',
+              'Future-Ready',
+            ].map((item) => (
+              <button
+                key={item}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all
+                           ${
+                             item === 'Accelerate'
+                               ? 'bg-blue-500 text-white'
+                               : 'text-slate-300 hover:text-white hover:bg-white/10'
+                           }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
