@@ -45,8 +45,8 @@ export const SolutionCarousel: React.FC<SolutionCarouselProps> = ({
     {
       translateX: 0,
       translateZ: 75,
-      translateY: -20,
-      rotateX: 5,
+      translateY: 0,
+      rotateX: 0,
       rotateY: 0,
       scale: 1.1,
       opacity: 1,
