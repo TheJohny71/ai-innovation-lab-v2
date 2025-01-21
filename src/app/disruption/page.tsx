@@ -13,7 +13,7 @@ import { Button } from '@/components/shared/Button';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { MetricCard } from '@/components/shared/MetricCard';
 import { ImplementationTypes } from '@/components/shared/ImplementationTypes';
-import { DeploymentStatus } from '@/components/shared/DeploymentStatus';
+import DeploymentStatus from '@/components/shared/DeploymentStatus'; // Changed to default import
 import { RegionalImpact } from '@/components/shared/RegionalImpact';
 import type { Metrics } from '@/types/metrics';
 
@@ -32,11 +32,11 @@ const dashboardData: Metrics = {
         'Pilot Phase': '1',
       },
       gradient: {
-        background: 'bg-slate-800/40',
-        border: 'border-white/10',
-        icon: 'bg-slate-700/40',
-        iconColor: 'text-white/80',
-        text: 'text-blue-400/80',
+        background: 'bg-[#171C2C]',
+        border: 'border-white/5',
+        icon: 'bg-[#1E293B]',
+        iconColor: 'text-blue-400',
+        text: 'text-blue-400',
       },
     },
     {
@@ -52,11 +52,11 @@ const dashboardData: Metrics = {
         Regions: '7',
       },
       gradient: {
-        background: 'bg-slate-800/40',
-        border: 'border-white/10',
-        icon: 'bg-slate-700/40',
-        iconColor: 'text-white/80',
-        text: 'text-blue-400/80',
+        background: 'bg-[#171C2C]',
+        border: 'border-white/5',
+        icon: 'bg-[#1E293B]',
+        iconColor: 'text-blue-400',
+        text: 'text-blue-400',
       },
     },
     {
@@ -72,11 +72,11 @@ const dashboardData: Metrics = {
         'Use Cases': '14',
       },
       gradient: {
-        background: 'bg-slate-800/40',
-        border: 'border-white/10',
-        icon: 'bg-slate-700/40',
-        iconColor: 'text-white/80',
-        text: 'text-blue-400/80',
+        background: 'bg-[#171C2C]',
+        border: 'border-white/5',
+        icon: 'bg-[#1E293B]',
+        iconColor: 'text-blue-400',
+        text: 'text-blue-400',
       },
     },
     {
@@ -92,11 +92,11 @@ const dashboardData: Metrics = {
         Pipeline: '0',
       },
       gradient: {
-        background: 'bg-slate-800/40',
-        border: 'border-white/10',
-        icon: 'bg-slate-700/40',
-        iconColor: 'text-white/80',
-        text: 'text-blue-400/80',
+        background: 'bg-[#171C2C]',
+        border: 'border-white/5',
+        icon: 'bg-[#1E293B]',
+        iconColor: 'text-blue-400',
+        text: 'text-blue-400',
       },
     },
   ],
@@ -142,7 +142,7 @@ export default function DisruptionPage() {
           </div>
 
           {/* Info Box */}
-          <div className="bg-slate-800/30 backdrop-blur-sm rounded-lg p-4 text-sm text-gray-300">
+          <div className="bg-[#171C2C] backdrop-blur-sm rounded-lg p-4 text-sm text-gray-300 border border-white/5">
             <p className="mb-1">
               Analysis derived from 33 verified AI implementations across
               leading global law firms.

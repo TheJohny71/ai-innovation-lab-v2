@@ -9,15 +9,15 @@ interface DeploymentStatusProps {
 
 export const DeploymentStatus: React.FC<DeploymentStatusProps> = ({ data }) => {
   const chartData = [
-    { name: 'Active', value: data.active, color: '#94A3B8' },
-    { name: 'Development', value: data.development, color: '#64748B' },
-    { name: 'Planning', value: data.planning, color: '#475569' },
+    { name: 'Active', value: data.active, color: '#A78BFA' }, // Purple
+    { name: 'Development', value: data.development, color: '#34D399' }, // Teal
+    { name: 'Planning', value: data.planning, color: '#60A5FA' }, // Blue
   ];
 
   const total = chartData.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <div className="rounded-xl bg-slate-800/40 border border-white/10 p-6 backdrop-blur-sm">
+    <div className="rounded-xl bg-[#171C2C] border border-white/5 p-6 backdrop-blur-sm">
       <h3 className="text-white font-semibold mb-6">Deployment Status</h3>
       <div className="flex flex-col">
         <div className="h-48 flex justify-center relative">
@@ -41,7 +41,7 @@ export const DeploymentStatus: React.FC<DeploymentStatusProps> = ({ data }) => {
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-bold text-white">{total}</span>
+            <span className="text-3xl font-bold text-white">{total}</span>
             <span className="text-sm text-gray-400">total</span>
           </div>
         </div>
@@ -63,3 +63,6 @@ export const DeploymentStatus: React.FC<DeploymentStatusProps> = ({ data }) => {
     </div>
   );
 };
+
+// Add this line
+export default DeploymentStatus;

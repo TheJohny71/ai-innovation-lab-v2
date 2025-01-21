@@ -21,7 +21,7 @@ export const RegionalImpact: React.FC<RegionalImpactProps> = ({ data }) => {
   }));
 
   return (
-    <div className="rounded-xl bg-[#0F1420] border border-white/5 p-6 backdrop-blur-sm">
+    <div className="rounded-xl bg-[#171C2C] border border-white/5 p-6 backdrop-blur-sm">
       <h3 className="text-white font-semibold mb-6">Regional Impact</h3>
       <div className="flex flex-col">
         <div className="h-48 flex justify-center relative">

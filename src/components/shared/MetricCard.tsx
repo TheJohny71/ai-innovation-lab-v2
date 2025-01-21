@@ -30,9 +30,9 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   trend,
   stats,
   gradient = {
-    background: 'bg-[#0F1420]',
+    background: 'bg-[#171C2C]',
     border: 'border-white/5',
-    icon: 'bg-slate-800/40',
+    icon: 'bg-[#1E293B]',
     iconColor: 'text-blue-400',
     text: 'text-blue-400',
   },
@@ -41,7 +41,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   return (
     <div
       className={`relative rounded-xl border ${gradient.border} ${gradient.background} 
-                 backdrop-blur-sm p-6 transition-all duration-300 ${className}`}
+                 backdrop-blur-sm p-6 ${className}`}
     >
       <div className="flex flex-col h-full">
         <div className="flex items-center gap-2 mb-3">
