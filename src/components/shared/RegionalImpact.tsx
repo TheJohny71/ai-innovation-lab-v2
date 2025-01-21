@@ -10,6 +10,17 @@ interface RegionalImpactProps {
 export const RegionalImpact: React.FC<RegionalImpactProps> = ({ data }) => {
   const totalRegions = data.length;
 
+  // Updated colors to match new scheme
+  const updatedData = data.map((item, index) => ({
+    ...item,
+    color: [
+      '#A78BFA', // Purple
+      '#34D399', // Teal
+      '#60A5FA', // Blue
+      '#94A3B8', // Gray
+    ][index % 4],
+  }));
+
   return (
     <div className="rounded-xl bg-slate-800/40 border border-white/10 p-6 backdrop-blur-sm">
       <h3 className="text-white font-semibold mb-6">Regional Impact</h3>
@@ -18,7 +29,7 @@ export const RegionalImpact: React.FC<RegionalImpactProps> = ({ data }) => {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={data}
+                data={updatedData}
                 cx="50%"
                 cy="50%"
                 innerRadius={50}
@@ -28,7 +39,7 @@ export const RegionalImpact: React.FC<RegionalImpactProps> = ({ data }) => {
                 startAngle={90}
                 endAngle={-270}
               >
-                {data.map((entry, index) => (
+                {updatedData.map((entry, index) => (
                   <Cell key={index} fill={entry.color} />
                 ))}
               </Pie>
@@ -42,7 +53,7 @@ export const RegionalImpact: React.FC<RegionalImpactProps> = ({ data }) => {
           </div>
         </div>
         <div className="mt-4 space-y-3">
-          {data.map((item) => (
+          {updatedData.map((item) => (
             <div key={item.name} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div

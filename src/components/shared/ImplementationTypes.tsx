@@ -24,7 +24,7 @@ export const ImplementationTypes: React.FC<ImplementationTypesProps> = ({
             </div>
             <div className="w-full bg-black/20 rounded-full h-1.5">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-gray-400/80 to-gray-500/60"
+                className="h-full rounded-full bg-gradient-to-r from-purple-400/80 to-teal-400/60"
                 style={{ width: `${(item.count / maxCount) * 100}%` }}
               />
             </div>
