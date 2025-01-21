@@ -28,8 +28,8 @@
     @apply bg-black text-foreground overflow-x-hidden;
     background: radial-gradient(
       circle at center,
-      #0d1930 0%,
-      #040812 60%,
+      #171c2c 0%,
+      #0f1420 60%,
       #000000 100%
     );
   }
@@ -39,7 +39,7 @@
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
-    rgba(9, 25, 47, 0.8) 100%
+    rgba(13, 25, 48, 0.8) 100%
   );
 }
 
@@ -48,7 +48,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(to right, #60a5fa, #3b82f6);
+  background: linear-gradient(to right, #a78bfa, #34d399);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -57,14 +57,14 @@
 .bg-gradient-radial {
   background: radial-gradient(
     circle at center,
-    rgba(59, 130, 246, 0.15) 0%,
-    rgba(59, 130, 246, 0.05) 30%,
+    rgba(167, 139, 250, 0.15) 0%,
+    rgba(52, 211, 153, 0.05) 30%,
     transparent 60%
   );
 }
 
 .bg-deep-blue {
-  background-color: #040812;
+  background-color: #0f1420;
 }
 
 @keyframes pulse {
@@ -98,16 +98,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(23, 28, 44, 0.2);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(96, 165, 250, 0.3);
+  background: rgba(167, 139, 250, 0.3);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(96, 165, 250, 0.5);
+  background: rgba(167, 139, 250, 0.5);
 }
 
 /* Animation utilities */
@@ -132,7 +132,7 @@
 }
 
 .hover-card-glow:hover {
-  box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.2);
   transform: translateY(-2px);
 }
 
@@ -159,7 +159,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #60a5fa;
+  background: #a78bfa;
   transition: width 0.3s ease;
 }
 
@@ -184,8 +184,8 @@
 .gradient-button {
   background: linear-gradient(
     45deg,
-    rgba(59, 130, 246, 0.8),
-    rgba(37, 99, 235, 0.9)
+    rgba(167, 139, 250, 0.8),
+    rgba(52, 211, 153, 0.9)
   );
   transition: all 0.3s ease;
 }
@@ -193,25 +193,25 @@
 .gradient-button:hover {
   background: linear-gradient(
     45deg,
-    rgba(59, 130, 246, 0.9),
-    rgba(37, 99, 235, 1)
+    rgba(167, 139, 250, 0.9),
+    rgba(52, 211, 153, 1)
   );
   transform: translateY(-1px);
 }
 
 /* Glass effect utilities */
 .glass-effect {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(23, 28, 44, 0.4);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.1);
 }
 
 .glass-card {
-  background: rgba(13, 25, 48, 0.3);
+  background: rgba(23, 28, 44, 0.3);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.1);
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);

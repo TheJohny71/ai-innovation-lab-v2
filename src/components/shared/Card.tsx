@@ -19,9 +19,9 @@ export function Card({
 }: CardProps) {
   const classes = [
     'rounded-xl border border-white/10 backdrop-blur-sm transition-all duration-300',
-    hover && 'hover:scale-105 hover:border-white/20',
-    glow && `shadow-lg ${gradient ? gradient : 'shadow-indigo-500/20'}`,
-    gradient || 'bg-gray-900/50',
+    hover && 'hover:scale-105 hover:border-purple-400/20',
+    glow && `shadow-lg ${gradient ? gradient : 'shadow-purple-500/20'}`,
+    gradient || 'bg-slate-800/40',
     className,
   ]
     .filter(Boolean)
