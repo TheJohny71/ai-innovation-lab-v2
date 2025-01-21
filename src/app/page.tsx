@@ -53,29 +53,24 @@ export default function NexusPage() {
             >
               <h1
                 className={cn(
-                  'text-6xl font-semibold mb-10',
-                  'bg-gradient-to-b from-blue-300 to-blue-500 bg-clip-text',
-                  'filter drop-shadow-lg animate-fade-in'
+                  'text-6xl font-extrabold mb-14',
+                  'animate-fade-in whitespace-nowrap'
                 )}
                 style={{
-                  textShadow: '0 0 30px rgba(166, 197, 247, 0.2)',
+                  background:
+                    'linear-gradient(90deg, #7dd3fc 0%, #2563eb 100%)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                  textShadow: `
+                    0 0 30px rgba(37, 99, 235, 0.3),
+                    0 0 50px rgba(37, 99, 235, 0.2),
+                    0 0 70px rgba(37, 99, 235, 0.1)
+                  `,
                 }}
               >
-                AI Innovation Hub
+                <span className="text-white">AI</span> Innovation Hub
               </h1>
-
-              <p
-                className={cn(
-                  'text-xl text-gray-300 mb-14',
-                  'filter animate-fade-in'
-                )}
-                style={{
-                  animationDelay: '100ms',
-                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)',
-                }}
-              >
-                Talent-Driven Mindset Acceleration
-              </p>
 
               <p
                 className={cn(
@@ -94,7 +89,7 @@ export default function NexusPage() {
         </div>
       </div>
 
-      {/* Navigation bar - keeping original styling */}
+      {/* Navigation bar */}
       <div className="fixed bottom-8 left-0 right-0 z-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-center">
