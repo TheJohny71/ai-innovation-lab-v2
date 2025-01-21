@@ -10,19 +10,18 @@ interface RegionalImpactProps {
 export const RegionalImpact: React.FC<RegionalImpactProps> = ({ data }) => {
   const totalRegions = data.length;
 
-  // Updated colors to match new scheme
   const updatedData = data.map((item, index) => ({
     ...item,
     color: [
-      '#A78BFA', // Purple
-      '#34D399', // Teal
-      '#60A5FA', // Blue
-      '#94A3B8', // Gray
+      '#A78BFA', // Purple for North America
+      '#34D399', // Teal for Europe
+      '#60A5FA', // Blue for Asia Pacific
+      '#475569', // Slate for Other Regions
     ][index % 4],
   }));
 
   return (
-    <div className="rounded-xl bg-slate-800/40 border border-white/10 p-6 backdrop-blur-sm">
+    <div className="rounded-xl bg-[#0F1420] border border-white/5 p-6 backdrop-blur-sm">
       <h3 className="text-white font-semibold mb-6">Regional Impact</h3>
       <div className="flex flex-col">
         <div className="h-48 flex justify-center relative">
@@ -46,7 +45,7 @@ export const RegionalImpact: React.FC<RegionalImpactProps> = ({ data }) => {
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-bold text-white">
+            <span className="text-3xl font-bold text-white">
               {totalRegions}
             </span>
             <span className="text-sm text-gray-400">regions</span>

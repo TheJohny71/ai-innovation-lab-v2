@@ -30,23 +30,22 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   trend,
   stats,
   gradient = {
-    background: 'bg-slate-800/40',
-    border: 'border-white/10',
-    icon: 'bg-slate-700/40',
-    iconColor: 'text-purple-400',
-    text: 'text-purple-400',
+    background: 'bg-[#0F1420]',
+    border: 'border-white/5',
+    icon: 'bg-slate-800/40',
+    iconColor: 'text-blue-400',
+    text: 'text-blue-400',
   },
   className = '',
 }) => {
   return (
     <div
       className={`relative rounded-xl border ${gradient.border} ${gradient.background} 
-                 backdrop-blur-sm p-6 hover:bg-slate-800/60 transition-all duration-300 ${className}
-                 hover:shadow-lg hover:shadow-purple-500/10`}
+                 backdrop-blur-sm p-6 transition-all duration-300 ${className}`}
     >
       <div className="flex flex-col h-full">
         <div className="flex items-center gap-2 mb-3">
-          <div className={`${gradient.icon} rounded-lg p-1`}>
+          <div className={`${gradient.icon} rounded-lg p-2`}>
             <Icon className={`h-5 w-5 ${gradient.iconColor}`} />
           </div>
           <h3 className={`text-sm font-medium ${gradient.text}`}>{title}</h3>
@@ -54,12 +53,12 @@ export const MetricCard: React.FC<MetricCardProps> = ({
 
         <div className="flex flex-col">
           <div className="flex items-baseline gap-2">
-            <p className="text-4xl font-bold text-white tracking-tight">
+            <p className="text-3xl font-bold text-white tracking-tight">
               {value}
             </p>
-            {trend && <span className="text-sm text-slate-400">{trend}</span>}
+            {trend && <span className="text-sm text-gray-400">{trend}</span>}
           </div>
-          <p className="text-sm text-slate-400 mt-1 line-clamp-2">{subtitle}</p>
+          <p className="text-sm text-gray-400 mt-1 line-clamp-2">{subtitle}</p>
         </div>
 
         {stats && Object.keys(stats).length > 0 && (
@@ -67,7 +66,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             {Object.entries(stats).map(([key, stat]) => (
               <div key={key} className="flex flex-col">
                 <p className="text-sm font-medium text-white">{stat}</p>
-                <p className="text-xs text-slate-400">{key}</p>
+                <p className="text-xs text-gray-400">{key}</p>
               </div>
             ))}
           </div>
