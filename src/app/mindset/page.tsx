@@ -7,13 +7,18 @@ import Image from 'next/image';
 export default function MindsetPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative">
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-[#0f1420]">
+        {' '}
+        {/* Added base background color */}
         <Image
           src="/ai-mindset-bg.webp"
           alt="AI visualization"
           fill
-          className="object-cover opacity-40"
           priority
+          loading="eager"
+          className="object-cover opacity-40"
+          sizes="100vw"
+          quality={75} // Optimized quality
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0f1420]" />
       </div>
