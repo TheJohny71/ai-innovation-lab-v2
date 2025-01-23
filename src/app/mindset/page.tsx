@@ -2,15 +2,18 @@
 
 import React from 'react';
 import { Sparkles } from 'lucide-react';
+import Image from 'next/image';
 
 export default function MindsetPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative">
       <div className="absolute inset-0 z-0">
-        <img
+        <Image
           src="/ai-mindset-bg.webp"
           alt="AI visualization"
-          className="w-full h-full object-cover opacity-40"
+          fill
+          className="object-cover opacity-40"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0f1420]" />
       </div>
