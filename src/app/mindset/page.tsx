@@ -59,7 +59,8 @@ export default function MindsetPage() {
       </div>
 
       <Container className="relative z-10">
-        <div className="pt-12">
+        {/* Reduced left padding for title */}
+        <div className="pt-12 -ml-8">
           <h1 className="text-5xl font-bold mb-2">
             <span className="text-white">AI</span>{' '}
             <span className="text-blue-400">Mindset</span>
@@ -67,7 +68,8 @@ export default function MindsetPage() {
           <p className="text-gray-400 text-lg">Talent-Driven Transformation</p>
         </div>
 
-        <div className="mt-24 max-w-lg">
+        {/* Vertical layout with max width and left alignment */}
+        <div className="mt-24 max-w-xl ml-0">
           <div className="space-y-6">
             {panels.map((panel, idx) => (
               <div
