@@ -18,15 +18,17 @@ interface TimelineSectionProps {
   panels: TimelinePanel[];
   activePanel: number | null;
   onPanelClick: (index: number | null) => void;
+  className?: string;
 }
 
 export function TimelineSection({
   panels,
   activePanel,
   onPanelClick,
+  className,
 }: TimelineSectionProps) {
   return (
-    <div className="relative ml-16">
+    <div className={`relative ml-16 ${className}`}>
       <div className="absolute top-0 left-0 w-[2px] h-full bg-gradient-to-b from-blue-400/30 to-transparent" />
       <div className="space-y-8">
         {panels.map((panel, idx) => (

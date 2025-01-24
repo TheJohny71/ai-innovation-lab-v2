@@ -163,12 +163,14 @@ export default function MindsetPage() {
           quote="Half of wisdom is learning what to unlearn"
           author="Larry Niven"
           scrollY={scrollY}
+          className="mt-8 mb-16"
         />
 
         <TimelineSection
           panels={panels}
           activePanel={activePanel}
           onPanelClick={setActivePanel}
+          className="mt-8"
         />
       </Container>
     </div>
