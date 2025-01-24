@@ -165,7 +165,7 @@ export default function DisruptionPage() {
               <MetricCard
                 key={index}
                 {...metric}
-                className={`${fadeIn} animate-card-float`}
+                className={fadeIn}
                 {...stagger(index)}
               />
             ))}
