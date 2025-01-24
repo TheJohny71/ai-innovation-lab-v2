@@ -65,7 +65,7 @@ export default function MindsetPage() {
       </div>
 
       <Container className="relative z-10">
-        <div className="pt-16 -ml-8">
+        <div className="pt-16 ml-16">
           <h1 className="text-6xl font-bold mb-3 tracking-tight text-shadow">
             <span className="text-white">AI</span>{' '}
             <span className="text-blue-400">Mindset</span>
@@ -78,8 +78,8 @@ export default function MindsetPage() {
           </div>
         </div>
 
-        <div className="mt-32 relative">
-          <div className="absolute top-0 left-8 w-px h-full bg-gradient-to-b from-blue-400/20 via-blue-400/10 to-transparent" />
+        <div className="mt-32 relative ml-16">
+          <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-blue-400/20 via-blue-400/10 to-transparent" />
           <div className="space-y-8">
             {panels.map((panel, idx) => (
               <motion.div
@@ -91,7 +91,7 @@ export default function MindsetPage() {
               >
                 <div className="absolute left-8 top-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-blue-400/20 border border-blue-400/40" />
                 <div
-                  className="ml-16 w-[480px] bg-black/40 backdrop-blur-xl rounded-2xl p-6 hover:bg-black/50 transition-all duration-300 cursor-pointer"
+                  className="ml-16 w-[480px] bg-black/30 backdrop-blur-md border-l border-white/10 rounded-xl p-6 hover:bg-black/40 transition-all duration-300 cursor-pointer"
                   onClick={() =>
                     setActivePanel(activePanel === idx ? null : idx)
                   }
