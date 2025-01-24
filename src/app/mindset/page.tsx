@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Plus, Minus } from 'lucide-react';
@@ -9,6 +9,13 @@ import { GradientBackground } from '@/components/shared/GradientBackground';
 
 export default function MindsetPage() {
   const [activePanel, setActivePanel] = useState<number | null>(null);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const panels = [
     {
@@ -45,19 +52,18 @@ export default function MindsetPage() {
       <GradientBackground />
 
       <div className="absolute inset-0 z-0">
+        <div className="absolute left-0 w-1/2 h-full bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10" />
         <motion.div
-          initial={{ scale: 1 }}
-          animate={{ scale: 1.1 }}
-          transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse' }}
-          className="absolute inset-0"
+          style={{
+            x: scrollY * 0.1,
+          }}
         >
-          <div className="absolute left-0 w-2/3 h-full bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10" />
           <Image
             src="/ai-mindset-bg.webp"
             alt="AI visualization"
             fill
             priority
-            className="object-cover opacity-40"
+            className="object-cover opacity-35 object-[70%_center]"
             sizes="100vw"
             quality={100}
           />
@@ -65,21 +71,20 @@ export default function MindsetPage() {
       </div>
 
       <Container className="relative z-10">
-        <div className="pt-16 ml-16">
-          <h1 className="text-6xl font-bold mb-3 tracking-tight text-shadow">
+        <div className="pt-16 ml-8">
+          <h1 className="text-6xl font-bold mb-3 tracking-tight">
             <span className="text-white">AI</span>{' '}
             <span className="text-blue-400">Mindset</span>
           </h1>
           <div className="relative">
-            <p className="text-gray-400 text-xl font-light tracking-wide">
+            <p className="text-gray-400 text-xl font-light">
               Talent-Driven Transformation
             </p>
-            <div className="absolute bottom-0 left-0 w-48 h-px bg-gradient-to-r from-blue-400/50 to-transparent" />
           </div>
         </div>
 
-        <div className="mt-32 relative ml-16">
-          <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-blue-400/20 via-blue-400/10 to-transparent" />
+        <div className="mt-24 relative ml-8">
+          <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-blue-400/10 to-transparent" />
           <div className="space-y-8">
             {panels.map((panel, idx) => (
               <motion.div
@@ -89,9 +94,9 @@ export default function MindsetPage() {
                 transition={{ delay: idx * 0.1 }}
                 className="relative"
               >
-                <div className="absolute left-8 top-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-blue-400/20 border border-blue-400/40" />
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-400/20" />
                 <div
-                  className="ml-16 w-[480px] bg-black/30 backdrop-blur-md border-l border-white/10 rounded-xl p-6 hover:bg-black/40 transition-all duration-300 cursor-pointer"
+                  className="ml-8 w-[480px] bg-black/30 backdrop-blur-md border-l border-white/10 rounded-xl p-6 hover:bg-black/40 transition-all duration-300 cursor-pointer"
                   onClick={() =>
                     setActivePanel(activePanel === idx ? null : idx)
                   }
@@ -145,12 +150,6 @@ export default function MindsetPage() {
           </div>
         </div>
       </Container>
-
-      <style jsx global>{`
-        .text-shadow {
-          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
-      `}</style>
     </div>
   );
 }
