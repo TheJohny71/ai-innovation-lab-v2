@@ -59,23 +59,23 @@ export default function MindsetPage() {
       </div>
 
       <Container className="relative z-10">
-        <div className="pt-12 px-8">
+        <div className="pt-12 pl-4">
           <h1 className="text-5xl font-bold mb-2">
-            <span className="text-blue-400">AI Mindset</span>
+            <span className="text-white">AI</span>{' '}
+            <span className="text-blue-400">Mindset</span>
           </h1>
           <p className="text-gray-400 text-lg">Talent-Driven Transformation</p>
         </div>
 
-        <div className="mt-24 px-8">
-          <div className="space-y-20">
+        <div className="mt-24 px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {panels.map((panel, idx) => (
-              <div key={idx} className="relative">
-                <motion.div
-                  className="flex items-center gap-2 cursor-pointer w-fit"
-                  onClick={() =>
-                    setActivePanel(activePanel === idx ? null : idx)
-                  }
-                >
+              <div
+                key={idx}
+                className="bg-black/40 backdrop-blur-sm rounded-xl p-6 hover:bg-black/50 transition-colors"
+                onClick={() => setActivePanel(activePanel === idx ? null : idx)}
+              >
+                <motion.div className="flex items-center gap-2 cursor-pointer">
                   <h3 className="text-2xl font-light tracking-wider text-white hover:text-blue-400 transition-colors">
                     {panel.title}
                   </h3>
@@ -93,7 +93,7 @@ export default function MindsetPage() {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="mt-4 ml-6"
+                      className="mt-4"
                     >
                       {panel.content.map((item, i) => (
                         <motion.div
