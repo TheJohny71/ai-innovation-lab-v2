@@ -1,22 +1,39 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { Plus, Minus, ArrowRight } from 'lucide-react';
+import { Container } from '@/components/shared/Container';
+import { GradientBackground } from '@/components/shared/GradientBackground';
 
-const MindsetPage = () => {
-  const [activePanel, setActivePanel] = useState(null);
+export default function MindsetPage() {
+  const [activePanel, setActivePanel] = useState<number | null>(null);
+  const [scrollY, setScrollY] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  
+
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress((window.scrollY / totalHeight) * 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
       const panels = document.querySelectorAll('.panel-container');
       let clickedInsidePanel = false;
-      
-      panels.forEach(panel => {
-        if (panel.contains(event.target)) {
+
+      panels.forEach((panel) => {
+        if (panel.contains(event.target as Node)) {
           clickedInsidePanel = true;
         }
       });
-      
+
       if (!clickedInsidePanel) {
         setActivePanel(null);
       }
@@ -24,14 +41,6 @@ const MindsetPage = () => {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress((window.scrollY / totalHeight) * 100);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const panels = [
@@ -40,156 +49,184 @@ const MindsetPage = () => {
       content: [
         {
           heading: 'Culture of Change',
-          details: 'Embrace continuous evolution and transformation'
+          details: 'Embrace continuous evolution and transformation',
         },
         {
           heading: 'Skills Half-Life',
-          details: 'Prepare for rapid skill obsolescence and renewal'
+          details: 'Prepare for rapid skill obsolescence and renewal',
         },
         {
           heading: 'Start Before Ready',
-          details: 'Take action while learning and adapting'
+          details: 'Take action while learning and adapting',
         },
         {
           heading: 'Velocity Focus',
-          details: 'Direction with speed trumps speed alone'
+          details: 'Direction with speed trumps speed alone',
         },
         {
           heading: 'Cost of Inaction',
-          details: 'Recognize stagnation as a significant risk'
-        }
-      ]
+          details: 'Recognize stagnation as a significant risk',
+        },
+      ],
     },
     {
       title: 'Human-Led, AI-Enabled',
       content: [
         {
           heading: 'AI as Co-Thinker',
-          details: 'Partner with AI, not replace with it'
+          details: 'Partner with AI, not replace with it',
         },
         {
           heading: 'Warm Tech Approach',
-          details: 'Human-centric technology implementation'
+          details: 'Human-centric technology implementation',
         },
         {
           heading: 'Client-Speed Learning',
-          details: 'Adapt and grow at market pace'
+          details: 'Adapt and grow at market pace',
         },
         {
           heading: 'Beyond Replacement',
-          details: 'AI augments human capability, not substitutes'
-        }
-      ]
+          details: 'AI augments human capability, not substitutes',
+        },
+      ],
     },
     {
       title: 'Strategic Intelligence',
       content: [
         {
           heading: 'Behavior Over Performance',
-          details: 'KBIs supersede traditional KPIs'
+          details: 'KBIs supersede traditional KPIs',
         },
         {
           heading: 'Attention Economy',
-          details: 'Focus on capturing and directing attention'
+          details: 'Focus on capturing and directing attention',
         },
         {
           heading: 'Risk Assessment',
-          details: 'Distinguish headline risks from actual threats'
+          details: 'Distinguish headline risks from actual threats',
         },
         {
           heading: 'Information Balance',
-          details: 'Optimize both input and output flows'
-        }
-      ]
-    }
+          details: 'Optimize both input and output flows',
+        },
+      ],
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-800">
-        <div 
+    <div className="min-h-screen relative overflow-hidden bg-[#040812]">
+      <GradientBackground />
+
+      <div className="absolute inset-0 z-0">
+        <div className="absolute left-0 w-3/5 h-full bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10" />
+        <motion.div style={{ x: scrollY * 0.1 }}>
+          <Image
+            src="/ai-mindset-bg.webp"
+            alt="AI visualization"
+            fill
+            priority
+            className="object-cover opacity-35 object-[70%_center]"
+            sizes="100vw"
+            quality={100}
+          />
+        </motion.div>
+      </div>
+
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-800 z-50">
+        <div
           className="h-full bg-blue-500 transition-all duration-300"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="mb-16">
-          <h1 className="text-6xl font-bold mb-4">
-            <span>AI </span>
+      <Container className="relative z-10 -ml-6 lg:-ml-8">
+        <div className="pt-16 ml-16">
+          <h1 className="text-6xl font-bold mb-3 tracking-tight">
+            <span className="text-white">AI</span>{' '}
             <span className="text-blue-400">Mindset</span>
           </h1>
-          <p className="text-xl text-gray-400">Talent-Driven Transformation</p>
+          <div className="relative">
+            <p className="text-gray-400 text-xl font-light">
+              Talent-Driven Transformation
+            </p>
+          </div>
         </div>
 
-        <div className="space-y-6">
-          {panels.map((panel, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.2 }}
-              className="relative panel-container"
-            >
-              <button
-                onClick={() => setActivePanel(activePanel === idx ? null : idx)}
-                className="w-full group"
-                aria-expanded={activePanel === idx}
-                aria-controls={`panel-${idx}`}
+        <div className="mt-24 relative ml-16">
+          <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-blue-400/10 to-transparent" />
+          <div className="space-y-8">
+            {panels.map((panel, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: idx * 0.1 }}
+                className="relative panel-container"
               >
-                <div className="flex items-center justify-between p-6 bg-gray-800/50 hover:bg-gray-800/70 rounded-xl border border-gray-700 transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="w-2 h-2 rounded-full bg-blue-500" />
-                    <h2 className="text-2xl font-light">{panel.title}</h2>
-                  </div>
-                  {activePanel === idx ? (
-                    <Minus className="w-6 h-6 text-blue-400" />
-                  ) : (
-                    <Plus className="w-6 h-6 text-blue-400" />
-                  )}
-                </div>
-              </button>
-
-              <AnimatePresence>
-                {activePanel === idx && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-400/20" />
+                <div
+                  className="ml-4 w-[480px] bg-black/30 backdrop-blur-md border-l border-white/10 rounded-xl p-6 hover:bg-black/40 transition-all duration-300 cursor-pointer"
+                  onClick={() =>
+                    setActivePanel(activePanel === idx ? null : idx)
+                  }
+                >
                   <motion.div
-                    id={`panel-${idx}`}
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ type: 'spring', duration: 0.5 }}
-                    className="overflow-hidden"
+                    className="flex items-center justify-between"
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <div className="p-6 space-y-6 bg-gray-800/30 rounded-b-xl border-x border-b border-gray-700">
-                      {panel.content.map((item, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                          className="group hover:bg-gray-800/50 p-4 rounded-lg transition-all"
-                        >
-                          <div className="flex items-center gap-3 mb-2">
-                            <ArrowRight className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <h3 className="text-xl font-medium text-blue-300">
-                              {item.heading}
-                            </h3>
-                          </div>
-                          <p className="text-gray-400 ml-7">
-                            {item.details}
-                          </p>
-                        </motion.div>
-                      ))}
-                    </div>
+                    <h3 className="text-2xl font-light tracking-wide text-white">
+                      {panel.title}
+                    </h3>
+                    {activePanel === idx ? (
+                      <Minus className="w-5 h-5 text-blue-400" />
+                    ) : (
+                      <Plus className="w-5 h-5 text-blue-400" />
+                    )}
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+
+                  <AnimatePresence>
+                    {activePanel === idx && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ type: 'spring', duration: 0.5 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-6 space-y-4">
+                          {panel.content.map((item, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: i * 0.1 }}
+                              className="group hover:bg-black/40 p-4 rounded-lg transition-all"
+                            >
+                              <div className="flex items-center gap-3">
+                                <ArrowRight className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <h4 className="text-lg text-blue-300">
+                                  {item.heading}
+                                </h4>
+                              </div>
+                              <p className="text-white/80 ml-7 mt-1 font-light">
+                                {item.details}
+                              </p>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
+      </Container>
+
       <div className="fixed bottom-8 right-8 max-w-md">
-        <div className="bg-gray-800/70 backdrop-blur-sm p-6 rounded-xl border border-gray-700">
+        <div className="bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
           <p className="text-gray-300 italic font-light text-lg">
             "Half of wisdom is learning what to unlearn"
           </p>
@@ -198,6 +235,4 @@ const MindsetPage = () => {
       </div>
     </div>
   );
-};
-
-export default MindsetPage;
+}
