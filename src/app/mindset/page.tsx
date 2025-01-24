@@ -67,12 +67,21 @@ export default function MindsetPage() {
             <div key={idx} className="relative group">
               <motion.div
                 className="cursor-pointer"
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
                 whileHover={{ scale: 1.05 }}
                 onClick={() => setActivePanel(activePanel === idx ? null : idx)}
               >
                 <h3
-                  className="text-4xl font-light text-white/90 tracking-wider hover:text-blue-400 
-                             transition-colors duration-300 backdrop-blur-sm text-glow"
+                  className="text-4xl font-light tracking-wider 
+                             bg-clip-text text-transparent bg-gradient-to-r from-white/90 to-blue-400/90
+                             hover:from-blue-400 hover:to-white
+                             transition-all duration-300 backdrop-blur-sm
+                             drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]"
                 >
                   {panel.title}
                 </h3>
