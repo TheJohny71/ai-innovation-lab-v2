@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -42,7 +41,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
     <div
       className={`relative rounded-xl border ${gradient.border} ${gradient.background} 
                  backdrop-blur-sm p-6 ${className} transition-all duration-300 
-                 hover:scale-102 hover:shadow-lg hover:shadow-blue-500/10 group animate-card-float`}
+                 hover:scale-102 hover:shadow-lg hover:shadow-blue-500/10 group`}
     >
       <div className="flex flex-col h-full">
         <div className="flex items-center gap-2 mb-3 transition-transform duration-300 group-hover:translate-x-1">

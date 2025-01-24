@@ -17,10 +17,10 @@ export const DeploymentStatus: React.FC<DeploymentStatusProps> = ({ data }) => {
   const total = chartData.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <div className="rounded-xl bg-[#171C2C] border border-white/5 p-6 backdrop-blur-sm">
+    <div className="rounded-xl bg-[#171C2C] border border-white/5 p-6 backdrop-blur-sm hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
       <h3 className="text-white font-semibold mb-6">Deployment Status</h3>
       <div className="flex flex-col">
-        <div className="h-48 flex justify-center relative">
+        <div className="h-48 flex justify-center relative group">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -33,6 +33,7 @@ export const DeploymentStatus: React.FC<DeploymentStatusProps> = ({ data }) => {
                 dataKey="value"
                 startAngle={90}
                 endAngle={-270}
+                className="transition-all duration-300 group-hover:scale-105"
               >
                 {chartData.map((entry, index) => (
                   <Cell key={index} fill={entry.color} />
@@ -40,17 +41,20 @@ export const DeploymentStatus: React.FC<DeploymentStatusProps> = ({ data }) => {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="absolute inset-0 flex flex-col items-center justify-center transition-all duration-300 group-hover:scale-110">
             <span className="text-3xl font-bold text-white">{total}</span>
             <span className="text-sm text-gray-400">total</span>
           </div>
         </div>
         <div className="mt-4 space-y-3">
           {chartData.map((item) => (
-            <div key={item.name} className="flex items-center justify-between">
+            <div
+              key={item.name}
+              className="flex items-center justify-between transition-all duration-300 hover:translate-x-1"
+            >
               <div className="flex items-center gap-2">
                 <div
-                  className="w-2.5 h-2.5 rounded-full"
+                  className="w-2.5 h-2.5 rounded-full transition-transform duration-300 hover:scale-125"
                   style={{ backgroundColor: item.color }}
                 />
                 <span className="text-gray-300">{item.name}</span>
@@ -64,5 +68,4 @@ export const DeploymentStatus: React.FC<DeploymentStatusProps> = ({ data }) => {
   );
 };
 
-// Add this line
 export default DeploymentStatus;

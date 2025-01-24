@@ -12,12 +12,15 @@ export const ImplementationTypes: React.FC<ImplementationTypesProps> = ({
   const maxCount = Math.max(...types.map((type) => type.count));
 
   return (
-    <div className="rounded-xl bg-[#171C2C] border border-white/5 p-6 backdrop-blur-sm">
+    <div className="rounded-xl bg-[#171C2C] border border-white/5 p-6 backdrop-blur-sm hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
       <h3 className="text-white font-semibold mb-1">Implementation Types</h3>
       <p className="text-gray-400 text-sm mb-6">By practice area</p>
       <div className="space-y-4">
         {types.map((item) => (
-          <div key={item.name} className="space-y-2">
+          <div
+            key={item.name}
+            className="space-y-2 transition-all duration-300 hover:translate-x-1"
+          >
             <div className="flex justify-between text-sm">
               <span className="text-gray-300 truncate pr-2">{item.name}</span>
               <span className="text-gray-400">{item.count}</span>
