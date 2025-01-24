@@ -3,10 +3,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { ChevronDown } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 import { Container } from '@/components/shared/Container';
 import { GradientBackground } from '@/components/shared/GradientBackground';
-import { cn } from '@/lib/utils';
 
 export default function MindsetPage() {
   const [activePanel, setActivePanel] = useState<number | null>(null);
@@ -46,77 +45,112 @@ export default function MindsetPage() {
       <GradientBackground />
 
       <div className="absolute inset-0 z-0">
-        <div className="absolute left-0 w-2/3 h-full bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10" />
-        <Image
-          src="/ai-mindset-bg.webp"
-          alt="AI visualization"
-          fill
-          priority
-          className="object-cover opacity-40"
-          sizes="100vw"
-          quality={75}
-        />
+        <motion.div
+          initial={{ scale: 1 }}
+          animate={{ scale: 1.1 }}
+          transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse' }}
+          className="absolute inset-0"
+        >
+          <div className="absolute left-0 w-2/3 h-full bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10" />
+          <Image
+            src="/ai-mindset-bg.webp"
+            alt="AI visualization"
+            fill
+            priority
+            className="object-cover opacity-40"
+            sizes="100vw"
+            quality={100}
+          />
+        </motion.div>
       </div>
 
       <Container className="relative z-10">
-        {/* Reduced left padding for title */}
-        <div className="pt-12 -ml-8">
-          <h1 className="text-5xl font-bold mb-2">
+        <div className="pt-16 -ml-8">
+          <h1 className="text-6xl font-bold mb-3 tracking-tight text-shadow">
             <span className="text-white">AI</span>{' '}
             <span className="text-blue-400">Mindset</span>
           </h1>
-          <p className="text-gray-400 text-lg">Talent-Driven Transformation</p>
+          <div className="relative">
+            <p className="text-gray-400 text-xl font-light tracking-wide">
+              Talent-Driven Transformation
+            </p>
+            <div className="absolute bottom-0 left-0 w-48 h-px bg-gradient-to-r from-blue-400/50 to-transparent" />
+          </div>
         </div>
 
-        {/* Vertical layout with max width and left alignment */}
-        <div className="mt-24 max-w-xl ml-0">
-          <div className="space-y-6">
+        <div className="mt-32 relative">
+          <div className="absolute top-0 left-8 w-px h-full bg-gradient-to-b from-blue-400/20 via-blue-400/10 to-transparent" />
+          <div className="space-y-8">
             {panels.map((panel, idx) => (
-              <div
+              <motion.div
                 key={idx}
-                className="bg-black/40 backdrop-blur-sm rounded-xl p-6 hover:bg-black/50 transition-colors"
-                onClick={() => setActivePanel(activePanel === idx ? null : idx)}
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: idx * 0.1 }}
+                className="relative"
               >
-                <motion.div className="flex items-center gap-2 cursor-pointer">
-                  <h3 className="text-2xl font-light tracking-wider text-white hover:text-blue-400 transition-colors">
-                    {panel.title}
-                  </h3>
+                <div className="absolute left-8 top-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-blue-400/20 border border-blue-400/40" />
+                <div
+                  className="ml-16 w-[480px] bg-black/40 backdrop-blur-xl rounded-2xl p-6 hover:bg-black/50 transition-all duration-300 cursor-pointer"
+                  onClick={() =>
+                    setActivePanel(activePanel === idx ? null : idx)
+                  }
+                >
                   <motion.div
-                    animate={{ rotate: activePanel === idx ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
+                    className="flex items-center justify-between"
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <ChevronDown className="w-4 h-4 text-blue-400" />
+                    <h3 className="text-2xl font-light tracking-wide text-white">
+                      {panel.title}
+                    </h3>
+                    {activePanel === idx ? (
+                      <Minus className="w-5 h-5 text-blue-400" />
+                    ) : (
+                      <Plus className="w-5 h-5 text-blue-400" />
+                    )}
                   </motion.div>
-                </motion.div>
 
-                <AnimatePresence>
-                  {activePanel === idx && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="mt-4"
-                    >
-                      {panel.content.map((item, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
-                          className="flex items-center gap-3 mb-3"
-                        >
-                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                          <p className="text-lg text-white/80">{item}</p>
-                        </motion.div>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                  <AnimatePresence>
+                    {activePanel === idx && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ type: 'spring', duration: 0.5 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-6 space-y-4">
+                          {panel.content.map((item, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: i * 0.1 }}
+                              className="flex items-center gap-3"
+                            >
+                              <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                              <p className="text-lg text-white/80 font-light">
+                                {item}
+                              </p>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </Container>
+
+      <style jsx global>{`
+        .text-shadow {
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+      `}</style>
     </div>
   );
 }
