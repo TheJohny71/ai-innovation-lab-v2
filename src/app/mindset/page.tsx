@@ -1,49 +1,29 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Plus, Minus, ArrowRight } from 'lucide-react';
 import { Container } from '@/components/shared/Container';
 import { GradientBackground } from '@/components/shared/GradientBackground';
+import { QuoteContainer } from '@/components/shared/QuoteContainer';
+import { TimelineSection } from '@/components/shared/TimelineSection';
+
+interface PanelContent {
+  heading: string;
+  details: string;
+}
+
+interface Panel {
+  title: string;
+  content: PanelContent[];
+}
 
 export default function MindsetPage() {
   const [activePanel, setActivePanel] = useState<number | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-      const totalHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress((window.scrollY / totalHeight) * 100);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const panels = document.querySelectorAll('.panel-container');
-      let clickedInsidePanel = false;
-
-      panels.forEach((panel) => {
-        if (panel.contains(event.target as Node)) {
-          clickedInsidePanel = true;
-        }
-      });
-
-      if (!clickedInsidePanel) {
-        setActivePanel(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const panels = [
+  const panels: Panel[] = [
     {
       title: 'Always in Beta',
       content: [
@@ -113,6 +93,33 @@ export default function MindsetPage() {
     },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress((window.scrollY / totalHeight) * 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (activePanel === null) return;
+
+      const target = event.target as Node;
+      const panel = document.querySelector(`[data-panel-id="${activePanel}"]`);
+
+      if (panel && !panel.contains(target)) {
+        setActivePanel(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [activePanel]);
+
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#040812]">
       <GradientBackground />
@@ -152,89 +159,17 @@ export default function MindsetPage() {
           </div>
         </div>
 
-        <motion.div
-          style={{ y: scrollY * 0.1 }}
-          className="w-full mt-16 py-12 bg-gradient-to-r from-blue-900/20 via-blue-900/10 to-transparent"
-        >
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-gray-300 italic font-light text-3xl leading-relaxed">
-              &ldquo;Half of wisdom is learning what to unlearn&rdquo;
-            </p>
-            <p className="text-blue-400 text-sm mt-4">— Larry Niven</p>
-          </div>
-        </motion.div>
+        <QuoteContainer
+          quote="Half of wisdom is learning what to unlearn"
+          author="Larry Niven"
+          scrollY={scrollY}
+        />
 
-        <div className="mt-24 relative ml-16">
-          <div className="absolute top-0 left-0 w-[2px] h-full bg-gradient-to-b from-blue-400/30 to-transparent" />
-          <div className="space-y-8">
-            {panels.map((panel, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: idx * 0.1 }}
-                className="relative panel-container"
-              >
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-blue-400/40" />
-                <div
-                  className="ml-4 w-[480px] bg-black/30 backdrop-blur-md border-l border-white/10 rounded-xl p-6 hover:bg-black/40 transition-all duration-300 cursor-pointer"
-                  onClick={() =>
-                    setActivePanel(activePanel === idx ? null : idx)
-                  }
-                >
-                  <motion.div
-                    className="flex items-center justify-between"
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <h3 className="text-2xl font-light tracking-wide text-white">
-                      {panel.title}
-                    </h3>
-                    {activePanel === idx ? (
-                      <Minus className="w-5 h-5 text-blue-400" />
-                    ) : (
-                      <Plus className="w-5 h-5 text-blue-400" />
-                    )}
-                  </motion.div>
-
-                  <AnimatePresence>
-                    {activePanel === idx && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ type: 'spring', duration: 0.5 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="mt-6 space-y-4">
-                          {panel.content.map((item, i) => (
-                            <motion.div
-                              key={i}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: i * 0.1 }}
-                              className="group hover:bg-black/40 p-4 rounded-lg transition-all"
-                            >
-                              <div className="flex items-center gap-3">
-                                <ArrowRight className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                <h4 className="text-lg text-blue-300">
-                                  {item.heading}
-                                </h4>
-                              </div>
-                              <p className="text-white/80 ml-7 mt-1 font-light">
-                                {item.details}
-                              </p>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        <TimelineSection
+          panels={panels}
+          activePanel={activePanel}
+          onPanelClick={setActivePanel}
+        />
       </Container>
     </div>
   );

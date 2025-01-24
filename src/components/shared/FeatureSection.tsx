@@ -1,4 +1,3 @@
-// src/components/shared/FeatureSection.tsx
 'use client';
 
 import React from 'react';
@@ -34,7 +33,7 @@ export function FeatureSection() {
       {features.map((feature) => (
         <div
           key={feature.title}
-          className="p-6 rounded-2xl bg-white/[0.02] backdrop-blur-sm"
+          className="p-6 rounded-2xl bg-gradient-to-r from-blue-900/20 via-blue-900/10 to-transparent backdrop-blur-sm"
         >
           <feature.icon className={`w-10 h-10 text-${feature.color} mb-4`} />
           <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
