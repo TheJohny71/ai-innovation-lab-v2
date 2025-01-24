@@ -228,7 +228,7 @@ export default function MindsetPage() {
       <div className="fixed bottom-8 right-8 max-w-md">
         <div className="bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
           <p className="text-gray-300 italic font-light text-lg">
-            "Half of wisdom is learning what to unlearn"
+            &ldquo;Half of wisdom is learning what to unlearn&rdquo;
           </p>
           <p className="text-gray-400 text-sm mt-2">— Larry Niven</p>
         </div>
