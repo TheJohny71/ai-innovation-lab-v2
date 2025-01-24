@@ -3,22 +3,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { ChevronRight } from 'lucide-react';
-import { GradientText } from '@/components/shared/GradientText';
-import { GradientBackground } from '@/components/shared/GradientBackground';
+import { ChevronDown } from 'lucide-react';
 import { Container } from '@/components/shared/Container';
+import { GradientBackground } from '@/components/shared/GradientBackground';
 import { cn } from '@/lib/utils';
-import { fadeIn, slideUp, smoothTransition } from '@/lib/animation';
-
-interface Panel {
-  title: string;
-  content: string[];
-}
 
 export default function MindsetPage() {
   const [activePanel, setActivePanel] = useState<number | null>(null);
 
-  const panels: Panel[] = [
+  const panels = [
     {
       title: 'Always in Beta',
       content: [
@@ -49,12 +42,11 @@ export default function MindsetPage() {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden bg-[#040812]">
       <GradientBackground />
 
       <div className="absolute inset-0 z-0">
-        {/* Background fade gradient */}
-        <div className="absolute left-0 w-1/3 h-full bg-gradient-to-r from-black/70 to-transparent z-10" />
+        <div className="absolute left-0 w-2/3 h-full bg-gradient-to-r from-black via-black/90 to-transparent z-10" />
         <Image
           src="/ai-mindset-bg.webp"
           alt="AI visualization"
@@ -67,75 +59,55 @@ export default function MindsetPage() {
       </div>
 
       <Container className="relative z-10">
-        <div className={cn('mt-20', fadeIn)}>
+        <div className="pt-12 px-16">
           <h1 className="text-5xl font-bold mb-2">
             <span className="text-white">Talent-Driven</span>{' '}
-            <GradientText>AI Mindset</GradientText>
+            <span className="text-blue-400">AI Mindset</span>
           </h1>
           <p className="text-gray-400 text-lg">Leading AI Transformation</p>
         </div>
 
-        <div className="mt-32 ml-24">
-          <div className="space-y-32">
+        <div className="mt-24 px-16 ml-8">
+          <div className="space-y-20">
             {panels.map((panel, idx) => (
-              <div key={idx} className="relative group">
+              <div key={idx} className="relative">
                 <motion.div
-                  className="flex items-center cursor-pointer"
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 cursor-pointer w-fit"
                   onClick={() =>
                     setActivePanel(activePanel === idx ? null : idx)
                   }
                 >
-                  <h3
-                    className={cn(
-                      'text-4xl font-light tracking-wider',
-                      'bg-clip-text text-transparent bg-gradient-to-r from-white/90 to-blue-400/90',
-                      'hover:from-blue-400 hover:to-white',
-                      smoothTransition,
-                      'text-glow'
-                    )}
-                  >
+                  <h3 className="text-2xl font-light tracking-wider text-white hover:text-blue-400 transition-colors">
                     {panel.title}
                   </h3>
                   <motion.div
-                    animate={{ rotate: activePanel === idx ? 90 : 0 }}
+                    animate={{ rotate: activePanel === idx ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="ml-4"
                   >
-                    <ChevronRight className="w-6 h-6 text-blue-400" />
+                    <ChevronDown className="w-4 h-4 text-blue-400" />
                   </motion.div>
                 </motion.div>
 
                 <AnimatePresence>
                   {activePanel === idx && (
                     <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      className="absolute left-full ml-12 top-0 w-96"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="mt-4 ml-6"
                     >
-                      <div className="glass-card p-6 rounded-lg backdrop-blur-md bg-black/30">
-                        {panel.content.map((item, i) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            className="flex items-center mb-4 last:mb-0 group"
-                          >
-                            <div className="w-2 h-2 rounded-full bg-blue-400 mr-3 group-hover:scale-150 transition-transform" />
-                            <p className="text-xl text-white/80 font-light tracking-wide group-hover:text-white transition-colors">
-                              {item}
-                            </p>
-                          </motion.div>
-                        ))}
-                      </div>
+                      {panel.content.map((item, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                          className="flex items-center gap-3 mb-3"
+                        >
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          <p className="text-lg text-white/80">{item}</p>
+                        </motion.div>
+                      ))}
                     </motion.div>
                   )}
                 </AnimatePresence>
