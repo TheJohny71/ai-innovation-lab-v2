@@ -71,7 +71,7 @@ export default function MindsetPage() {
       </div>
 
       <Container className="relative z-10">
-        <div className="pt-16 ml-8">
+        <div className="pt-16 ml-4">
           <h1 className="text-6xl font-bold mb-3 tracking-tight">
             <span className="text-white">AI</span>{' '}
             <span className="text-blue-400">Mindset</span>
@@ -83,7 +83,7 @@ export default function MindsetPage() {
           </div>
         </div>
 
-        <div className="mt-24 relative ml-8">
+        <div className="mt-24 relative ml-4">
           <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-blue-400/10 to-transparent" />
           <div className="space-y-8">
             {panels.map((panel, idx) => (
@@ -96,7 +96,7 @@ export default function MindsetPage() {
               >
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-400/20" />
                 <div
-                  className="ml-8 w-[480px] bg-black/30 backdrop-blur-md border-l border-white/10 rounded-xl p-6 hover:bg-black/40 transition-all duration-300 cursor-pointer"
+                  className="ml-4 w-[480px] bg-black/30 backdrop-blur-md border-l border-white/10 rounded-xl p-6 hover:bg-black/40 transition-all duration-300 cursor-pointer"
                   onClick={() =>
                     setActivePanel(activePanel === idx ? null : idx)
                   }
