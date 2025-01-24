@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { ChevronRight } from 'lucide-react';
 import { GradientText } from '@/components/shared/GradientText';
 import { GradientBackground } from '@/components/shared/GradientBackground';
 import { Container } from '@/components/shared/Container';
@@ -52,6 +53,8 @@ export default function MindsetPage() {
       <GradientBackground />
 
       <div className="absolute inset-0 z-0">
+        {/* Background fade gradient */}
+        <div className="absolute left-0 w-1/3 h-full bg-gradient-to-r from-black/70 to-transparent z-10" />
         <Image
           src="/ai-mindset-bg.webp"
           alt="AI visualization"
@@ -77,7 +80,7 @@ export default function MindsetPage() {
             {panels.map((panel, idx) => (
               <div key={idx} className="relative group">
                 <motion.div
-                  className="cursor-pointer"
+                  className="flex items-center cursor-pointer"
                   animate={{ y: [0, -10, 0] }}
                   transition={{
                     duration: 4,
@@ -100,6 +103,13 @@ export default function MindsetPage() {
                   >
                     {panel.title}
                   </h3>
+                  <motion.div
+                    animate={{ rotate: activePanel === idx ? 90 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="ml-4"
+                  >
+                    <ChevronRight className="w-6 h-6 text-blue-400" />
+                  </motion.div>
                 </motion.div>
 
                 <AnimatePresence>
@@ -110,17 +120,20 @@ export default function MindsetPage() {
                       exit={{ opacity: 0, x: -20 }}
                       className="absolute left-full ml-12 top-0 w-96"
                     >
-                      <div className="glass-card p-6 rounded-lg">
+                      <div className="glass-card p-6 rounded-lg backdrop-blur-md bg-black/30">
                         {panel.content.map((item, i) => (
-                          <motion.p
+                          <motion.div
                             key={i}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
-                            className="text-xl text-white/80 font-light tracking-wide mb-4 last:mb-0"
+                            className="flex items-center mb-4 last:mb-0 group"
                           >
-                            {item}
-                          </motion.p>
+                            <div className="w-2 h-2 rounded-full bg-blue-400 mr-3 group-hover:scale-150 transition-transform" />
+                            <p className="text-xl text-white/80 font-light tracking-wide group-hover:text-white transition-colors">
+                              {item}
+                            </p>
+                          </motion.div>
                         ))}
                       </div>
                     </motion.div>
