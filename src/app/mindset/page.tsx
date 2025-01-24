@@ -149,11 +149,17 @@ export default function MindsetPage() {
             <p className="text-gray-400 text-xl font-light">
               Talent-Driven Transformation
             </p>
+            <div className="mt-8 w-[600px] bg-gradient-to-r from-blue-900/10 to-transparent p-6 rounded-lg border-l-2 border-transparent hover:border-blue-400/30 transition-all duration-300">
+              <p className="text-gray-300 italic font-light text-2xl">
+                &ldquo;Half of wisdom is learning what to unlearn&rdquo;
+              </p>
+              <p className="text-gray-400 text-sm mt-2">— Larry Niven</p>
+            </div>
           </div>
         </div>
 
         <div className="mt-24 relative ml-16">
-          <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-blue-400/10 to-transparent" />
+          <div className="absolute top-0 left-0 w-[2px] h-full bg-gradient-to-b from-blue-400/30 to-transparent" />
           <div className="space-y-8">
             {panels.map((panel, idx) => (
               <motion.div
@@ -163,7 +169,7 @@ export default function MindsetPage() {
                 transition={{ delay: idx * 0.1 }}
                 className="relative panel-container"
               >
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-400/20" />
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-blue-400/40" />
                 <div
                   className="ml-4 w-[480px] bg-black/30 backdrop-blur-md border-l border-white/10 rounded-xl p-6 hover:bg-black/40 transition-all duration-300 cursor-pointer"
                   onClick={() =>
@@ -224,15 +230,6 @@ export default function MindsetPage() {
           </div>
         </div>
       </Container>
-
-      <div className="fixed bottom-8 right-8 max-w-md">
-        <div className="bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-white/10">
-          <p className="text-gray-300 italic font-light text-lg">
-            &ldquo;Half of wisdom is learning what to unlearn&rdquo;
-          </p>
-          <p className="text-gray-400 text-sm mt-2">— Larry Niven</p>
-        </div>
-      </div>
     </div>
   );
 }
