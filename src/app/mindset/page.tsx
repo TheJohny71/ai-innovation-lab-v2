@@ -149,14 +149,20 @@ export default function MindsetPage() {
             <p className="text-gray-400 text-xl font-light">
               Talent-Driven Transformation
             </p>
-            <div className="mt-8 w-[600px] bg-gradient-to-r from-blue-900/10 to-transparent p-6 rounded-lg border-l-2 border-transparent hover:border-blue-400/30 transition-all duration-300">
-              <p className="text-gray-300 italic font-light text-2xl">
-                &ldquo;Half of wisdom is learning what to unlearn&rdquo;
-              </p>
-              <p className="text-gray-400 text-sm mt-2">— Larry Niven</p>
-            </div>
           </div>
         </div>
+
+        <motion.div
+          style={{ y: scrollY * 0.1 }}
+          className="w-full mt-16 py-12 bg-gradient-to-r from-blue-900/20 via-blue-900/10 to-transparent"
+        >
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-gray-300 italic font-light text-3xl leading-relaxed">
+              &ldquo;Half of wisdom is learning what to unlearn&rdquo;
+            </p>
+            <p className="text-blue-400 text-sm mt-4">— Larry Niven</p>
+          </div>
+        </motion.div>
 
         <div className="mt-24 relative ml-16">
           <div className="absolute top-0 left-0 w-[2px] h-full bg-gradient-to-b from-blue-400/30 to-transparent" />
