@@ -70,8 +70,8 @@ export default function MindsetPage() {
         </motion.div>
       </div>
 
-      <Container className="relative z-10">
-        <div className="pt-16 ml-12">
+      <Container className="relative z-10 -ml-6 lg:-ml-8">
+        <div className="pt-16 ml-16">
           <h1 className="text-6xl font-bold mb-3 tracking-tight">
             <span className="text-white">AI</span>{' '}
             <span className="text-blue-400">Mindset</span>
@@ -83,7 +83,7 @@ export default function MindsetPage() {
           </div>
         </div>
 
-        <div className="mt-24 relative ml-12">
+        <div className="mt-24 relative ml-16">
           <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-blue-400/10 to-transparent" />
           <div className="space-y-8">
             {panels.map((panel, idx) => (
