@@ -46,7 +46,7 @@ export default function MindsetPage() {
       <GradientBackground />
 
       <div className="absolute inset-0 z-0">
-        <div className="absolute left-0 w-2/3 h-full bg-gradient-to-r from-black via-black/90 to-transparent z-10" />
+        <div className="absolute left-0 w-2/3 h-full bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10" />
         <Image
           src="/ai-mindset-bg.webp"
           alt="AI visualization"
@@ -59,15 +59,14 @@ export default function MindsetPage() {
       </div>
 
       <Container className="relative z-10">
-        <div className="pt-12 px-16">
+        <div className="pt-12 px-8">
           <h1 className="text-5xl font-bold mb-2">
-            <span className="text-white">Talent-Driven</span>{' '}
             <span className="text-blue-400">AI Mindset</span>
           </h1>
-          <p className="text-gray-400 text-lg">Leading AI Transformation</p>
+          <p className="text-gray-400 text-lg">Talent-Driven Transformation</p>
         </div>
 
-        <div className="mt-24 px-16 ml-8">
+        <div className="mt-24 px-8">
           <div className="space-y-20">
             {panels.map((panel, idx) => (
               <div key={idx} className="relative">
