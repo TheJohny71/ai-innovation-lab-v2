@@ -13,8 +13,9 @@ import { Button } from '@/components/shared/Button';
 import { BaseLayout } from '@/components/shared/BaseLayout';
 import { MetricCard } from '@/components/shared/MetricCard';
 import { ImplementationTypes } from '@/components/shared/ImplementationTypes';
-import DeploymentStatus from '@/components/shared/DeploymentStatus'; // Changed to default import
+import DeploymentStatus from '@/components/shared/DeploymentStatus';
 import { RegionalImpact } from '@/components/shared/RegionalImpact';
+import { fadeIn, slideUp, stagger } from '@/lib/animation';
 import type { Metrics } from '@/types/metrics';
 
 const dashboardData: Metrics = {
@@ -124,25 +125,27 @@ export default function DisruptionPage() {
   return (
     <BaseLayout>
       <div className="min-h-screen p-6 flex flex-col">
-        <div className="max-w-7xl mx-auto w-full space-y-6 flex-grow">
+        <div className="max-w-7xl mx-auto w-full space-y-8 flex-grow pt-8">
           {/* Header */}
           <div className="flex justify-between items-start">
-            <div>
-              <h1 className="text-4xl font-bold text-white mb-2">
+            <div className={fadeIn}>
+              <h1 className="text-5xl font-bold text-white mb-3">
                 Law Firm{' '}
                 <span className="text-blue-400">AI Disruption Index</span>
               </h1>
-              <p className="text-gray-400">
+              <p className="text-lg text-gray-400">
                 Tracking AI innovation in global law firms
               </p>
             </div>
-            <Button variant="default" className="gap-2">
+            <Button variant="default" className={`gap-2 ${fadeIn}`}>
               Access Dataset <ExternalLink size={16} />
             </Button>
           </div>
 
           {/* Info Box */}
-          <div className="bg-[#171C2C] backdrop-blur-sm rounded-lg p-4 text-sm text-gray-300 border border-white/5">
+          <div
+            className={`bg-[#171C2C] backdrop-blur-sm rounded-lg p-4 text-sm text-gray-300 border border-white/5 ${slideUp}`}
+          >
             <p className="mb-1">
               Analysis derived from 33 verified AI implementations across
               leading global law firms.
@@ -159,12 +162,17 @@ export default function DisruptionPage() {
           {/* Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {dashboardData.cards.map((metric, index) => (
-              <MetricCard key={index} {...metric} />
+              <MetricCard
+                key={index}
+                {...metric}
+                className={`${fadeIn} animate-card-float`}
+                {...stagger(index)}
+              />
             ))}
           </div>
 
           {/* Bottom Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${slideUp}`}>
             <ImplementationTypes types={dashboardData.implementationTypes} />
             <DeploymentStatus data={dashboardData.deploymentStatus} />
             <RegionalImpact data={dashboardData.regionalImpact} />
