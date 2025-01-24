@@ -52,7 +52,7 @@ export default function MindsetPage() {
       <GradientBackground />
 
       <div className="absolute inset-0 z-0">
-        <div className="absolute left-0 w-1/2 h-full bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10" />
+        <div className="absolute left-0 w-3/5 h-full bg-gradient-to-r from-black/80 via-black/60 to-transparent z-10" />
         <motion.div
           style={{
             x: scrollY * 0.1,
@@ -71,7 +71,7 @@ export default function MindsetPage() {
       </div>
 
       <Container className="relative z-10">
-        <div className="pt-16 ml-4">
+        <div className="pt-16 ml-12">
           <h1 className="text-6xl font-bold mb-3 tracking-tight">
             <span className="text-white">AI</span>{' '}
             <span className="text-blue-400">Mindset</span>
@@ -83,7 +83,7 @@ export default function MindsetPage() {
           </div>
         </div>
 
-        <div className="mt-24 relative ml-4">
+        <div className="mt-24 relative ml-12">
           <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-blue-400/10 to-transparent" />
           <div className="space-y-8">
             {panels.map((panel, idx) => (
