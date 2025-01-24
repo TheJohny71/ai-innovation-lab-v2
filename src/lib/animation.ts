@@ -7,7 +7,6 @@ export const stagger = (index: number) => ({
   style: { animationFillMode: 'forwards' },
 });
 
-// Star field animations
 export const starfield = {
   container: 'fixed inset-0 transform-gpu overflow-hidden perspective-500',
   star: 'absolute rounded-full transform-gpu bg-white will-change-transform',
@@ -31,8 +30,7 @@ export const glowPulse = 'animate-enhanced-pulse';
 export const hoverScale = 'transition-transform hover:scale-105';
 export const smoothTransition = 'transition-all duration-300 ease-in-out';
 
-/** @type {import('tailwindcss').Config} */
-export default {
+const animations = {
   theme: {
     extend: {
       animation: {
@@ -95,3 +93,5 @@ export default {
     },
   },
 };
+
+export default animations;
